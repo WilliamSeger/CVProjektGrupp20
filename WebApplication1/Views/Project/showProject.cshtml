@@ -1,0 +1,31 @@
+﻿@model List<Project>
+
+<table class="table table-light">
+
+ <thead>
+ <tr>
+  <td>Title</td>
+  <td>Description</td>
+  <td>Created</td>
+  <td>Updated</td>
+ </tr>
+
+ </thead>
+
+
+ <tbody>
+ 
+     @foreach(var projekt in Model)
+        {
+         <tr>
+             <td>@projekt.Title</td>
+             <td>@projekt.Description</td>
+             <td>@projekt.Created</td>
+             <td>@projekt.Updated</td>
+         </tr>   
+        }
+
+</tbody>
+
+
+</table>
