@@ -1,13 +1,13 @@
-﻿namespace WebApplication1.Models
+﻿using System.ComponentModel.DataAnnotations;
+namespace WebApplication1.Models;
+public class Resume
 {
-    
-    public class Resume
-    {
-        public Resume() { }
-        int Id { get; set; }
-        string Email { get; set; }
-        List<string> Qualification { get; set; }
-        List<string> Phonenumber { get; set; }
-        List<string> Education { get; set; }
-    }
+    public int Id { get; set; }
+    public string Email { get; set; }
+    [Required]
+    public List<string> Qualification { get; set; }
+    [Required]
+    public List<string> Phonenumber { get; set; }
+    [Required]
+    public List<string> Education { get; set; }
 }
