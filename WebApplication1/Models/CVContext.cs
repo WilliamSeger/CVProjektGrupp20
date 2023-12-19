@@ -43,25 +43,25 @@ namespace WebApplication1.Models
 
                 }
                 );
-            modelBuilder.Entity<Project>().HasData(
-                new Project 
-                {
-                    Id = 1,
-                    Title = "MIB",
-                    Description = "JAVA project",
-                    Created = DateTime.Now,
-                    Updated = DateTime.Now 
-                }
-                ,
-                new Project
-                {
-                    Id = 2,
-                    Title = "Hattmakaren",
-                    Description = "SCRUM Project",
-                    Created = DateTime.Now,
-                    Updated = DateTime.Now
-                }
-            );
+            //modelBuilder.Entity<Project>().HasData(
+            //    new Project
+            //    {
+            //        Id = 1,
+            //        Title = "MIB",
+            //        Description = "JAVA project",
+            //        Created = DateTime.Now,
+            //        Updated = DateTime.Now
+            //    }
+            //    ,
+            //    new Project
+            //    {
+            //        Id = 2,
+            //        Title = "Hattmakaren",
+            //        Description = "SCRUM Project",
+            //        Created = DateTime.Now,
+            //        Updated = DateTime.Now
+            //    }
+            //);
         }
     }
 }

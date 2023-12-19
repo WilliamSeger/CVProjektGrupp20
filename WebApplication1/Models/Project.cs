@@ -14,7 +14,7 @@
         public DateTime Updated { get; set; }
 
         public int ProjectOwnerId { get; set; }
-        public virtual List<User> Participants { get; set; }
+        //public virtual List<User> Participants { get; set; }
 
 
         public Project(string title, string description, DateTime created, DateTime updated)

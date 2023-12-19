@@ -1,5 +1,5 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
@@ -19,4 +19,8 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.navbar-nav .nav-item:hover .nav-link {
+    background-color: #B9B7A1;
 }
