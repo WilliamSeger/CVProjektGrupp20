@@ -1,31 +1,87 @@
-﻿@model List<Project>
+﻿@model Project
 
-<table class="table table-light">
+@{
+    ViewBag.Title = "ProjectDetails";
+}
 
- <thead>
- <tr>
-  <td>Title</td>
-  <td>Description</td>
-  <td>Created</td>
-  <td>Updated</td>
- </tr>
+<h2>ProjectDetails</h2>
 
- </thead>
+<div>
+    <h4>Project</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
 
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
 
- <tbody>
- 
-     @foreach(var projekt in Model)
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Updated)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Updated)
+        </dd>
+        @if (User.Identity.IsAuthenticated)
         {
-         <tr>
-             <td>@projekt.Title</td>
-             <td>@projekt.Description</td>
-             <td>@projekt.Created</td>
-             <td>@projekt.Updated</td>
-         </tr>   
+            <dt>
+                @Html.DisplayNameFor(model => model.Created)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Updated)
+            </dd>
+
         }
+        <dt>
+            @Html.DisplayNameFor(model => model.Participants)
+        </dt>
+        @if (User.Identity.IsAuthenticated)
+        {
+            foreach (var item in Model.Participants)
+            {
+                <dd>
+                    @item.ProfileName
+                </dd>
+            }
+        }
+        else
+        {
+            foreach (var item in Model.Participants)
+            {
 
-</tbody>
+                if (item.Private == false)
+                {
+                    <dd>
+                        @item.ProfileName
+                    </dd>
+                }
+            }
+
+        }
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
 
 
-</table>
