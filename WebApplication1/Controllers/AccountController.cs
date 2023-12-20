@@ -44,5 +44,40 @@ namespace WebApplication1.Controllers
 
 		return View(registerViewModel);
 		}
+
+		[HttpGet]
+
+		public IActionResult LogIn()
+		{
+			LoginViewModel loginViewModel = new LoginViewModel();
+			return View(loginViewModel);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> LogIn(LoginViewModel loginViewModel)
+		{
+			if (ModelState.IsValid)
+			{
+				var result = await signInManager.PasswordSignInAsync(
+				loginViewModel.UserName, loginViewModel.Password, isPersistent: loginViewModel.RememberMe,
+				lockoutOnFailure: false);
+				if (result.Succeeded)
+				{
+					return RedirectToAction("Search", "Resume");
+				}
+				else
+				{
+					ModelState.AddModelError("", "Wrong username/password");
+				}
+			}
+			return View(loginViewModel);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Logout()
+		{
+			await signInManager.SignOutAsync();
+			return RedirectToAction("Search", "Resume");
+		}
 	}
 }
