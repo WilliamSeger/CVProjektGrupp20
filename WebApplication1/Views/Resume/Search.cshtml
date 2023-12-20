@@ -1,3 +1,45 @@
 ﻿@model List<Resume>
 
+<meta name="viewport" content="width=device-width, inital-scale=1.0" />
+
 <h2>Hej och välkommen</h2>
+<div>
+    <h1>CVs</h1>
+</div>
+<div>
+    <div>
+        @foreach (var resume in Model)
+        {
+            <div class="resumeItem">
+                <label>Email: <br /> @resume.Email </label>
+                <br />
+                <br />
+                <label>Qualification: </label>
+                <p>
+                @foreach (var quali in @resume.Qualification)
+                {
+                    @quali
+                    <br />
+                }
+                </p>
+                <label>Education: </label>
+                <p>
+                    @foreach (var edu in @resume.Education)
+                    {
+                        @edu
+                        <br />
+                    }
+                </p>
+                <label>Phonenumber: </label>
+                <p>
+                @foreach (var number in @resume.Phonenumber)
+                {
+                    @number
+                    <br />
+                }
+                </p>
+              
+            </div>
+        }
+    </div>
+</div>
