@@ -10,10 +10,11 @@ namespace WebApplication1.Controllers
         {
             _context = context;
         }
-        public IActionResult ProfileView()
+        public IActionResult ProfileView(int ProfileId)
         {
             var profileList = from profile in _context.Profiles
-                             select profile;
+                              where profile.Id == ProfileId
+                              select profile;
 
             return View(profileList.ToList());
         }
