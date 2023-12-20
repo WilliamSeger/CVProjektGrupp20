@@ -49,7 +49,7 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Projects");
+                    b.ToTable("Projects", (string)null);
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Resume", b =>
@@ -77,7 +77,7 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Resumes");
+                    b.ToTable("Resumes", (string)null);
 
                     b.HasData(
                         new
