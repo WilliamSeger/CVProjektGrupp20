@@ -1,15 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
 
 
 namespace WebApplication1.Models
 {
-    public class CVContext : DbContext
+    public class CVContext : IdentityDbContext<User>
     {
         public CVContext(DbContextOptions<CVContext> options) : base(options) { }
 
         public DbSet<Resume> Resumes { get; set; }
         public DbSet<Project> Projects { get; set; }
+        public DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
