@@ -1,10 +1,10 @@
-﻿@* @model Project
+﻿@model Project
 
 @{
     ViewBag.Title = "ProjectDetails";
 }
 
-<h2>ProjectDetails</h2>
+<h2>Project Details</h2>
 
 <div>
     <h4>Project</h4>
@@ -60,7 +60,7 @@
             foreach (var item in Model.Participants)
             {
                 <dd>
-                    @item.ProfileName
+                    @item.Name
                 </dd>
             }
         }
@@ -69,10 +69,10 @@
             foreach (var item in Model.Participants)
             {
 
-                if (item.Private == false)
+                if (item.IsPrivate == false)
                 {
                     <dd>
-                        @item.ProfileName
+                        @item.Name
                     </dd>
                 }
             }
@@ -81,8 +81,8 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
 </p>
 
 
- *@
+
