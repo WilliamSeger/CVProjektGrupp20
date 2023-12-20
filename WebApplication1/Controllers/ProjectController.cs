@@ -5,11 +5,11 @@ namespace WebApplication1.Controllers
 	public class ProjectController : Controller
 	{
 
-		public CVContext _service {  get; set; }
-		public ProjectController(CVContext service) 
+		public CVContext context {  get; set; }
+		public ProjectController(CVContext _context) 
 		
 		{
-			_service = service;
+			context = _context;
 		}
 
 		public IActionResult showProject()
