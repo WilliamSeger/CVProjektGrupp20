@@ -14,8 +14,6 @@ namespace WebApplication1.Controllers
         {
             var resumeList = from resume in _context.Resumes
                              select resume;
-
-
             
             return View(resumeList.ToList());
         }
