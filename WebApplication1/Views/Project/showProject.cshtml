@@ -6,6 +6,13 @@
 
 <h2>Project Details</h2>
 
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        @Html.ActionLink("Create new Project", "Create", null, new { @class = "btn btn-success" })
+    </p>
+}
+
 <div>
     <h4>Project</h4>
     <hr />
