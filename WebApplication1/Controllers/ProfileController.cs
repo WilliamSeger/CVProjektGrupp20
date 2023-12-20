@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Numerics;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -10,13 +11,13 @@ namespace WebApplication1.Controllers
         {
             _context = context;
         }
-        public IActionResult ProfileView(int ProfileId)
+        public IActionResult ProfileView(int id)
         {
             var profileList = from profile in _context.Profiles
-                              where profile.Id == ProfileId
+                              where profile.Id == id
                               select profile;
-
-            return View(profileList.ToList());
+            
+            return View(profileList.ToList().FirstOrDefault());
         }
     }
 }

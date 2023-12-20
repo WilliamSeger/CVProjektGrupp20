@@ -44,30 +44,30 @@ namespace WebApplication1.Models
                 new Resume
                 {
                     Id = 1,
-                    Email = "Alexstuvsta@bingus.se",
                     Qualification = new List<string> { "bingus", "bongus" },
                     Phonenumber = new List<string> { "09348", "094854" },
                     Education = new List<string> { "Harvard", "Yale" },
+                    Experiences = new List<string> { "Amgus champion"},
                     ProfileId = 1
 
                 },
                 new Resume
                 {
                     Id = 2,
-                    Email = "Alexstuvsta@bingus.se",
                     Qualification = new List<string> { "bin", "bon" },
                     Phonenumber = new List<string> { "09348999", "99094854" },
                     Education = new List<string> { "Harvardle", "Yalebon" },
+                    Experiences = new List<string> { "Coding"},
                     ProfileId = 2
 
                 },
                 new Resume
                 {
                     Id = 3,
-                    Email = "Alexstuvsta@bingus.se",
                     Qualification = new List<string> { "binguruskus", "sibongus" },
                     Phonenumber = new List<string> { "66609348", "666094854" },
                     Education = new List<string> { "FakeHarvard", "RealYale" },
+                    Experiences = new List<string> { "Bruh" },
                     ProfileId = 3
 
                 }

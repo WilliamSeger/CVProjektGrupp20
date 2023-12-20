@@ -11,10 +11,9 @@
         @foreach (var resume in Model)
         {
             <div class="resumeItem">
-                <a asp-action="ProfileView" , asp-controller="ProfileController" asp-route-id="@resume.ProfileId">
+                <a asp-action="ProfileView" , asp-controller="Profile" asp-route-name="@resume.ProfileId">
                     <div>
-                        <label>Email:  </label>
-                        <p>@resume.Email</p>
+                       
                         <label>Qualification: </label>
                         <p>
                         @foreach (var quali in @resume.Qualification)
@@ -28,6 +27,14 @@
                             @foreach (var edu in @resume.Education)
                             {
                                 @edu
+                                <br />
+                            }
+                        </p>
+                        <label>Experiences: </label>
+                        <p>
+                            @foreach (var exp in @resume.Experiences)
+                            {
+                                @exp
                                 <br />
                             }
                         </p>
