@@ -11,7 +11,7 @@
         @foreach (var resume in Model)
         {
             <div class="resumeItem">
-                <a asp-action="ProfileView", asp-controller="ProfileController">
+                <a asp-action="ProfileView" , asp-controller="ProfileController" asp-route-id="@resume.ProfileId">
                     <div>
                         <label>Email:  </label>
                         <p>@resume.Email</p>

@@ -12,8 +12,8 @@ public class Resume
     public List<string> Phonenumber { get; set; }
     [Required]
     public List<string> Education { get; set; }
-    //[Required]
-    //public int ProfileId {  get; set; }
-    //[ForeignKey(nameof(ProfileId))]
-    //public virtual Profile Profile { get; set; }
+    [Required]
+    public int ProfileId {  get; set; }
+    [ForeignKey(nameof(ProfileId))]
+    public virtual Profile Profile { get; set; }
 }
