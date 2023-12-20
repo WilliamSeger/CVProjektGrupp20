@@ -5,13 +5,14 @@ namespace WebApplication1.Models;
 public class Resume
 {
     public int Id { get; set; }
-    public string Email { get; set; }
     [Required]
     public List<string> Qualification { get; set; }
     [Required]
     public List<string> Phonenumber { get; set; }
     [Required]
     public List<string> Education { get; set; }
+    public List<string> Experiences { get; set; }
+
     [Required]
     public int ProfileId {  get; set; }
     [ForeignKey(nameof(ProfileId))]
