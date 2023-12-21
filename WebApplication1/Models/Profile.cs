@@ -10,16 +10,13 @@ namespace WebApplication1.Models
         public string Adress { get; set; }
         public List<string> Email { get; set; }
         public Boolean IsPrivate { get; set; }
-<<<<<<< HEAD
         //public byte[] Picture { get; set; }
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual User User { get; set; }
-=======
         //insert Picture
         //public int UserId { get; set; }
         //[ForeignKey(nameof(UserId))]
         //public virtual User User { get; set; }
->>>>>>> parent of ab6caff (new class projectprofile,add view for project)
     }
 }

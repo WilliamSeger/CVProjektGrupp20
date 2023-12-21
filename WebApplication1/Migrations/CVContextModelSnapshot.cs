@@ -184,6 +184,16 @@ namespace WebApplication1.Migrations
                     b.Property<int?>("ProjectId")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
+
                     b.ToTable("Profiles");
 
                     b.HasData(
@@ -249,20 +259,20 @@ namespace WebApplication1.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9507),
+                            Created = new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2567),
                             Description = "JAVA project",
                             ProjectOwnerId = 0,
                             Title = "MIB",
-                            Updated = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9558)
+                            Updated = new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2624)
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9562),
+                            Created = new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2626),
                             Description = "SCRUM Project",
                             ProjectOwnerId = 0,
                             Title = "Hattmakaren",
-                            Updated = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9564)
+                            Updated = new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2628)
                         });
                 });
 
@@ -398,12 +408,12 @@ namespace WebApplication1.Migrations
                         {
                             Id = "123",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d2ea0209-def2-4193-b9d5-4eb79c20e804",
+                            ConcurrencyStamp = "19767deb-79c8-4a3c-9a7e-c3ed3a0badf8",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "1234Abc!",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a097e83d-0a09-4724-a6b9-a40a183783d5",
+                            SecurityStamp = "26ba257c-4c17-4bcf-8ce2-4e79c9e1b696",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -465,6 +475,14 @@ namespace WebApplication1.Migrations
                     b.HasOne("WebApplication1.Models.Project", null)
                         .WithMany("Participants")
                         .HasForeignKey("ProjectId");
+
+                    b.HasOne("WebApplication1.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Resume", b =>
