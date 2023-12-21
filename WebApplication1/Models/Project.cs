@@ -1,4 +1,6 @@
-﻿namespace WebApplication1.Models
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WebApplication1.Models
 {
     public class Project
     {
@@ -14,14 +16,16 @@
         public DateTime Updated { get; set; }
 
         public int ProjectOwnerId { get; set; }
-        public virtual List<Profile> Participants { get; set; }
+        [ForeignKey(nameof(ProjectOwnerId))]
+        public virtual Profile ProjectOwner { get; set; } // Främmande nyckel för ägaren av projektet
+        public virtual ICollection<ParticipatesIn> Participants { get; set; } = new List<ParticipatesIn>(); { get; set; }
 
 
-        
-        
 
+
+}
 
     }
 
-}
+
 
