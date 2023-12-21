@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Models;
 
@@ -11,9 +12,11 @@ using WebApplication1.Models;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(CVContext))]
-    partial class CVContextModelSnapshot : ModelSnapshot
+    [Migration("20231221133737_ResumeMigration")]
+    partial class ResumeMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,6 +186,16 @@ namespace WebApplication1.Migrations
 
                     b.Property<int?>("ProjectId")
                         .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Profiles");
 
@@ -465,6 +478,14 @@ namespace WebApplication1.Migrations
                     b.HasOne("WebApplication1.Models.Project", null)
                         .WithMany("Participants")
                         .HasForeignKey("ProjectId");
+
+                    b.HasOne("WebApplication1.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Resume", b =>

@@ -17,27 +17,41 @@ namespace WebApplication1.Models
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Profile>().HasData(
+            modelBuilder.Entity<User>().HasData(
+                new User
+                {   
+                    Id = "123",
+                    UserName = "Admin",
+                    PasswordHash = "1234Abc!"
+                }
+                );
+			modelBuilder.Entity<Profile>().HasData(
                 new Profile
                 {
                     Id = 1,
                     Name = "Bong",
                     Adress = "väggatan",
-                    IsPrivate = false
+                    Email = new List<string> { "hej@gmail.com", "hej@jobb.com" },
+                    IsPrivate = false,
+                    UserId = "123"
                 },
                 new Profile
                 {
                     Id = 2,
                     Name = "Bongus",
                     Adress = "väggatan 4",
-                    IsPrivate = false
+                    Email = new List<string> { "hallå@hotmail.com", "hallå@företag.se" },
+                    IsPrivate = false,
+                    UserId = "123"
                 },
                 new Profile
                 {
                     Id = 3,
                     Name = "Bing",
                     Adress = "väggatan 2",
-                    IsPrivate = false
+                    Email = new List<string> { "meh@yahoo.com", "meh@arbete.com" },
+                    IsPrivate = false,
+                    UserId = "123"
                 }
                 );
             modelBuilder.Entity<Resume>().HasData(
@@ -72,26 +86,26 @@ namespace WebApplication1.Models
 
                 }
                 );
-            
-            //modelBuilder.Entity<Project>().HasData(
-            //    new Project
-            //    {
-            //        Id = 1,
-            //        Title = "MIB",
-            //        Description = "JAVA project",
-            //        Created = DateTime.Now,
-            //        Updated = DateTime.Now
-            //    }
-            //    ,
-            //    new Project
-            //    {
-            //        Id = 2,
-            //        Title = "Hattmakaren",
-            //        Description = "SCRUM Project",
-            //        Created = DateTime.Now,
-            //        Updated = DateTime.Now
-            //    }
-            //);
+
+            modelBuilder.Entity<Project>().HasData(
+                new Project
+                {
+                    Id = 1,
+                    Title = "MIB",
+                    Description = "JAVA project",
+                    Created = DateTime.Now,
+                    Updated = DateTime.Now
+                }
+                ,
+                new Project
+                {
+                    Id = 2,
+                    Title = "Hattmakaren",
+                    Description = "SCRUM Project",
+                    Created = DateTime.Now,
+                    Updated = DateTime.Now
+                }
+            );
         }
     }
 }

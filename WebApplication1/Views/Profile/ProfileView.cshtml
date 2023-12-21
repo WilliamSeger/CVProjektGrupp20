@@ -1,8 +1,100 @@
 ﻿@model Profile
-<h1>I did it</h1>
-<p>
-    @Model.IsPrivate;
-</p>
-<p>
-    @Model.Id;
-</p>
+
+<div class="grid-container">
+	<div id="item1">
+		<h1>Contact Details</h1>
+		<div>
+			<a asp-action="EditProfile" asp-controller="Profile" asp-route-id="@Model.Id" id="editProfile">Edit Profile</a>
+		</div>
+		<label>Email: </label>
+		<p>
+			@foreach (var mail in Model.Email)
+			{
+				@mail
+				<br />
+			}
+		</p>
+		<label>Phonenumber: </label>
+		<p>
+			@foreach (var number in ViewBag.Resume.Phonenumber)
+			{
+				@number
+				<br />
+			}
+		</p>
+		
+	</div>
+	<div id="item2">
+		<h1>Resume</h1>
+		<div class="resumeItemProfile" id="resume">
+			<div>
+				<label>Qualification: </label>
+				<p>
+						@foreach (var quali in ViewBag.Resume.Qualification)
+						{
+							@quali
+						<br />
+						}
+				</p>
+				<label>Education: </label>
+				<p>
+						@foreach (var edu in ViewBag.Resume.Education)
+						{
+							@edu
+						<br />
+						}
+				</p>
+				<label>Experiences: </label>
+				<p>
+						@foreach (var exp in ViewBag.Resume.Experiences)
+						{
+							@exp
+						<br />
+						}
+				</p>
+				<label>Phonenumber: </label>
+				<p>
+						@foreach (var number in ViewBag.Resume.Phonenumber)
+						{
+							@number
+						<br />
+						}
+				</p>
+			</div>
+		</div>
+		<div id="chat">
+			
+		</div>
+	</div>
+	<div id="item3">
+		<h1>Projects</h1>
+		@foreach(var project in ViewBag.Projects)
+		{
+			<div class="profileProjectItem">
+
+				<a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@Model.Id" asp-route-id2="@project.Id">
+					<div>
+						<label>Title: </label>
+						<p>
+							@project.Title
+						</p>
+						<label>Description: </label>
+						<p>
+							@project.Description
+						</p>
+						<label>Date Created: </label>
+						<p>
+							@project.Created;
+						</p>
+					</div>
+					@* <div>
+						@foreach(var participant in project.Participants)
+						{
+							
+						}
+					</div> *@
+				</a>
+			</div>
+		}
+	</div>
+</div>

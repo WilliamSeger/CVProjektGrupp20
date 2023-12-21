@@ -1,16 +1,18 @@
-﻿namespace WebApplication1.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace WebApplication1.Models
 {
     public class Profile
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public string Adress { get; set; }
+        public List<string> Email { get; set; }
         public Boolean IsPrivate { get; set; }
-        public virtual ICollection<ParticipatesIn> Projects { get; set; } = new List<ParticipatesIn>();
-
-        //insert Picture
-        //public int UserId { get; set; }
-        //[ForeignKey(nameof(UserId))]
-        //public virtual User User { get; set; }
+        //public byte[] Picture { get; set; }
+        public string UserId { get; set; }
+        [ForeignKey(nameof(UserId))]
+        public virtual User User { get; set; }
     }
 }

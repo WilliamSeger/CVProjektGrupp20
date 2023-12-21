@@ -1,0 +1,63 @@
+﻿@model Profile
+
+<div class="formDiv">
+	<form asp-action="Edit" method="post">
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="Adress" />
+		<input type="hidden" asp-for="IsPrivate" />
+		<input type="hidden" asp-for="Email" />
+		<input type="hidden" asp-for="UserId" />
+		<label>Name: </label>
+		<input type="text" asp-for="Name"/>
+		<br />
+		<button type="submit">Save Name</button>
+	</form>
+	<form asp-action="Edit" method="post">
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="Name" />
+		<input type="hidden" asp-for="IsPrivate" />
+		<input type="hidden" asp-for="Email" />
+		<input type="hidden" asp-for="UserId" />
+		<label>Adress: </label>
+		<input type="text" asp-for="Adress" />
+		<br />
+		<button type="submit">Save Adress</button>
+	</form>
+	<form asp-action="Edit" method="post">
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="Name" />
+		<input type="hidden" asp-for="Adress" />
+		<input type="hidden" asp-for="IsPrivate" />
+		<input type="hidden" asp-for="UserId" />
+		<label>Email: </label>
+		@for (int i = 0; i < Model.Email.Count; i++)
+		{
+			<input type="text" asp-for="Email[i]" />
+		}
+		<br />
+		<button type="submit">Save Email</button>
+	</form>
+	<form asp-action="Edit" method="post">
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="Adress" />
+		<input type="hidden" asp-for="Name" />
+		<input type="hidden" asp-for="Email" />
+		<input type="hidden" asp-for="UserId" />
+		<label>Edit Private Profile</label>
+		<input type="checkbox" asp-for="IsPrivate" />
+		<br />
+		<button type="submit">Save Privacy Options</button>
+	</form>
+	<form asp-action="EditPicture" method="post" enctype="multipart/form-data">
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="Name" />
+		<input type="hidden" asp-for="Adress" />
+		<input type="hidden" asp-for="Email" />
+		<input type="hidden" asp-for="IsPrivate" />
+		<input type="hidden" asp-for="UserId" />
+		<label>Edit Profile Picture</label>
+		<input type="file" id="file1" name="file1"/>
+		<br />
+		<button type="submit">Save Profile Picture</button>
+	</form>
+</div>
