@@ -12,8 +12,8 @@ using WebApplication1.Models;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(CVContext))]
-    [Migration("20231221133737_ResumeMigration")]
-    partial class ResumeMigration
+    [Migration("20231221143828_ProfileMigration")]
+    partial class ProfileMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -262,20 +262,20 @@ namespace WebApplication1.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9507),
+                            Created = new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2567),
                             Description = "JAVA project",
                             ProjectOwnerId = 0,
                             Title = "MIB",
-                            Updated = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9558)
+                            Updated = new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2624)
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9562),
+                            Created = new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2626),
                             Description = "SCRUM Project",
                             ProjectOwnerId = 0,
                             Title = "Hattmakaren",
-                            Updated = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9564)
+                            Updated = new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2628)
                         });
                 });
 
@@ -411,12 +411,12 @@ namespace WebApplication1.Migrations
                         {
                             Id = "123",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "d2ea0209-def2-4193-b9d5-4eb79c20e804",
+                            ConcurrencyStamp = "19767deb-79c8-4a3c-9a7e-c3ed3a0badf8",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "1234Abc!",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "a097e83d-0a09-4724-a6b9-a40a183783d5",
+                            SecurityStamp = "26ba257c-4c17-4bcf-8ce2-4e79c9e1b696",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });

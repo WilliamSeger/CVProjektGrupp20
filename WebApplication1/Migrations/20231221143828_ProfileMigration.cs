@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebApplication1.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class ProfileMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -183,12 +183,20 @@ namespace WebApplication1.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsPrivate = table.Column<bool>(type: "bit", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Profiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Profiles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Profiles_Projects_ProjectId",
                         column: x => x.ProjectId,
@@ -202,10 +210,10 @@ namespace WebApplication1.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Qualification = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Phonenumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Education = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Experiences = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfileId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -220,23 +228,37 @@ namespace WebApplication1.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Profiles",
-                columns: new[] { "Id", "Adress", "IsPrivate", "Name", "ProjectId" },
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "123", 0, "19767deb-79c8-4a3c-9a7e-c3ed3a0badf8", null, false, false, null, null, null, "1234Abc!", null, false, "26ba257c-4c17-4bcf-8ce2-4e79c9e1b696", false, "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "Projects",
+                columns: new[] { "Id", "Created", "Description", "ProjectOwnerId", "Title", "Updated" },
                 values: new object[,]
                 {
-                    { 1, "väggatan", false, "Bong", null },
-                    { 2, "väggatan 4", false, "Bongus", null },
-                    { 3, "väggatan 2", false, "Bing", null }
+                    { 1, new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2567), "JAVA project", 0, "MIB", new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2624) },
+                    { 2, new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2626), "SCRUM Project", 0, "Hattmakaren", new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2628) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Profiles",
+                columns: new[] { "Id", "Adress", "Email", "IsPrivate", "Name", "ProjectId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, "väggatan", "[\"hej@gmail.com\",\"hej@jobb.com\"]", false, "Bong", null, "123" },
+                    { 2, "väggatan 4", "[\"hall\\u00E5@hotmail.com\",\"hall\\u00E5@f\\u00F6retag.se\"]", false, "Bongus", null, "123" },
+                    { 3, "väggatan 2", "[\"meh@yahoo.com\",\"meh@arbete.com\"]", false, "Bing", null, "123" }
                 });
 
             migrationBuilder.InsertData(
                 table: "Resumes",
-                columns: new[] { "Id", "Education", "Email", "Phonenumber", "ProfileId", "Qualification" },
+                columns: new[] { "Id", "Education", "Experiences", "Phonenumber", "ProfileId", "Qualification" },
                 values: new object[,]
                 {
-                    { 1, "[\"Harvard\",\"Yale\"]", "Alexstuvsta@bingus.se", "[\"09348\",\"094854\"]", 1, "[\"bingus\",\"bongus\"]" },
-                    { 2, "[\"Harvardle\",\"Yalebon\"]", "Alexstuvsta@bingus.se", "[\"09348999\",\"99094854\"]", 2, "[\"bin\",\"bon\"]" },
-                    { 3, "[\"FakeHarvard\",\"RealYale\"]", "Alexstuvsta@bingus.se", "[\"66609348\",\"666094854\"]", 3, "[\"binguruskus\",\"sibongus\"]" }
+                    { 1, "[\"Harvard\",\"Yale\"]", "[\"Amgus champion\"]", "[\"09348\",\"094854\"]", 1, "[\"bingus\",\"bongus\"]" },
+                    { 2, "[\"Harvardle\",\"Yalebon\"]", "[\"Coding\"]", "[\"09348999\",\"99094854\"]", 2, "[\"bin\",\"bon\"]" },
+                    { 3, "[\"FakeHarvard\",\"RealYale\"]", "[\"Bruh\"]", "[\"66609348\",\"666094854\"]", 3, "[\"binguruskus\",\"sibongus\"]" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -284,6 +306,11 @@ namespace WebApplication1.Migrations
                 column: "ProjectId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Profiles_UserId",
+                table: "Profiles",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Resumes_ProfileId",
                 table: "Resumes",
                 column: "ProfileId");
@@ -314,10 +341,10 @@ namespace WebApplication1.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "Profiles");
 
             migrationBuilder.DropTable(
-                name: "Profiles");
+                name: "AspNetUsers");
 
             migrationBuilder.DropTable(
                 name: "Projects");
