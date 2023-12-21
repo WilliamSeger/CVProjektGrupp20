@@ -17,7 +17,7 @@ namespace WebApplication1.Controllers
 			this.signInManager = signInManager;
 			_context = context;
 		}
-		[Authorize]
+
 		[HttpGet]
 		public IActionResult Register()
 		{
@@ -83,6 +83,7 @@ namespace WebApplication1.Controllers
 			return RedirectToAction("Search", "Resume");
 		}
 
+		[Authorize]
 		[HttpGet]
 		public IActionResult ChangePassword()
 		{
