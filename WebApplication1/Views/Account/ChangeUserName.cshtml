@@ -1,0 +1,24 @@
+﻿@model ChangeUserNameViewModel
+@{
+	ViewBag.Message = "Change Password";
+}
+<H2>@ViewBag.Titel</H2>
+<div asp-validation-summary="All" class=text-danger>
+	<span></span>
+</div>
+<form method="post" asp-action="ChangeUserName">
+	<div class="form-group row">
+		<div class="col-sm-2">
+			<label>New UserName: </label>
+		</div>
+		<div class="col-sm-4">
+			<input asp-for="NewUserName" class="form-control"/>
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="offset-2 col-sm-4">
+			<button type="submit" class="btn btn-primary">Change Username</button>
+		</div>
+	</div>
+	
+</form>

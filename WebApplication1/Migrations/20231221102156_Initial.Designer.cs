@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Models;
 
@@ -11,9 +12,11 @@ using WebApplication1.Models;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(CVContext))]
-    partial class CVContextModelSnapshot : ModelSnapshot
+    [Migration("20231221102156_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -170,10 +173,6 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("bit");
 
@@ -184,6 +183,10 @@ namespace WebApplication1.Migrations
                     b.Property<int?>("ProjectId")
                         .HasColumnType("int");
 
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
                     b.ToTable("Profiles");
 
                     b.HasData(
@@ -191,28 +194,22 @@ namespace WebApplication1.Migrations
                         {
                             Id = 1,
                             Adress = "väggatan",
-                            Email = "[\"hej@gmail.com\",\"hej@jobb.com\"]",
                             IsPrivate = false,
-                            Name = "Bong",
-                            UserId = "123"
+                            Name = "Bong"
                         },
                         new
                         {
                             Id = 2,
                             Adress = "väggatan 4",
-                            Email = "[\"hall\\u00E5@hotmail.com\",\"hall\\u00E5@f\\u00F6retag.se\"]",
                             IsPrivate = false,
-                            Name = "Bongus",
-                            UserId = "123"
+                            Name = "Bongus"
                         },
                         new
                         {
                             Id = 3,
                             Adress = "väggatan 2",
-                            Email = "[\"meh@yahoo.com\",\"meh@arbete.com\"]",
                             IsPrivate = false,
-                            Name = "Bing",
-                            UserId = "123"
+                            Name = "Bing"
                         });
                 });
 
@@ -244,26 +241,6 @@ namespace WebApplication1.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Created = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9507),
-                            Description = "JAVA project",
-                            ProjectOwnerId = 0,
-                            Title = "MIB",
-                            Updated = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9558)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Created = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9562),
-                            Description = "SCRUM Project",
-                            ProjectOwnerId = 0,
-                            Title = "Hattmakaren",
-                            Updated = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9564)
-                        });
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Resume", b =>
@@ -278,7 +255,7 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Experiences")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -304,7 +281,7 @@ namespace WebApplication1.Migrations
                         {
                             Id = 1,
                             Education = "[\"Harvard\",\"Yale\"]",
-                            Experiences = "[\"Amgus champion\"]",
+                            Email = "Alexstuvsta@bingus.se",
                             Phonenumber = "[\"09348\",\"094854\"]",
                             ProfileId = 1,
                             Qualification = "[\"bingus\",\"bongus\"]"
@@ -313,7 +290,7 @@ namespace WebApplication1.Migrations
                         {
                             Id = 2,
                             Education = "[\"Harvardle\",\"Yalebon\"]",
-                            Experiences = "[\"Coding\"]",
+                            Email = "Alexstuvsta@bingus.se",
                             Phonenumber = "[\"09348999\",\"99094854\"]",
                             ProfileId = 2,
                             Qualification = "[\"bin\",\"bon\"]"
@@ -322,7 +299,7 @@ namespace WebApplication1.Migrations
                         {
                             Id = 3,
                             Education = "[\"FakeHarvard\",\"RealYale\"]",
-                            Experiences = "[\"Bruh\"]",
+                            Email = "Alexstuvsta@bingus.se",
                             Phonenumber = "[\"66609348\",\"666094854\"]",
                             ProfileId = 3,
                             Qualification = "[\"binguruskus\",\"sibongus\"]"
@@ -392,21 +369,6 @@ namespace WebApplication1.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "123",
-                            AccessFailedCount = 0,
-                            ConcurrencyStamp = "d2ea0209-def2-4193-b9d5-4eb79c20e804",
-                            EmailConfirmed = false,
-                            LockoutEnabled = false,
-                            PasswordHash = "1234Abc!",
-                            PhoneNumberConfirmed = false,
-                            SecurityStamp = "a097e83d-0a09-4724-a6b9-a40a183783d5",
-                            TwoFactorEnabled = false,
-                            UserName = "Admin"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

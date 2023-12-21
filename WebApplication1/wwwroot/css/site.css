@@ -138,4 +138,12 @@ label:hover {
 
 #item1 div {
     text-align: right;
+  
+#loggaUt {
+    border: none;
+    background-color: white;
+}
+
+#loggaUt:hover {
+    background-color: #B9B7A1;
 }
