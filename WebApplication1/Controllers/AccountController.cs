@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
 
@@ -16,7 +17,7 @@ namespace WebApplication1.Controllers
 			this.signInManager = signInManager;
 			_context = context;
 		}
-
+		[Authorize]
 		[HttpGet]
 		public IActionResult Register()
 		{
