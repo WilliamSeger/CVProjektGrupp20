@@ -12,7 +12,6 @@ public class Resume
     [Required]
     public List<string> Education { get; set; }
     public List<string> Experiences { get; set; }
-
     [Required]
     public int ProfileId {  get; set; }
     [ForeignKey(nameof(ProfileId))]

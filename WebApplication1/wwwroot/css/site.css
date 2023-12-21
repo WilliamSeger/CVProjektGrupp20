@@ -21,6 +21,10 @@ body {
   margin-bottom: 60px;
 }
 
+label:hover {
+    cursor: text;
+}
+
 .navbar-nav .nav-item:hover .nav-link {
     background-color: #B9B7A1;
 }
@@ -41,19 +45,97 @@ body {
     color: black;
 }
 
-.resumeItem label:hover {
-    cursor: pointer;
-}
-
 .resumeItem div {
     margin: 1vw;
 }
 
-.resumeItem p {
+.resumeItem p label {
     overflow-wrap: break-word;
 }
 
 .resumeItem a {
     color: black;
     text-decoration: none;
+}
+
+.grid-container {
+    display: grid;
+    row-gap: 5vh;
+}
+
+#item1 {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    display: inline-block;
+}
+
+#item2 {
+    grid-column-start: 1;
+    grid-column-end: 1;
+    grid-row-start: 2;
+    grid-row-end: 4;
+}
+
+#item3 {
+    grid-column-start: 2;
+    grid-column-end: 2;
+    grid-row-start: 2;
+    grid-row-end: 4;
+}
+
+.resumeItemProfile {
+    display: inline-block;
+    flex-wrap: wrap;
+    margin-right: 1vw;
+    margin-bottom: 10vh;
+    border: solid black 1px;
+    border-radius: 2vw;
+    width: 15vw;
+}
+
+.resumeItemProfile div {
+    margin: 1vw;
+}
+
+.resumeItemProfile p label {
+    overflow-wrap: break-word;
+}
+
+.profileProjectItem {
+    display: inline-block;
+    flex-wrap: wrap;
+    margin-right: 1vw;
+    margin-bottom: 10vh;
+    border: solid black 1px;
+    border-radius: 2vw;
+    width: 15vw;
+}
+
+.profileProjectItem:hover {
+    background-color: lightgrey;
+    cursor: pointer;
+    color: black;
+}
+
+.profileProjectItem div {
+    margin: 1vw;
+}
+
+.profileProjectItem p label {
+    overflow-wrap: break-word;
+}
+
+.profileProjectItem a {
+    color: black;
+    text-decoration: none;
+}
+
+.formDiv form {
+    margin-bottom: 5vh;
+}
+
+#item1 div {
+    text-align: right;
 }

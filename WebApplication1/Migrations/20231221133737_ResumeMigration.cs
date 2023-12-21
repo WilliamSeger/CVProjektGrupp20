@@ -3,31 +3,16 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace WebApplication1.Migrations
 {
     /// <inheritdoc />
-    public partial class UserMigration : Migration
+    public partial class ResumeMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
-                name: "Email",
-                table: "Resumes",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "",
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
-
-            migrationBuilder.AddColumn<int>(
-                name: "ProjectOwnerId",
-                table: "Projects",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -65,6 +50,23 @@ namespace WebApplication1.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Projects",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Updated = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ProjectOwnerId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Projects", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,6 +175,92 @@ namespace WebApplication1.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Profiles",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Adress = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsPrivate = table.Column<bool>(type: "bit", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProjectId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Profiles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Profiles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Profiles_Projects_ProjectId",
+                        column: x => x.ProjectId,
+                        principalTable: "Projects",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Resumes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Qualification = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phonenumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Education = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Experiences = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProfileId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Resumes", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Resumes_Profiles_ProfileId",
+                        column: x => x.ProfileId,
+                        principalTable: "Profiles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetUsers",
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                values: new object[] { "123", 0, "d2ea0209-def2-4193-b9d5-4eb79c20e804", null, false, false, null, null, null, "1234Abc!", null, false, "a097e83d-0a09-4724-a6b9-a40a183783d5", false, "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "Projects",
+                columns: new[] { "Id", "Created", "Description", "ProjectOwnerId", "Title", "Updated" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9507), "JAVA project", 0, "MIB", new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9558) },
+                    { 2, new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9562), "SCRUM Project", 0, "Hattmakaren", new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9564) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Profiles",
+                columns: new[] { "Id", "Adress", "Email", "IsPrivate", "Name", "ProjectId", "UserId" },
+                values: new object[,]
+                {
+                    { 1, "väggatan", "[\"hej@gmail.com\",\"hej@jobb.com\"]", false, "Bong", null, "123" },
+                    { 2, "väggatan 4", "[\"hall\\u00E5@hotmail.com\",\"hall\\u00E5@f\\u00F6retag.se\"]", false, "Bongus", null, "123" },
+                    { 3, "väggatan 2", "[\"meh@yahoo.com\",\"meh@arbete.com\"]", false, "Bing", null, "123" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Resumes",
+                columns: new[] { "Id", "Education", "Experiences", "Phonenumber", "ProfileId", "Qualification" },
+                values: new object[,]
+                {
+                    { 1, "[\"Harvard\",\"Yale\"]", "[\"Amgus champion\"]", "[\"09348\",\"094854\"]", 1, "[\"bingus\",\"bongus\"]" },
+                    { 2, "[\"Harvardle\",\"Yalebon\"]", "[\"Coding\"]", "[\"09348999\",\"99094854\"]", 2, "[\"bin\",\"bon\"]" },
+                    { 3, "[\"FakeHarvard\",\"RealYale\"]", "[\"Bruh\"]", "[\"66609348\",\"666094854\"]", 3, "[\"binguruskus\",\"sibongus\"]" }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -211,6 +299,21 @@ namespace WebApplication1.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profiles_ProjectId",
+                table: "Profiles",
+                column: "ProjectId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Profiles_UserId",
+                table: "Profiles",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Resumes_ProfileId",
+                table: "Resumes",
+                column: "ProfileId");
         }
 
         /// <inheritdoc />
@@ -232,22 +335,19 @@ namespace WebApplication1.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Resumes");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Profiles");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
 
-            migrationBuilder.DropColumn(
-                name: "ProjectOwnerId",
-                table: "Projects");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Email",
-                table: "Resumes",
-                type: "nvarchar(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+            migrationBuilder.DropTable(
+                name: "Projects");
         }
     }
 }

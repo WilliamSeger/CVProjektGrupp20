@@ -170,6 +170,10 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsPrivate")
                         .HasColumnType("bit");
 
@@ -177,7 +181,18 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Profiles");
 
@@ -186,22 +201,28 @@ namespace WebApplication1.Migrations
                         {
                             Id = 1,
                             Adress = "väggatan",
+                            Email = "[\"hej@gmail.com\",\"hej@jobb.com\"]",
                             IsPrivate = false,
-                            Name = "Bong"
+                            Name = "Bong",
+                            UserId = "123"
                         },
                         new
                         {
                             Id = 2,
                             Adress = "väggatan 4",
+                            Email = "[\"hall\\u00E5@hotmail.com\",\"hall\\u00E5@f\\u00F6retag.se\"]",
                             IsPrivate = false,
-                            Name = "Bongus"
+                            Name = "Bongus",
+                            UserId = "123"
                         },
                         new
                         {
                             Id = 3,
                             Adress = "väggatan 2",
+                            Email = "[\"meh@yahoo.com\",\"meh@arbete.com\"]",
                             IsPrivate = false,
-                            Name = "Bing"
+                            Name = "Bing",
+                            UserId = "123"
                         });
                 });
 
@@ -233,6 +254,26 @@ namespace WebApplication1.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Created = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9507),
+                            Description = "JAVA project",
+                            ProjectOwnerId = 0,
+                            Title = "MIB",
+                            Updated = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9558)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Created = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9562),
+                            Description = "SCRUM Project",
+                            ProjectOwnerId = 0,
+                            Title = "Hattmakaren",
+                            Updated = new DateTime(2023, 12, 21, 14, 37, 36, 853, DateTimeKind.Local).AddTicks(9564)
+                        });
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Resume", b =>
@@ -247,7 +288,7 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Email")
+                    b.Property<string>("Experiences")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -255,11 +296,16 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProfileId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Qualification")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("Resumes");
 
@@ -268,24 +314,27 @@ namespace WebApplication1.Migrations
                         {
                             Id = 1,
                             Education = "[\"Harvard\",\"Yale\"]",
-                            Email = "Alexstuvsta@bingus.se",
+                            Experiences = "[\"Amgus champion\"]",
                             Phonenumber = "[\"09348\",\"094854\"]",
+                            ProfileId = 1,
                             Qualification = "[\"bingus\",\"bongus\"]"
                         },
                         new
                         {
                             Id = 2,
                             Education = "[\"Harvardle\",\"Yalebon\"]",
-                            Email = "Alexstuvsta@bingus.se",
+                            Experiences = "[\"Coding\"]",
                             Phonenumber = "[\"09348999\",\"99094854\"]",
+                            ProfileId = 2,
                             Qualification = "[\"bin\",\"bon\"]"
                         },
                         new
                         {
                             Id = 3,
                             Education = "[\"FakeHarvard\",\"RealYale\"]",
-                            Email = "Alexstuvsta@bingus.se",
+                            Experiences = "[\"Bruh\"]",
                             Phonenumber = "[\"66609348\",\"666094854\"]",
+                            ProfileId = 3,
                             Qualification = "[\"binguruskus\",\"sibongus\"]"
                         });
                 });
@@ -353,6 +402,21 @@ namespace WebApplication1.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "123",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "d2ea0209-def2-4193-b9d5-4eb79c20e804",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "1234Abc!",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "a097e83d-0a09-4724-a6b9-a40a183783d5",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -404,6 +468,37 @@ namespace WebApplication1.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.Profile", b =>
+                {
+                    b.HasOne("WebApplication1.Models.Project", null)
+                        .WithMany("Participants")
+                        .HasForeignKey("ProjectId");
+
+                    b.HasOne("WebApplication1.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.Resume", b =>
+                {
+                    b.HasOne("WebApplication1.Models.Profile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.Project", b =>
+                {
+                    b.Navigation("Participants");
                 });
 #pragma warning restore 612, 618
         }
