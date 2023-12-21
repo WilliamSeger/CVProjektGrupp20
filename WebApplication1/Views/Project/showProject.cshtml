@@ -1,10 +1,91 @@
-﻿@model Project
+﻿@model List<WebApplication1.ViewModels.ShowProjectViewModel>
+
+<h2>All projects</h2>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <p>
+        @Html.ActionLink("Create New Project", "Add", null, new { @class = "btn btn-success" })
+    </p>
+}
+
+<div class="row">
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <div class="project-box">
+                <h4>@Html.DisplayFor(modelItem => item.Project.Title)</h4>
+                <p>@Html.DisplayFor(modelItem => item.Project.Description)</p>
+                <p>Created: @Html.DisplayFor(modelItem => item.Project.Created)</p>
+                <p>Updated: @Html.DisplayFor(modelItem => item.Project.Updated)</p>
+                <p>Project Owner: @Html.DisplayFor(modelItem => item.Project.ProjectOwner.Name)</p>
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <p>
+                        @Html.ActionLink("Edit", "EditProject", new { id = item.Project.Id }) |
+                        @* här kan man lägga till fler actions *@
+                    </p>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@* @model Project
 
 @{
     ViewBag.Title = "ProjectDetails";
 }
-
-<h2>Project Details</h2>
+<header>
+    <h2>Project Details</h2>
+</header>
 
 @if (User.Identity.IsAuthenticated)
 {
@@ -90,6 +171,6 @@
 <p>
     @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
 </p>
-
+ *@
 
 

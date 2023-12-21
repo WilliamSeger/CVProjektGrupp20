@@ -1,9 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
+
 namespace WebApplication1.Controllers
+
+
+
 {
-	public class ProjectController : Controller
+    [Authorize] // Lägg till [Authorize] för att kräva inloggning för hela kontrollern
+    public class ProjectController : Controller
 	{
+
 
 		public CVContext context {  get; set; }
 		public ProjectController(CVContext _context) 
@@ -12,19 +22,46 @@ namespace WebApplication1.Controllers
 			context = _context;
 		}
 
-		public IActionResult showProject()
+        [AllowAnonymous] // Tillåt åtkomst utan inloggning för ShowProject
+        public IActionResult showProject()
 		{
-			return View();
-		}
+            var projects = context.Projects.Include(p => p.ProjectOwner).ToList();
+            return View(projects);
+        }
 
-		public IActionResult AddProject()
-		{
-			return View();
-		}
+        [HttpPost]
+        public IActionResult Add(Project project)
+        {
+            if (ModelState.IsValid)
+            {
+                context.Projects.Add(project);
+                context.SaveChanges();
 
-		public IActionResult EditProject()
-		{
-			return View();
-		}
-	}
+                return RedirectToAction("ShowProject");
+            }
+
+            // Om modellen inte är giltig, återvänder till samma vy för kunna visa felmeddelanden
+            return View("Add", project);
+        }
+    
+
+        public IActionResult EditProject(int id)
+        {
+            var project = context.Projects.Find(id);
+            return View(project);
+        }
+
+
+        [HttpPost]
+        public IActionResult EditProject(Project project)
+        {
+            context.Entry(project).State = EntityState.Modified;
+            context.SaveChanges();
+
+            return RedirectToAction("ShowProject");
+        }
+
+
+
+    }
 }
