@@ -105,6 +105,29 @@ namespace WebApplication1.Controllers
 
 			return RedirectToAction("Search", "Resume");
 		}
-		
-	}
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult ChangeUserName()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangeUserName(ChangeUserNameViewModel changeUserNameViewModel)
+        {
+
+
+            string userName = User.Identity.Name;
+            var result = from user in _context.Users
+                         where user.UserName == userName
+                         select user;
+            User newUser = result.ToList()[0];
+			newUser.UserName = changeUserNameViewModel.NewUserName;
+            await userManager.UpdateAsync(newUser);
+
+            return RedirectToAction("Search", "Resume");
+        }
+
+    }
 }

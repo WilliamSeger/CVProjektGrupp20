@@ -57,3 +57,12 @@ body {
     color: black;
     text-decoration: none;
 }
+
+#loggaUt {
+    border: none;
+    background-color: white;
+}
+
+#loggaUt:hover {
+    background-color: #B9B7A1;
+}
