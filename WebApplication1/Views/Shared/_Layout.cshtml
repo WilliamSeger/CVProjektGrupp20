@@ -31,10 +31,34 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Message" asp-action="HÄR SKA MESSAGES VIEW VARA">Messages</a>
                         </li>
                     </ul>
-                    <ul class="navbar-nav ms-auto">
-                        <li class="nav-item">
+                    <ul class="navbar-nav ms-auto">                       
+                         @if(User.Identity.IsAuthenticated)
+                         {
+                            //<h2>Du är nu inloggad som @User.Identity.Name</h2>
+                            <li class="nav-item">
+                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
+                            </li>
+                            <li class="nav-item">
+                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangeUserName">Change Username</a>
+                            </li>
+                            <li>
+                                 <form method="post" asp-controller="Account" asp-action="Logout">
+                                     <input id="loggaUt" class="nav-link text-dark" type=submit value="Log Out"/> 
+                                 </form>
+                            </li>
+                         }
+                         @if (!User.Identity.IsAuthenticated)
+                         {
+                            <li class="nav-item">
+                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
+                            </li>
+                            <li class="nav-item">
+                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
+                         }
+                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="HÄR SKA PROFILES VIEW VARA">Profile</a>
-                        </li>
+                         </li>
                     </ul>
                 </div>
             </div>

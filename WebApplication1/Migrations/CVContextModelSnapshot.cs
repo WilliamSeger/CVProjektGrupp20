@@ -177,7 +177,12 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ProjectId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProjectId");
 
                     b.ToTable("Profiles");
 
@@ -255,11 +260,16 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProfileId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Qualification")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ProfileId");
 
                     b.ToTable("Resumes");
 
@@ -270,6 +280,7 @@ namespace WebApplication1.Migrations
                             Education = "[\"Harvard\",\"Yale\"]",
                             Email = "Alexstuvsta@bingus.se",
                             Phonenumber = "[\"09348\",\"094854\"]",
+                            ProfileId = 1,
                             Qualification = "[\"bingus\",\"bongus\"]"
                         },
                         new
@@ -278,6 +289,7 @@ namespace WebApplication1.Migrations
                             Education = "[\"Harvardle\",\"Yalebon\"]",
                             Email = "Alexstuvsta@bingus.se",
                             Phonenumber = "[\"09348999\",\"99094854\"]",
+                            ProfileId = 2,
                             Qualification = "[\"bin\",\"bon\"]"
                         },
                         new
@@ -286,6 +298,7 @@ namespace WebApplication1.Migrations
                             Education = "[\"FakeHarvard\",\"RealYale\"]",
                             Email = "Alexstuvsta@bingus.se",
                             Phonenumber = "[\"66609348\",\"666094854\"]",
+                            ProfileId = 3,
                             Qualification = "[\"binguruskus\",\"sibongus\"]"
                         });
                 });
@@ -404,6 +417,29 @@ namespace WebApplication1.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.Profile", b =>
+                {
+                    b.HasOne("WebApplication1.Models.Project", null)
+                        .WithMany("Participants")
+                        .HasForeignKey("ProjectId");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.Resume", b =>
+                {
+                    b.HasOne("WebApplication1.Models.Profile", "Profile")
+                        .WithMany()
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.Project", b =>
+                {
+                    b.Navigation("Participants");
                 });
 #pragma warning restore 612, 618
         }
