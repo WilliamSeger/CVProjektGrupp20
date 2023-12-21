@@ -8,11 +8,13 @@ namespace WebApplication1.Controllers
 	{
 		private UserManager<User> userManager;
 		private SignInManager<User> signInManager;
+		private CVContext _context;
 
-		public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+		public AccountController(CVContext context, UserManager<User> userManager, SignInManager<User> signInManager)
 		{
 			this.userManager = userManager;
 			this.signInManager = signInManager;
+			_context = context;
 		}
 
 		[HttpGet]
@@ -47,14 +49,14 @@ namespace WebApplication1.Controllers
 
 		[HttpGet]
 
-		public IActionResult LogIn()
+		public IActionResult Login()
 		{
 			LoginViewModel loginViewModel = new LoginViewModel();
 			return View(loginViewModel);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> LogIn(LoginViewModel loginViewModel)
+		public async Task<IActionResult> Login(LoginViewModel loginViewModel)
 		{
 			if (ModelState.IsValid)
 			{
@@ -79,5 +81,28 @@ namespace WebApplication1.Controllers
 			await signInManager.SignOutAsync();
 			return RedirectToAction("Search", "Resume");
 		}
+
+		[HttpGet]
+		public IActionResult ChangePassword()
+		{
+			return View();
+		}
+
+		
+		[HttpPost]
+		public async Task<IActionResult> ChangePassword(ChangePasswordViewModel changePasswordViewModel) 
+		{
+
+
+			string userName = User.Identity.Name;
+			var result = from user in _context.Users
+						   where user.UserName == userName
+						   select user;
+			User newUser = result.ToList()[0];
+			await userManager.ChangePasswordAsync(newUser, changePasswordViewModel.CurrentPassword, changePasswordViewModel.NewPassword);
+
+			return RedirectToAction("Search", "Resume");
+		}
+		
 	}
 }
