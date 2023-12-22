@@ -31,12 +31,6 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="SearchProfile">Search</a>
                         </li>
-                         @if (User.Identity.IsAuthenticated)
-                         {
-                            <li>
-                                <h3 class="nav-link text-dark">Du är nu inloggad som @User.Identity.Name</h3> 
-                            </li>
-                         }
                     </ul>
                     <ul class="navbar-nav ms-auto">                       
                          @if(User.Identity.IsAuthenticated)
