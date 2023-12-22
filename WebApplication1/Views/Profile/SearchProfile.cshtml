@@ -1,0 +1,47 @@
+﻿@model List<Profile>
+
+<form method="get" asp-action="SearchProfile">
+	<label>Sök efter profilnamn</label>
+	<input type="search" name="searchString"/>
+	<button type="submit">Sök</button>
+</form>
+
+<table class="table">
+	<thead>
+		<td>Name</td>
+		<td>Private</td>
+	</thead>
+	<tbody>
+		@if (User.Identity.IsAuthenticated)
+		{
+			@foreach (var profile in Model)
+			{								
+				<tr>
+					<td>@profile.Name</td>
+					@if(profile.IsPrivate == true) {
+					<td>Yes</td>
+					} else
+					{
+					<td>No</td>
+					}
+					<td><a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@profile.Id">View Profile</a></td>
+				</tr>				
+			}
+
+		} else
+		{
+			@foreach (var profile in Model)
+			{
+				if (profile.IsPrivate == false)
+				{
+					<tr>
+						<td>@profile.Name</td>
+						<td>No</td>
+						<td><a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@profile.Id">View Profile</a></td>
+					</tr>
+				}
+			}
+		}
+	</tbody>
+</table>
+
