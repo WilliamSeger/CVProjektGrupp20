@@ -12,8 +12,8 @@ using WebApplication1.Models;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(CVContext))]
-    [Migration("20231221143828_ProfileMigration")]
-    partial class ProfileMigration
+    [Migration("20231222130600_ComMigration")]
+    partial class ComMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -161,6 +161,46 @@ namespace WebApplication1.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("WebApplication1.Models.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("RecieverId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RecieverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Messages");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Content = "Hej",
+                            Created = new DateTime(2023, 12, 22, 14, 6, 0, 281, DateTimeKind.Local).AddTicks(8771),
+                            RecieverId = 2,
+                            SenderId = 1
+                        });
+                });
+
             modelBuilder.Entity("WebApplication1.Models.Profile", b =>
                 {
                     b.Property<int>("Id")
@@ -262,20 +302,20 @@ namespace WebApplication1.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2567),
+                            Created = new DateTime(2023, 12, 22, 14, 6, 0, 279, DateTimeKind.Local).AddTicks(6494),
                             Description = "JAVA project",
                             ProjectOwnerId = 0,
                             Title = "MIB",
-                            Updated = new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2624)
+                            Updated = new DateTime(2023, 12, 22, 14, 6, 0, 279, DateTimeKind.Local).AddTicks(6543)
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2626),
+                            Created = new DateTime(2023, 12, 22, 14, 6, 0, 279, DateTimeKind.Local).AddTicks(6545),
                             Description = "SCRUM Project",
                             ProjectOwnerId = 0,
                             Title = "Hattmakaren",
-                            Updated = new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2628)
+                            Updated = new DateTime(2023, 12, 22, 14, 6, 0, 279, DateTimeKind.Local).AddTicks(6547)
                         });
                 });
 
@@ -411,12 +451,12 @@ namespace WebApplication1.Migrations
                         {
                             Id = "123",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "19767deb-79c8-4a3c-9a7e-c3ed3a0badf8",
+                            ConcurrencyStamp = "715b3828-d9a3-4617-b128-082a39de9885",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "1234Abc!",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "26ba257c-4c17-4bcf-8ce2-4e79c9e1b696",
+                            SecurityStamp = "44f67c02-6e3f-4d47-809d-a186a61befcd",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -473,6 +513,23 @@ namespace WebApplication1.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("WebApplication1.Models.Message", b =>
+                {
+                    b.HasOne("WebApplication1.Models.Profile", "RecieverProfile")
+                        .WithMany("RecievedMessages")
+                        .HasForeignKey("RecieverId")
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Models.Profile", "SenderProfile")
+                        .WithMany("SentMessages")
+                        .HasForeignKey("SenderId")
+                        .IsRequired();
+
+                    b.Navigation("RecieverProfile");
+
+                    b.Navigation("SenderProfile");
+                });
+
             modelBuilder.Entity("WebApplication1.Models.Profile", b =>
                 {
                     b.HasOne("WebApplication1.Models.Project", null)
@@ -497,6 +554,13 @@ namespace WebApplication1.Migrations
                         .IsRequired();
 
                     b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.Profile", b =>
+                {
+                    b.Navigation("RecievedMessages");
+
+                    b.Navigation("SentMessages");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Project", b =>

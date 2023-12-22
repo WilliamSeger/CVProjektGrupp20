@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace WebApplication1.Migrations
 {
     /// <inheritdoc />
-    public partial class ProfileMigration : Migration
+    public partial class ComMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -205,6 +205,32 @@ namespace WebApplication1.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SenderId = table.Column<int>(type: "int", nullable: false),
+                    RecieverId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_Profiles_RecieverId",
+                        column: x => x.RecieverId,
+                        principalTable: "Profiles",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Messages_Profiles_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "Profiles",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Resumes",
                 columns: table => new
                 {
@@ -230,15 +256,15 @@ namespace WebApplication1.Migrations
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
-                values: new object[] { "123", 0, "19767deb-79c8-4a3c-9a7e-c3ed3a0badf8", null, false, false, null, null, null, "1234Abc!", null, false, "26ba257c-4c17-4bcf-8ce2-4e79c9e1b696", false, "Admin" });
+                values: new object[] { "123", 0, "715b3828-d9a3-4617-b128-082a39de9885", null, false, false, null, null, null, "1234Abc!", null, false, "44f67c02-6e3f-4d47-809d-a186a61befcd", false, "Admin" });
 
             migrationBuilder.InsertData(
                 table: "Projects",
                 columns: new[] { "Id", "Created", "Description", "ProjectOwnerId", "Title", "Updated" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2567), "JAVA project", 0, "MIB", new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2624) },
-                    { 2, new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2626), "SCRUM Project", 0, "Hattmakaren", new DateTime(2023, 12, 21, 15, 38, 28, 546, DateTimeKind.Local).AddTicks(2628) }
+                    { 1, new DateTime(2023, 12, 22, 14, 6, 0, 279, DateTimeKind.Local).AddTicks(6494), "JAVA project", 0, "MIB", new DateTime(2023, 12, 22, 14, 6, 0, 279, DateTimeKind.Local).AddTicks(6543) },
+                    { 2, new DateTime(2023, 12, 22, 14, 6, 0, 279, DateTimeKind.Local).AddTicks(6545), "SCRUM Project", 0, "Hattmakaren", new DateTime(2023, 12, 22, 14, 6, 0, 279, DateTimeKind.Local).AddTicks(6547) }
                 });
 
             migrationBuilder.InsertData(
@@ -250,6 +276,11 @@ namespace WebApplication1.Migrations
                     { 2, "väggatan 4", "[\"hall\\u00E5@hotmail.com\",\"hall\\u00E5@f\\u00F6retag.se\"]", false, "Bongus", null, "123" },
                     { 3, "väggatan 2", "[\"meh@yahoo.com\",\"meh@arbete.com\"]", false, "Bing", null, "123" }
                 });
+
+            migrationBuilder.InsertData(
+                table: "Messages",
+                columns: new[] { "Id", "Content", "Created", "RecieverId", "SenderId" },
+                values: new object[] { 1, "Hej", new DateTime(2023, 12, 22, 14, 6, 0, 281, DateTimeKind.Local).AddTicks(8771), 2, 1 });
 
             migrationBuilder.InsertData(
                 table: "Resumes",
@@ -301,6 +332,16 @@ namespace WebApplication1.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Messages_RecieverId",
+                table: "Messages",
+                column: "RecieverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_SenderId",
+                table: "Messages",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Profiles_ProjectId",
                 table: "Profiles",
                 column: "ProjectId");
@@ -333,6 +374,9 @@ namespace WebApplication1.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Messages");
 
             migrationBuilder.DropTable(
                 name: "Resumes");

@@ -1,0 +1,19 @@
+﻿@model List<Message>
+
+<table class="table">
+    <thead>
+    <td>Sender</td>
+    <td>Reciever</td>
+    <td>Date Sent</td>
+    </thead>
+    <tbody>
+        @foreach (var message in Model)
+        {
+            <tr>
+                <td>@message.SenderProfile.Name</td>
+                <td>@message.RecieverProfile.Name</td>
+                <td>@message.Created</td>
+            </tr>
+        }
+    </tbody>
+</table>

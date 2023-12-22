@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.DataProtection.KeyManagement;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
 
@@ -13,19 +14,20 @@ namespace WebApplication1.Models
         public DbSet<Project> Projects { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Profile> Profiles { get; set; }
+        public DbSet<Message> Messages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>().HasData(
                 new User
-                {   
+                {
                     Id = "123",
                     UserName = "Admin",
                     PasswordHash = "1234Abc!"
                 }
-                );
-			modelBuilder.Entity<Profile>().HasData(
+            );
+            modelBuilder.Entity<Profile>().HasData(
                 new Profile
                 {
                     Id = 1,
@@ -53,7 +55,7 @@ namespace WebApplication1.Models
                     IsPrivate = false,
                     UserId = "123"
                 }
-                );
+            );
             modelBuilder.Entity<Resume>().HasData(
                 new Resume
                 {
@@ -61,7 +63,7 @@ namespace WebApplication1.Models
                     Qualification = new List<string> { "bingus", "bongus" },
                     Phonenumber = new List<string> { "09348", "094854" },
                     Education = new List<string> { "Harvard", "Yale" },
-                    Experiences = new List<string> { "Amgus champion"},
+                    Experiences = new List<string> { "Amgus champion" },
                     ProfileId = 1
 
                 },
@@ -71,7 +73,7 @@ namespace WebApplication1.Models
                     Qualification = new List<string> { "bin", "bon" },
                     Phonenumber = new List<string> { "09348999", "99094854" },
                     Education = new List<string> { "Harvardle", "Yalebon" },
-                    Experiences = new List<string> { "Coding"},
+                    Experiences = new List<string> { "Coding" },
                     ProfileId = 2
 
                 },
@@ -85,7 +87,7 @@ namespace WebApplication1.Models
                     ProfileId = 3
 
                 }
-                );
+            );
 
             modelBuilder.Entity<Project>().HasData(
                 new Project
@@ -104,6 +106,18 @@ namespace WebApplication1.Models
                     Description = "SCRUM Project",
                     Created = DateTime.Now,
                     Updated = DateTime.Now
+                }
+            );
+            modelBuilder.Entity<Message>().HasOne(x => x.SenderProfile).WithMany(z => z.SentMessages).HasForeignKey(x => x.SenderId).OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.Entity<Message>().HasOne(x => x.RecieverProfile).WithMany(z => z.RecievedMessages).HasForeignKey(x => x.RecieverId).OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.Entity<Message>().HasData(
+                new Message
+                {
+                    Id = 1,
+                    SenderId = 1,
+                    RecieverId = 2,
+                    Content = "Hej",
+                    Created = DateTime.Now
                 }
             );
         }
