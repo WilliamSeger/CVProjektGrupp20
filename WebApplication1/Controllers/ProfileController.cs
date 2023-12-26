@@ -80,5 +80,38 @@ namespace WebApplication1.Controllers
 
             return View(profileList.ToList());
         }
+
+        public IActionResult CreateProfile()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult CreateProfile(CreateProfileViewModel profileViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Profile profile = new Profile();
+                profile.Name = profileViewModel.Name;
+                profile.Adress = profileViewModel.Adress;
+                profile.IsPrivate = profileViewModel.IsPrivate;
+                string userName = User.Identity.Name;
+                var result = from user in _context.Users
+                             where user.UserName == userName
+                             select user;
+                User currentUser = result.ToList()[0];
+                profile.UserId = currentUser.Id;
+                profile.User = currentUser;
+                profile.Email = new List<string>();
+                profile.Email.Add(profileViewModel.Email);
+                _context.Add(profile);
+                _context.SaveChanges();
+				return RedirectToAction("ProfileView", "Profile", profile.Id);
+			}
+            else
+            {
+                return View();
+            }
+        }
     }
 }
