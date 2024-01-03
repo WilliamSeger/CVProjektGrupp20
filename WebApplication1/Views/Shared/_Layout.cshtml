@@ -28,11 +28,13 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Message" asp-action="HÄR SKA MESSAGES VIEW VARA">Messages</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="SearchProfile">Search</a>
+                        </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">                       
                          @if(User.Identity.IsAuthenticated)
                          {
-                            //<h2>Du är nu inloggad som @User.Identity.Name</h2>
                             <li class="nav-item">
                                  <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
                             </li>
@@ -54,9 +56,12 @@
                                  <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
                             </li>
                          }
-                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="HÄR SKA PROFILES VIEW VARA">Profile</a>
-                         </li>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                             <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="HÄR SKA PROFILES VIEW VARA">@User.Identity.Name</a>
+                             </li>
+                        }
                     </ul>
                 </div>
             </div>

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Models;
 
@@ -11,9 +12,11 @@ using WebApplication1.Models;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(CVContext))]
-    partial class CVContextModelSnapshot : ModelSnapshot
+    [Migration("20231222105844_newTestData")]
+    partial class newTestData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,7 +205,7 @@ namespace WebApplication1.Migrations
                             Id = 1,
                             Adress = "väggatan",
                             Email = "[\"hej@gmail.com\",\"hej@jobb.com\"]",
-                            IsPrivate = false,
+                            IsPrivate = true,
                             Name = "Bong",
                             UserId = "123"
                         },
@@ -259,20 +262,20 @@ namespace WebApplication1.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2023, 12, 22, 14, 49, 57, 236, DateTimeKind.Local).AddTicks(938),
+                            Created = new DateTime(2023, 12, 22, 11, 58, 43, 664, DateTimeKind.Local).AddTicks(9686),
                             Description = "JAVA project",
                             ProjectOwnerId = 0,
                             Title = "MIB",
-                            Updated = new DateTime(2023, 12, 22, 14, 49, 57, 236, DateTimeKind.Local).AddTicks(989)
+                            Updated = new DateTime(2023, 12, 22, 11, 58, 43, 664, DateTimeKind.Local).AddTicks(9737)
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2023, 12, 22, 14, 49, 57, 236, DateTimeKind.Local).AddTicks(992),
+                            Created = new DateTime(2023, 12, 22, 11, 58, 43, 664, DateTimeKind.Local).AddTicks(9740),
                             Description = "SCRUM Project",
                             ProjectOwnerId = 0,
                             Title = "Hattmakaren",
-                            Updated = new DateTime(2023, 12, 22, 14, 49, 57, 236, DateTimeKind.Local).AddTicks(994)
+                            Updated = new DateTime(2023, 12, 22, 11, 58, 43, 664, DateTimeKind.Local).AddTicks(9742)
                         });
                 });
 
@@ -408,12 +411,12 @@ namespace WebApplication1.Migrations
                         {
                             Id = "123",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "70a557a9-6160-445d-aabd-1859e06ba331",
+                            ConcurrencyStamp = "dbb87594-889f-42f7-b476-e49bf7f2b0c6",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "1234Abc!",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d9170aa8-9e18-4b38-9276-8c36e29f943b",
+                            SecurityStamp = "f1c60616-03eb-4305-9ff4-772a7c9227da",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });

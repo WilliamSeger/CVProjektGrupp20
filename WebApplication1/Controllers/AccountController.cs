@@ -35,7 +35,7 @@ namespace WebApplication1.Controllers
 				if(result.Succeeded)
 				{
 					await signInManager.SignInAsync(user, isPersistent: true);
-					RedirectToAction("Search", "Resume");
+					return RedirectToAction("CreateProfile", "Profile");
 				} else
 				{
 					foreach(var error in result.Errors)
@@ -45,7 +45,7 @@ namespace WebApplication1.Controllers
 				}
 			}
 
-		return View(registerViewModel);
+			return View();
 		}
 
 		[HttpGet]
