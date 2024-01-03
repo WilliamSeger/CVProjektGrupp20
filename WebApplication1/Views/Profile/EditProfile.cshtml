@@ -26,8 +26,8 @@
 	<form asp-action="Edit" method="post">
 		<input type="hidden" asp-for="Id" />
 		<input type="hidden" asp-for="Name" />
-		<input type="hidden" asp-for="Adress" />
 		<input type="hidden" asp-for="IsPrivate" />
+		<input type="hidden" asp-for="Adress" />
 		<input type="hidden" asp-for="UserId" />
 		<label>Email: </label>
 		@for (int i = 0; i < Model.Email.Count; i++)
