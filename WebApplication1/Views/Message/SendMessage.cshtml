@@ -1,0 +1,33 @@
+﻿@model SendMessageViewModel
+@{
+	ViewBag.Title = "Send a private message";
+}
+<H2>@ViewBag.Title</H2>
+<div asp-validation-summary="All" class=text-danger>
+	<span></span>
+</div>
+<form method="post" asp-action="CreateMessage">
+	<div class="form-group row">
+		<div class="col-sm-2">
+			<label>Message content: </label>
+		</div>
+		<div class="col-sm-4">
+			<textarea rows="4" asp-for="Content" class="form-control"></textarea>
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">
+			<label>Recipient: </label>
+		</div>
+		<div class="col-sm-4">
+			<label class="bold-text">@Model.Reciever.Name</label>
+			<input type="hidden" name="senderId" value="@Model.Sender.Id"></input>
+			<input type="hidden" name="recieverId" value="@Model.Reciever.Id"></input>
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">
+			<button type="submit" class="btn btn-primary">Send</button>
+		</div>
+	</div>
+</form>
