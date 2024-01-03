@@ -12,7 +12,7 @@ namespace WebApplication1.Controllers
         {
             _context = context;
         }
-        public IActionResult ProfileView(int id, int id2)
+        public IActionResult ProfileView(int id)
         {
 			var resumeList = from resume in _context.Resumes
                              where resume.ProfileId == id
@@ -37,14 +37,6 @@ namespace WebApplication1.Controllers
             else
             {
                 ViewBag.Projects = new List<Project>();
-            }
-            if (id2 != null)
-            {
-                ViewBag.Class = "projectItemVisible";
-            }
-            else
-            {
-                ViewBag.Class = "projectItemInvisible";
             }
 
             var profileList = from profile in _context.Profiles
@@ -73,7 +65,7 @@ namespace WebApplication1.Controllers
 							  where oldProfile.Id == profile.Id
 							  select oldProfile;
 
-			return RedirectToAction("EditProfile", "Profile", profileList.ToList().FirstOrDefault());
+			return RedirectToAction("ProfileView", "Profile", profileList.ToList().FirstOrDefault());
         }
         public IActionResult SearchProfile()
         {
