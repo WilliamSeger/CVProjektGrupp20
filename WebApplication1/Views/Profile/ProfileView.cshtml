@@ -15,86 +15,109 @@
 			}
 		</p>
 		<label>Phonenumber: </label>
-		<p>
-			@foreach (var number in ViewBag.Resume.Phonenumber)
-			{
-				@number
-				<br />
-			}
-		</p>
-		
+		@if (ViewBag.Resume.Phonenumber != null)
+		{
+			<p>
+				@foreach (var number in ViewBag.Resume.Phonenumber)
+				{
+					@number
+					<br />
+				}
+			</p>
+		}
+		else
+		{
+			<p> This profile has not registered a phonenumber </p>
+		}
 	</div>
 	<div id="item2">
-		<h1>Resume</h1>
-		<div class="resumeItemProfile" id="resume">
-			<div>
-				<label>Qualification: </label>
-				<p>
+		@if (ViewBag.Resume.Qualification != null)
+		{
+
+
+			<h1>Resume</h1>
+			<div class="resumeItemProfile" id="resume">
+				<div>
+					<label>Qualification: </label>
+					<p>
 						@foreach (var quali in ViewBag.Resume.Qualification)
 						{
 							@quali
-						<br />
+							<br />
 						}
-				</p>
-				<label>Education: </label>
-				<p>
+					</p>
+					<label>Education: </label>
+					<p>
 						@foreach (var edu in ViewBag.Resume.Education)
 						{
 							@edu
-						<br />
+							<br />
 						}
-				</p>
-				<label>Experiences: </label>
-				<p>
+					</p>
+					<label>Experiences: </label>
+					<p>
 						@foreach (var exp in ViewBag.Resume.Experiences)
 						{
 							@exp
-						<br />
+							<br />
 						}
-				</p>
-				<label>Phonenumber: </label>
-				<p>
+					</p>
+					<label>Phonenumber: </label>
+					<p>
 						@foreach (var number in ViewBag.Resume.Phonenumber)
 						{
 							@number
-						<br />
+							<br />
 						}
-				</p>
+					</p>
+				</div>
 			</div>
-		</div>
+		}
+		else
+		{
+			<h1> This profile has not uploaded a resume yet</h1>
+		}
 		<div id="chat">
 			
 		</div>
 	</div>
 	<div id="item3">
-		<h1>Projects</h1>
-		@foreach(var project in ViewBag.Projects)
+		@if (ViewBag.Projects.Count != 0)
 		{
-			<div class="profileProjectItem">
 
-				<a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@Model.Id" asp-route-id2="@project.Id">
-					<div>
-						<label>Title: </label>
-						<p>
-							@project.Title
-						</p>
-						<label>Description: </label>
-						<p>
-							@project.Description
-						</p>
-						<label>Date Created: </label>
-						<p>
-							@project.Created;
-						</p>
-					</div>
-					@* <div>
+			<h1>Projects</h1>
+			@foreach (var project in ViewBag.Projects)
+			{
+				<div class="profileProjectItem">
+
+					<a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@Model.Id" asp-route-id2="@project.Id">
+						<div>
+							<label>Title: </label>
+							<p>
+								@project.Title
+							</p>
+							<label>Description: </label>
+							<p>
+								@project.Description
+							</p>
+							<label>Date Created: </label>
+							<p>
+								@project.Created;
+							</p>
+						</div>
+						@* <div>
 						@foreach(var participant in project.Participants)
 						{
-							
+
 						}
 					</div> *@
-				</a>
-			</div>
+					</a>
+				</div>
+			}
+		}
+		else
+		{
+			<h1> This profile is not apart of any projects yet </h1>
 		}
 	</div>
 </div>
