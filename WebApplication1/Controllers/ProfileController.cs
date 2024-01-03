@@ -17,14 +17,27 @@ namespace WebApplication1.Controllers
 			var resumeList = from resume in _context.Resumes
                              where resume.ProfileId == id
 							 select resume;
-
-            ViewBag.Resume = resumeList.ToList().FirstOrDefault();
+            if (!resumeList.IsNullOrEmpty())
+            {
+				ViewBag.Resume = resumeList.ToList().FirstOrDefault();
+			}
+            else
+            {
+                ViewBag.Resume = new Resume();
+            }
+      
 
 			var projectList = from project in _context.Projects
 							  select project;
 
-            ViewBag.Projects = projectList.ToList();
-
+            if (!projectList.IsNullOrEmpty())
+            {
+                ViewBag.Projects = projectList.ToList();
+            }
+            else
+            {
+                ViewBag.Projects = new List<Project>();
+            }
             if (id2 != null)
             {
                 ViewBag.Class = "projectItemVisible";
@@ -106,7 +119,7 @@ namespace WebApplication1.Controllers
                 profile.Email.Add(profileViewModel.Email);
                 _context.Add(profile);
                 _context.SaveChanges();
-				return RedirectToAction("ProfileView", "Profile", profile.Id);
+				return RedirectToAction("ProfileView", "Profile", profile);
 			}
             else
             {

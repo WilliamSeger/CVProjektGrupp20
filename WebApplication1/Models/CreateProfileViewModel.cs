@@ -10,7 +10,7 @@ namespace WebApplication1.Models
 		[StringLength(50, MinimumLength = 2, ErrorMessage = "Adress has to be between 2 and 50 characters")]
 		public string Adress { get; set; }
 		[Required]
-		[RegularExpression(@"^[a-zA-Z]{3,}@[a-zA-Z]{2,}\.[a-zA-Z]{2,}$", ErrorMessage = "You need to input a valid Email")]
+		[RegularExpression(@"^[a-zA-Z]{1,}@[a-zA-Z]{2,}\.[a-zA-Z]{2,}$", ErrorMessage = "You need to input a valid Email")]
 		public string Email { get; set; }
 		[Required]
 		public Boolean IsPrivate { get; set; }
