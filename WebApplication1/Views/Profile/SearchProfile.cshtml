@@ -42,13 +42,7 @@
 					<tr>
 						<td>@profile.Name</td>
 						<td>No</td>
-						<td><a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@profile.Id">View Profile</a></td>
-						<td>
-						<form method="get" asp-controller="Message" asp-action="SendMessage" asp-route-id="@profile.Id">
-							<button type="submit" class="btn btn-primary">Send message</button>
-						</form>
-						</td>
-						
+						<td><a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@profile.Id">View Profile</a></td>						
 					</tr>
 				}
 			}
