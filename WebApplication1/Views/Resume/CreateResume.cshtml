@@ -1,0 +1,65 @@
+﻿@model Resume
+<h1>Hej</h1>
+<div class="formDiv">
+	<form asp-action="AddNew" method="post">
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="ProfileId" />
+
+		<label>Qualifications: </label>
+		
+			<input type="text" asp-for="@Model.Qualification" value=""/>
+		
+		<br />
+
+		<label>Phone Numbers: </label>
+
+
+			<input type="text" asp-for="@Model.Phonenumber" value="" />
+		
+		<br />
+
+		<label>Education: </label>
+
+			<input type="text" asp-for="@Model.Education" value="" />
+		
+		<br />
+
+		<label>Experiences: </label>
+
+
+			<input type="text" asp-for="@Model.Experiences" value="" />
+		
+		<br />
+
+		<button type="submit">Create Resume</button>
+		@* <label>Qualifications: </label>
+		@foreach (var qualification in Model.Qualification)
+		{
+			<input type="text" asp-for="@qualification" />
+		}
+		<br />
+
+		<label>Phone Numbers: </label>
+		@foreach (var phoneNumber in Model.Phonenumber)
+		{
+			<input type="text" asp-for="@phoneNumber" />
+		}
+		<br />
+
+		<label>Education: </label>
+		@foreach (var educationItem in Model.Education)
+		{
+			<input type="text" asp-for="@educationItem" />
+		}
+		<br />
+
+		<label>Experiences: </label>
+		@foreach (var experience in Model.Experiences)
+		{
+			<input type="text" asp-for="@experience" />
+		}
+		<br />
+
+		<button type="submit">Create Resume</button> *@
+	</form>
+</div>

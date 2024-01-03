@@ -1,0 +1,112 @@
+﻿@* @* Alex la till för att ändra cv info *@
+
+@* @model Resume
+<p>Tja</p>
+<div class="formDiv">
+	<form asp-action="Edit" method="post">
+		<input type="hidden" asp-for="Id" /> *@
+		@* <input type="hidden" asp-for="Qualification" /> *@
+		@* <input type="hidden" asp-for="Phonenumber" />
+		<input type="hidden" asp-for="Education" />
+		<input type="hidden" asp-for="Experiences" />
+		<input type="hidden" asp-for="ProfileId" />
+		<label>Qualification: </label>
+		@for (int i = 0; i < Model.Qualification.Count; i++)
+		{
+			<input type="text" asp-for="@Model.Qualification[i]" />
+			
+		}
+		<br />
+		<button type="submit">Save Qualifications</button>
+	</form>
+	<form asp-action="Edit" method="post">
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="Qualification" />
+		<input type="hidden" asp-for="Phonenumber" /> *@
+		@* <input type="hidden" asp-for="Education" /> *@
+		@* <input type="hidden" asp-for="Experiences" />
+		<input type="hidden" asp-for="ProfileId" />
+		<label>Education: </label>
+		
+		@for (int i = 0; i < Model.Education.Count; i++)
+		{
+			<input type="text"   asp-for="@Model.Education[i]" />
+			
+		}
+		<br />
+		<button type="submit">Save Education</button>
+	</form>
+	<form asp-action="Edit" method="post">
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="Qualification" />
+		<input type="hidden" asp-for="Phonenumber" />
+		<input type="hidden" asp-for="Education" /> *@
+		@* <input type="hidden" asp-for="Experiences" /> *@
+		@* <input type="hidden" asp-for="ProfileId" />
+		<label>Experiences: </label>
+		@for (int i = 0; i < Model.Experiences.Count; i++)
+		{
+			<input type="text" asp-for="@Model.Experiences[i]" />
+			
+		}
+		<br />
+		<button type="submit">Save Experiences</button>
+	</form> *@
+	@* <form asp-action="Edit" method="post">
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="Qualification" /> *@
+		@* <input type="hidden" asp-for="Phonenumber" /> *@
+		@* <input type="hidden" asp-for="Education" />
+		<input type="hidden" asp-for="Experiences" />
+		<input type="hidden" asp-for="ProfileId" />
+		<label>Edit Phonenumber</label>
+		@for (int i = 0; i < Model.Phonenumber.Count; i++)
+		{
+			<input type="text" asp-for="@Model.Phonenumber[i]" />
+			
+		}
+		<br />
+		<button type="submit">Save Phonenumber</button>
+	</form> *@
+	
+@* </div>  *@
+@model Resume
+
+<p>Tja</p>
+<div class="formDiv">
+	<form asp-action="Edit" method="post">
+		<input type="hidden" asp-for="Id" />
+		<input type="hidden" asp-for="ProfileId" />
+
+		<label>Qualifications: </label>
+		@for (int i = 0; i < Model.Qualification.Count; i++)
+		{
+			<input type="text" asp-for="@Model.Qualification[i]" />
+		}
+		<br />
+
+		<label>Phone Numbers: </label>
+		@for (int i = 0; i < Model.Phonenumber.Count; i++)
+		{
+			<input type="text" asp-for="@Model.Phonenumber[i]" />
+		}
+		<br />
+
+		<label>Education: </label>
+		@for (int i = 0; i < Model.Education.Count; i++)
+		{
+			<input type="text" asp-for="@Model.Education[i]" />
+		}
+		<br />
+
+		<label>Experiences: </label>
+		@for (int i = 0; i < Model.Experiences.Count; i++)
+		{
+			<input type="text" asp-for="@Model.Experiences[i]" />
+		}
+		<br />
+		
+
+		<button type="submit">Save Resume</button>
+	</form>
+</div>

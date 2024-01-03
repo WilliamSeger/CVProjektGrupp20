@@ -3,9 +3,12 @@
 <div class="grid-container">
 	<div id="item1">
 		<h1>Contact Details</h1>
-		<div>
-			<a asp-action="EditProfile" asp-controller="Profile" asp-route-id="@Model.Id" id="editProfile">Edit Profile</a>
-		</div>
+		@if (User.Identity.IsAuthenticated)
+		{
+			<div>
+				<a asp-action="EditProfile" asp-controller="Profile" asp-route-id="@Model.Id" id="editProfile">Edit Profile</a>
+			</div>
+		}
 		<label>Email: </label>
 		<p>
 			@foreach (var mail in Model.Email)
@@ -31,6 +34,7 @@
 		}
 	</div>
 	<div id="item2">
+		<h1>Resume</h1>
 		@if (ViewBag.Resume.Qualification != null)
 		{
 
@@ -81,9 +85,47 @@
 			
 		</div>
 	</div>
+	@* De ja laggt till *@
+	@if(User.Identity.IsAuthenticated){
+	@if (ViewBag.Resume is null)
+	{
+		<div><a asp-action="CreateResume" asp-controller="Resume" asp-route-id="@Model.Id">Create Resume</a></div>
+	}
+	else
+	{
+		<div><a asp-action="EditResume" asp-controller="Resume" asp-route-id="@Model.Id" id="resume">Edit Resume</a> </div>
+	}
+	
+	<div><a asp-action="CreateResume" asp-controller="Resume" asp-route-id="@Model.Id">Create Resume</a></div>
+	<div>
+		<form asp-controller="Resume" asp-action="Delete" asp-route-id="@Model.Id" method="post">
+			<input type="hidden" name="_method" value="DELETE" /> 
+			<button type="submit">Delete Resume</button>
+		</form>
+	</div>
+	}
+	@*slut*@
 	<div id="item3">
 		@if (ViewBag.Projects.Count != 0)
 		{
+			<div class="profileProjectItem">
+				<a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@Model.Id" asp-route-id2="@project.Id">
+					
+					<div>
+						<label>Title: </label>
+						<p>
+							@project.Title
+						</p>
+						<label>Description: </label>
+						<p>
+							@project.Description
+						</p>
+						<label>Date Created: </label>
+						<p>
+							@project.Created;
+						</p>
+					</div>
+					@* <div>
 
 			<h1>Projects</h1>
 			@foreach (var project in ViewBag.Projects)

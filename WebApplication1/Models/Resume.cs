@@ -4,7 +4,16 @@ using System.Runtime;
 namespace WebApplication1.Models;
 public class Resume
 {
-    public int Id { get; set; }
+	//Test för att se om jag kan fixa en grej med create
+	public Resume()
+	{
+		
+		Qualification = new List<string>();
+		Phonenumber = new List<string>();
+		Education = new List<string>();
+		Experiences = new List<string>();
+	}
+	public int Id { get; set; }
     [Required]
     public List<string> Qualification { get; set; }
     [Required]
@@ -12,7 +21,8 @@ public class Resume
     [Required]
     public List<string> Education { get; set; }
     public List<string> Experiences { get; set; }
-    [Required]
+	
+	[Required]
     public int ProfileId {  get; set; }
     [ForeignKey(nameof(ProfileId))]
     public virtual Profile Profile { get; set; }
