@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Models;
 
@@ -11,9 +12,11 @@ using WebApplication1.Models;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(CVContext))]
-    partial class CVContextModelSnapshot : ModelSnapshot
+    [Migration("20240103114908_MessageUpdate")]
+    partial class MessageUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -188,14 +191,14 @@ namespace WebApplication1.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Message");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             Content = "Tjenare mannen!",
-                            Created = new DateTime(2024, 1, 3, 13, 10, 40, 665, DateTimeKind.Local).AddTicks(4610),
+                            Created = new DateTime(2024, 1, 3, 12, 49, 7, 449, DateTimeKind.Local).AddTicks(4980),
                             IsRead = false,
                             RecieverId = 2,
                             SenderId = 1
@@ -204,7 +207,7 @@ namespace WebApplication1.Migrations
                         {
                             Id = 2,
                             Content = "Gott nytt år kompis.",
-                            Created = new DateTime(2024, 1, 3, 13, 10, 40, 665, DateTimeKind.Local).AddTicks(4655),
+                            Created = new DateTime(2024, 1, 3, 12, 49, 7, 449, DateTimeKind.Local).AddTicks(5008),
                             IsRead = false,
                             RecieverId = 3,
                             SenderId = 1
@@ -213,7 +216,7 @@ namespace WebApplication1.Migrations
                         {
                             Id = 3,
                             Content = "Jag måste berätta en grej...",
-                            Created = new DateTime(2024, 1, 3, 13, 10, 40, 665, DateTimeKind.Local).AddTicks(4659),
+                            Created = new DateTime(2024, 1, 3, 12, 49, 7, 449, DateTimeKind.Local).AddTicks(5012),
                             IsRead = false,
                             RecieverId = 1,
                             SenderId = 2
@@ -222,7 +225,7 @@ namespace WebApplication1.Migrations
                         {
                             Id = 4,
                             Content = "Vem är du? Vem är jag? Levande charader...",
-                            Created = new DateTime(2024, 1, 3, 13, 10, 40, 665, DateTimeKind.Local).AddTicks(4662),
+                            Created = new DateTime(2024, 1, 3, 12, 49, 7, 449, DateTimeKind.Local).AddTicks(5014),
                             IsRead = false,
                             RecieverId = 1,
                             SenderId = 3
@@ -330,20 +333,20 @@ namespace WebApplication1.Migrations
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2024, 1, 3, 13, 10, 40, 663, DateTimeKind.Local).AddTicks(1881),
+                            Created = new DateTime(2024, 1, 3, 12, 49, 7, 447, DateTimeKind.Local).AddTicks(8408),
                             Description = "JAVA project",
                             ProjectOwnerId = 0,
                             Title = "MIB",
-                            Updated = new DateTime(2024, 1, 3, 13, 10, 40, 663, DateTimeKind.Local).AddTicks(1939)
+                            Updated = new DateTime(2024, 1, 3, 12, 49, 7, 447, DateTimeKind.Local).AddTicks(8457)
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2024, 1, 3, 13, 10, 40, 663, DateTimeKind.Local).AddTicks(1943),
+                            Created = new DateTime(2024, 1, 3, 12, 49, 7, 447, DateTimeKind.Local).AddTicks(8461),
                             Description = "SCRUM Project",
                             ProjectOwnerId = 0,
                             Title = "Hattmakaren",
-                            Updated = new DateTime(2024, 1, 3, 13, 10, 40, 663, DateTimeKind.Local).AddTicks(1945)
+                            Updated = new DateTime(2024, 1, 3, 12, 49, 7, 447, DateTimeKind.Local).AddTicks(8463)
                         });
                 });
 
@@ -479,12 +482,12 @@ namespace WebApplication1.Migrations
                         {
                             Id = "123",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "51ba8733-dafb-47d8-8e61-313b3db0b5b8",
+                            ConcurrencyStamp = "b9c8d21d-8633-4ae2-bf38-0382daf2aede",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "1234Abc!",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "39df011d-eba2-4fab-9a19-9cb4d70da27a",
+                            SecurityStamp = "e7cab09e-b010-4097-8762-b1d7cc1475c1",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });

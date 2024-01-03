@@ -1,0 +1,48 @@
+﻿@model List<Message>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<h2 class="bold-text">You have @Model.Count messages</h2>
+
+<form method="get" asp-controller="Message" asp-action="ChooseMessageRecipient">
+	<button type="submit" class="btn btn-primary">New Message</button>
+</form>
+
+<table class="table">
+	<thead>
+	<tr>
+			<td class="bold-text">Sender</td>
+			<td class="bold-text">Date</td>
+			<td class="bold-text">Status</td>
+	</tr>
+	</thead>
+	<tbody>
+		@foreach (var message in Model)
+		{
+						<tr>
+							<td>@message.Sender.Name</td>
+							<td>@message.Created</td>
+				@if (@message.IsRead)
+				{
+									<td>Read</td>
+				}
+				else
+				{
+									<td>
+										<form method="post" action="@Url.Action("MessageIsRead", "Message")">
+											<input type="hidden" name="msgId" value="@message.Id" />
+									<label>Mark as Read <button type="submit" class="btn btn-outline-success">&#10004;</button></label>
+										</form>
+									</td>
+				}
+							<td>
+						<button id="showContentButton" class="btn btn-outline-primary" data-content-id="@message.Id">Show Content</button>
+							</td>
+						</tr>
+						<tr class="contentRow" id="contentRow_@message.Id" style="display:none;">
+							<td class="bold-text">Message content:</td>
+							<td>
+								<div class="content-container">@message.Content</div>
+							</td>
+						</tr>
+		}
+	</tbody>
+</table>

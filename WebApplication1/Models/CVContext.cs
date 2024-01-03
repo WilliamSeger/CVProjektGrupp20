@@ -13,8 +13,9 @@ namespace WebApplication1.Models
         public DbSet<Project> Projects { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Profile> Profiles { get; set; }
+		public DbSet<Message> Messages { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>().HasData(
@@ -105,7 +106,56 @@ namespace WebApplication1.Models
                     Created = DateTime.Now,
                     Updated = DateTime.Now
                 }
-            );
-        }
+                );
+
+			modelBuilder.Entity<Message>()
+				.HasOne(msg => msg.Sender)
+				.WithMany(prof => prof.SentMessages)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<Message>()
+				.HasOne(msg => msg.Reciever)
+				.WithMany(prof => prof.RecievedMessages)
+				.OnDelete(DeleteBehavior.Restrict);
+
+			modelBuilder.Entity<Message>().HasData(
+				new Message
+				{
+					Id = 1,
+					Content = "Tjenare mannen!",
+					Created = DateTime.Now,
+					IsRead = false,
+					SenderId = 1,
+					RecieverId = 2
+				},
+				new Message
+				{
+					Id = 2,
+					Content = "Gott nytt år kompis.",
+					Created = DateTime.Now,
+					IsRead = false,
+					SenderId = 1,
+					RecieverId = 3
+				},
+				new Message
+				{
+					Id = 3,
+					Content = "Jag måste berätta en grej...",
+					Created = DateTime.Now,
+					IsRead = false,
+					SenderId = 2,
+					RecieverId = 1
+				},
+				new Message
+				{
+					Id = 4,
+					Content = "Vem är du? Vem är jag? Levande charader...",
+					Created = DateTime.Now,
+					IsRead = false,
+					SenderId = 3,
+					RecieverId = 1
+				}
+				);
+		}
     }
 }

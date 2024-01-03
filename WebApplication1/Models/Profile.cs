@@ -14,9 +14,7 @@ namespace WebApplication1.Models
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual User User { get; set; }
-        //insert Picture
-        //public int UserId { get; set; }
-        //[ForeignKey(nameof(UserId))]
-        //public virtual User User { get; set; }
-    }
+		public virtual IEnumerable<Message> SentMessages { get; set; } = new List<Message>();
+		public virtual IEnumerable<Message> RecievedMessages { get; set; } = new List<Message>();
+	}
 }
