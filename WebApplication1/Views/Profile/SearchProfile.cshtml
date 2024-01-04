@@ -46,9 +46,11 @@
 					<tr>
 						<td>@profile.Name</td>
 						<td>No</td>
-						<form asp-controller="Profile" asp-action="ProfileView" asp-route-id="@profile.Id">
-							<button type="submit" class="btn btn-primary">View Profile</button>
-						</form>
+						<td>
+							<form asp-controller="Profile" asp-action="ProfileView" asp-route-id="@profile.Id">
+								<button type="submit" class="btn btn-primary">View Profile</button>
+							</form>
+						</td>
 					</tr>
 				}
 			}
