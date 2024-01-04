@@ -6,16 +6,16 @@
 	</div>
 }
 
-<h1 class="bold-text">@Model.Name's Profile</h1>
 @if (Model.Name == null)
 {
 	<h2 class="bold-text">You currently don't have a profile.</h2>
 	<form method ="get" asp-controller="Profile" asp-action="CreateProfile">
 		<button type="submit" class="btn btn-primary">Create profile</button>
 	</form>
-} 
+}
 else
 {
+	<h1 class="bold-text">@Model.Name's Profile</h1>
 	<div class="grid-container">
 		<div class="item item1">
 			@*Hämtar egenvald profilbild eller standardbild*@
@@ -186,9 +186,9 @@ else
 			}
 			else
 			{
-				<h1> This profile is not apart of any projects yet </h1>
+				<h1> This profile is not part of any projects yet </h1>
 			}
 			</div>
 		</div>
-	}
+}
 

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.Linq;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -23,7 +25,14 @@ namespace WebApplication1.Controllers
 			var profileQuery = from profile in _context.Profiles
 							   where profile.UserId == user.Id
 							   select profile;
-			Profile userProfile = profileQuery.FirstOrDefault();
+			Profile userProfile = new Profile();
+			userProfile = profileQuery.FirstOrDefault();
+
+			//Profilkontroll
+			if (userProfile == null)
+			{
+				return RedirectToAction("CreateProfile","Profile");
+			}
 
 			var messageQuery = from message in _context.Messages
 							   where message.RecieverId == userProfile.Id
@@ -41,12 +50,19 @@ namespace WebApplication1.Controllers
 			var senderQuery = from profile in _context.Profiles
 							   where profile.UserId == user.Id
 							   select profile;
+			Profile userProfile = senderQuery.ToList().FirstOrDefault();
+
+			//Profilkontroll
+			if (userProfile == null)
+			{
+				return RedirectToAction("CreateProfile", "Profile");
+			}
+
 			var recieverQuery = from profile in _context.Profiles
 								where profile.Id == id
 								select profile;
 
-			Profile userProfile = senderQuery.ToList().First();
-			Profile recieverProfile = recieverQuery.ToList().First();
+			Profile recieverProfile = recieverQuery.ToList().FirstOrDefault();
 
 			//Skickar med avsändaren samt mottagaren
 			ViewBag.Sender = userProfile;
