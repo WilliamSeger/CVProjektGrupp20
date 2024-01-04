@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Numerics;
@@ -161,6 +162,50 @@ namespace WebApplication1.Controllers
                 return View();
             }
         }
-        
+
+        [Authorize]
+        [HttpGet]
+        public IActionResult UploadProfilePicture()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UploadProfilePicture(IFormFile file)
+        {
+            if (file == null || file.Length == 0)
+            {
+                return BadRequest("Invalid file.");
+            }
+
+            //Skapa en filepath till där bilden ska sparas
+            var uploadPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/profiles");
+            var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(uploadPath, fileName);
+
+            //Spara med filestream
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            //Hämta profilen som ska kopplas till bilden
+            User currentUser = await userManager.FindByNameAsync(User.Identity.Name);
+            var profileQuery = from profile in _context.Profiles
+                               where profile.UserId == currentUser.Id
+                               select profile;
+            Profile userProfile = new Profile();
+            if (!profileQuery.IsNullOrEmpty())
+            {
+                userProfile = profileQuery.ToList().First();
+                userProfile.ProfilePicturePath = fileName;
+                _context.Update(userProfile);
+                _context.SaveChanges();
+                TempData["AlertMessage"] = "Profile picture updated succesfully";
+            }
+
+            return RedirectToAction("MyProfile");
+        }
+
     }
 }

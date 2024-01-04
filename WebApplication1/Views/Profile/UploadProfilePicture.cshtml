@@ -1,0 +1,7 @@
+﻿@model Profile
+
+<h2>Upload profile picture</h2>
+<form asp-action="UploadProfilePicture" method="post" enctype="multipart/form-data">
+    <input type="file" name="file" />
+    <button type="submit">Upload</button>
+</form>

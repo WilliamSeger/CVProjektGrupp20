@@ -11,6 +11,14 @@ else
 {
 	<div class="grid-container">
 		<div id="item1">
+			@if (!String.IsNullOrEmpty(Model.ProfilePicturePath))
+			{
+				<img src="/images/profiles/@Model.ProfilePicturePath" class="profile-picture" alt="@Model.ProfilePicturePath" />
+			}
+			else
+			{
+				<img src="/images/profiles/stdpfp.jpg" class="profile-picture" alt="Profile picture" />
+			}
 			<h1>Contact Details</h1>
 			@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
 			{
