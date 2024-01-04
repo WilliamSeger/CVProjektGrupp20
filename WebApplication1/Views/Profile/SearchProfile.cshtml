@@ -3,7 +3,7 @@
 <form method="get" asp-action="SearchProfile">
 	<label>Sök efter profilnamn</label>
 	<input type="search" name="searchString"/>
-	<button type="submit">Sök</button>
+	<button type="submit" class="btn btn-primary">Search</button>
 </form>
 
 <table class="table">
@@ -24,10 +24,14 @@
 					{
 					<td>No</td>
 					}
-					<td><a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@profile.Id">View Profile</a></td>
+					<td>
+						<form asp-controller="Profile" asp-action="ProfileView" asp-route-id="@profile.Id">
+							<button type="submit" class="btn btn-primary">View Profile</button>
+						</form>
+					</td>
 					<td>
 					<form method="get" asp-controller="Message" asp-action="SendMessage" asp-route-id="@profile.Id">
-						<button type="submit" class="btn btn-primary">Send message</button>
+						<button type="submit" class="btn btn-secondary">Send message</button>
 					</form>
 					</td>
 				</tr>				

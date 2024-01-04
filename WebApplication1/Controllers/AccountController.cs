@@ -88,22 +88,17 @@ namespace WebApplication1.Controllers
 		[HttpGet]
 		public IActionResult ChangePassword()
 		{
-			return View();
+			ChangePasswordViewModel viewModel = new ChangePasswordViewModel();
+			return View(viewModel);
 		}
 
 		
 		[HttpPost]
 		public async Task<IActionResult> ChangePassword(ChangePasswordViewModel changePasswordViewModel) 
 		{
-
-
-			string userName = User.Identity.Name;
-			var result = from user in _context.Users
-						   where user.UserName == userName
-						   select user;
-			User newUser = result.ToList()[0];
-			await userManager.ChangePasswordAsync(newUser, changePasswordViewModel.CurrentPassword, changePasswordViewModel.NewPassword);
-			_context.SaveChanges();
+			var users = _context.Users;
+			User user = users.Where(user => user.UserName == User.Identity.Name).First();
+			await userManager.ChangePasswordAsync(user, changePasswordViewModel.CurrentPassword, changePasswordViewModel.NewPassword);
 			TempData["AlertMessage"] = "Password was updated succesfully";
 
 			return RedirectToAction("Search", "Resume");
@@ -121,14 +116,10 @@ namespace WebApplication1.Controllers
         {
 
 
-            string userName = User.Identity.Name;
-            var result = from user in _context.Users
-                         where user.UserName == userName
-                         select user;
-            User newUser = result.ToList()[0];
-			newUser.UserName = changeUserNameViewModel.NewUserName;
-            await userManager.UpdateAsync(newUser);
-			_context.SaveChanges();
+			var users = _context.Users;
+			User user = users.Where(user => user.UserName == User.Identity.Name).First();
+			user.UserName = changeUserNameViewModel.NewUserName;
+            await userManager.UpdateAsync(user);
 			TempData["AlertMessage"] = "Username was updated succesfully";
 
 			return RedirectToAction("Search", "Resume");
