@@ -87,30 +87,59 @@ namespace WebApplication1.Controllers
             return View(userProfile);
         }
 
-        public IActionResult EditProfile(int id) 
+		[Authorize]
+		[HttpGet]
+		public async Task<IActionResult> EditProfile() 
         {
-            //Fetches the profile that belongs to the id provided as a parameter and sends it to the view. 
-			var profileList = from profile in _context.Profiles
-							  where profile.Id == id
-							  select profile;
+			User user = await userManager.FindByNameAsync(User.Identity.Name);
+			var profileQuery = from profile in _context.Profiles
+							   where profile.UserId == user.Id
+							   select profile;
+			Profile userProfile = profileQuery.FirstOrDefault();
+			ViewBag.Profile = userProfile;
 
-			return View(profileList.ToList().FirstOrDefault());
-        }
+			return View(userProfile);
+		}
 
-        [HttpPost]
-        public IActionResult Edit(Profile profile) 
+		[Authorize]
+		[HttpPost]
+        public IActionResult Edit(Profile userProfile, int id) 
         {
-            //Updates the profile in the database and redirects to the profileview.
-            _context.Update(profile);
-            _context.SaveChanges();
-			TempData["AlertMessage"] = "Profile updated succesfully";
+            var profileQuery = from profile in _context.Profiles
+                               where profile.Id == id
+                               select profile;
+            Profile currentProfile = profileQuery.FirstOrDefault();
+
+			if (userProfile.Name != null)
+			{
+				currentProfile.Name = userProfile.Name;
+			}
+			if (userProfile.Email != null)
+			{
+				currentProfile.Email = userProfile.Email;
+			}
+			if (userProfile.Adress != null)
+			{
+				currentProfile.Adress = userProfile.Adress;
+			}
+			currentProfile.IsPrivate = userProfile.IsPrivate;
 
 			var profileList = from oldProfile in _context.Profiles
-							  where oldProfile.Id == profile.Id
+							  where oldProfile.Id == currentProfile.Id
 							  select oldProfile;
+
+			if (currentProfile != null)
+            {
+                _context.Update(currentProfile);
+                _context.SaveChanges();
+				TempData["AlertMessage"] = "Profile updated succesfully";
+
+				return RedirectToAction("ProfileView", "Profile", profileList.ToList().FirstOrDefault());
+			}
 
 			return RedirectToAction("ProfileView", "Profile", profileList.ToList().FirstOrDefault());
         }
+
         public IActionResult SearchProfile()
         {
             return View();

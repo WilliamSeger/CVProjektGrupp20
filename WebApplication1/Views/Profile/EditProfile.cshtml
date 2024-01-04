@@ -9,7 +9,7 @@
 <div asp-validation-summary="All" class=text-danger>
 	<span></span>
 </div>
-<form method="post" asp-controller="Profile" asp-action="Edit">
+<form method="post" asp-controller="Profile" asp-action="Edit" asp-route-id="@Model.Id">
 	<input type="hidden" asp-for="Id" />
 	<input type="hidden" asp-for="UserId" />
 	<div class="form-group row">

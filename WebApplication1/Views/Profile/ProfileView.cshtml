@@ -30,7 +30,7 @@ else
 			@*Visar "edit profile" eller "send message" beroende på profil*@
 			@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
 			{
-				<form method="get" asp-controller="Profile" asp-action="EditProfile" asp-route-id="@Model.Id" id="editProfile">
+				<form method="get" asp-controller="Profile" asp-action="EditProfile">
 					<button type="submit" class="btn btn-primary">Edit profile</button>
 				</form>
 			}
