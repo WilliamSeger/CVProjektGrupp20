@@ -11,47 +11,47 @@
 
         @foreach (var resume in Model)
         {
-           
-            <div class="resumeItem">
-                
+            if (ViewBag.PublicResumes.Contains(resume) || User.Identity.IsAuthenticated) {
+                <div class="resumeItem">
                     <a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@resume.ProfileId">
-                    <div>
+                        <div>
                        
-                        <label>Qualification: </label>
-                        <p>
-                        @foreach (var quali in @resume.Qualification)
-                        {
-                            @quali
-                            <br />
-                        }
-                        </p>
-                        <label>Education: </label>
-                        <p>
-                            @foreach (var edu in @resume.Education)
+                            <label>Qualification: </label>
+                            <p>
+                            @foreach (var quali in @resume.Qualification)
                             {
-                                @edu
+                                @quali
                                 <br />
                             }
-                        </p>
-                        <label>Experiences: </label>
-                        <p>
-                            @foreach (var exp in @resume.Experiences)
+                            </p>
+                            <label>Education: </label>
+                            <p>
+                                @foreach (var edu in @resume.Education)
+                                {
+                                    @edu
+                                    <br />
+                                }
+                            </p>
+                            <label>Experiences: </label>
+                            <p>
+                                @foreach (var exp in @resume.Experiences)
+                                {
+                                    @exp
+                                    <br />
+                                }
+                            </p>
+                            <label>Phonenumber: </label>
+                            <p>
+                            @foreach (var number in @resume.Phonenumber)
                             {
-                                @exp
+                                @number
                                 <br />
                             }
-                        </p>
-                        <label>Phonenumber: </label>
-                        <p>
-                        @foreach (var number in @resume.Phonenumber)
-                        {
-                            @number
-                            <br />
-                        }
-                        </p>    
-                    </div>
-                </a>
-            </div>
+                            </p>    
+                        </div>
+                    </a>
+                </div>
+            }
         }
     </div>
 </div>

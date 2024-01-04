@@ -13,18 +13,37 @@ namespace WebApplication1.Controllers
         { 
             _context = context;
         }
+
         public IActionResult Search()
-        {
-            var resumeList = from resume in _context.Resumes
+		{
+			//HomepageView fetches all resumes and filters out public ones
+			var profileIdList = from profile in _context.Profiles
+							  where profile.IsPrivate == false
+							  select profile.Id;
+
+			var resumeList = from resume in _context.Resumes
                              select resume;
-            
-            return View(resumeList.ToList());
+
+			List<Resume> publicResumeList = new List<Resume>();
+
+			foreach (var resume in resumeList.ToList())
+			{
+				if (profileIdList.ToList().Contains(resume.ProfileId))
+				{
+					publicResumeList.Add(resume);
+				}
+			}
+
+			ViewBag.PublicResumes = publicResumeList;
+
+			return View(resumeList.ToList());
         }
-		//Alex lagt till
+		
 		public IActionResult EditResume(int id)
 		{
+			//Fetches the resume that corresponds to the profile 
 			var resumeList = from resume in _context.Resumes
-							  where resume.Id == id
+							  where resume.ProfileId == id
 							  select resume;
 
 			return View(resumeList.ToList().FirstOrDefault());
@@ -32,7 +51,7 @@ namespace WebApplication1.Controllers
 		[HttpPost]
 		public IActionResult Edit(Resume resume)
 		{
-			
+			//Edits an exitsting resume with values provided by userinputs. Updates database
 			_context.Update(resume);
 			_context.SaveChanges();
 
@@ -46,41 +65,39 @@ namespace WebApplication1.Controllers
 		[HttpPost]
 		public IActionResult Delete(int id)
 		{
-			// Find all resumes with the specified ProfileId
-			var resumesToDelete = _context.Resumes.Where(r => r.ProfileId == id);
+			//Deletes the resume that corresponds to the ProfileId and updates the database. 
+			try { 
+				var resumesToDelete = _context.Resumes.Where(r => r.ProfileId == id);
+				foreach (var resume in resumesToDelete)
+				{
+					_context.Resumes.Remove(resume);
+				}
 
-			// Remove each resume from the context
-			foreach (var resume in resumesToDelete)
-			{
-				_context.Resumes.Remove(resume);
+				_context.SaveChanges();
+
+				return RedirectToAction("ProfileView", "Profile", new { id });
 			}
+			catch (Exception ex)
+			{
+                Console.WriteLine($"An error occurred: {ex.Message}");
 
-			// Save changes to the database
-			_context.SaveChanges();
-
-			// Redirect to the desired action (e.g., ProfileView)
-			return RedirectToAction("ProfileView", "Profile", new { id });
-		}
+                return View("Error");
+            }
+        }
 		[Authorize]
 		[HttpPost]
 		public IActionResult AddNew(Resume resume)
 		{
-			// Create a new instance of the Resume model
-	
-
-			// Add the new Resume to the context
+			//Creates a Resume using the values provided by the inputs. 
 			_context.Resumes.Add(resume);
-
-			// Save changes to the database
 			_context.SaveChanges();
 
-			// Redirect to the EditResume action with the newly created Resume's Id
 			return RedirectToAction("ProfileView", "Profile", new { id = resume.ProfileId });
-			
 		}
 		[Authorize]
 		public IActionResult CreateResume(int id)
 		{
+			//Creates a new blank resume and sends it to the view. The lists contains dummy items because the input fields in the view needs items in the list to attach to.
 			var newResume = new Resume
 			{
 				ProfileId = id,
@@ -92,6 +109,5 @@ namespace WebApplication1.Controllers
 
             return View(newResume);
 		}
-		//slut på de ja la till
 	}
 }

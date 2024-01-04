@@ -10,3 +10,8 @@
         }
     });
 });
+
+const button = document.getElementById("addQual");
+button.addEventListener('click' function () {
+
+})

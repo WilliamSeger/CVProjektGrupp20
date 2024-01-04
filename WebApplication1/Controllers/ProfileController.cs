@@ -19,6 +19,7 @@ namespace WebApplication1.Controllers
 
         public async Task<IActionResult> MyProfileView()
         {
+            //Fetches the profile id of the current user through UserManager. This then provides the profileview of the user.
 			User user = await userManager.FindByNameAsync(User.Identity.Name);
 			var profileQuery = from profile in _context.Profiles
 							   where profile.UserId == user.Id
@@ -35,6 +36,8 @@ namespace WebApplication1.Controllers
 
         public IActionResult ProfileView(int id)
         {
+            //fetches the profile, resume and projects belonging to the id provided as a parameter. 
+            //The resume and projects are put in seperate viewbags and the profile is sent to the view. 
             var userName = User.Identity.Name;
 
             var currentUser = from user in _context.Users 
@@ -54,7 +57,7 @@ namespace WebApplication1.Controllers
 			}
             else
             {
-                ViewBag.Resume = new Resume();
+                ViewBag.Resume = null;
             }
       
 
@@ -85,6 +88,7 @@ namespace WebApplication1.Controllers
 
         public IActionResult EditProfile(int id) 
         {
+            //Fetches the profile that belongs to the id provided as a parameter and sends it to the view. 
 			var profileList = from profile in _context.Profiles
 							  where profile.Id == id
 							  select profile;
@@ -95,6 +99,7 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult Edit(Profile profile) 
         {
+            //Updates the profile in the database and redirects to the profileview.
             _context.Update(profile);
             _context.SaveChanges();
 
