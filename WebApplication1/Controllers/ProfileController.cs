@@ -30,7 +30,7 @@ namespace WebApplication1.Controllers
             }
 
 
-            return RedirectToAction("ProfileView", "Profile", userProfile.Id);
+            return RedirectToAction("ProfileView", "Profile", new { userProfile.Id });
 		    }
 
         public IActionResult ProfileView(int id)
