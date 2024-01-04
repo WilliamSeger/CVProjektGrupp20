@@ -94,7 +94,9 @@ namespace WebApplication1.Controllers
 
 			return RedirectToAction("ProfileView", "Profile", new { id = resume.ProfileId });
 		}
+
 		[Authorize]
+		[HttpPost]
 		public IActionResult CreateResume(int id)
 		{
 			//Creates a new blank resume and sends it to the view. The lists contains dummy items because the input fields in the view needs items in the list to attach to.
