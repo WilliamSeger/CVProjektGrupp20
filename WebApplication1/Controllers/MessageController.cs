@@ -97,7 +97,7 @@ namespace WebApplication1.Controllers
 
 		}
 
-			public IActionResult MessageIsRead(int msgId)
+			public async Task<IActionResult> MessageIsRead(int msgId)
 		{
 			var messageQuery = from message in _context.Messages
 							   where message.Id == msgId
@@ -111,9 +111,17 @@ namespace WebApplication1.Controllers
 				_context.SaveChanges();
 			}
 
-			var newMessageQuery = from message in _context.Messages
+			User user = await userManager.FindByNameAsync(User.Identity.Name);
+			var profileQuery = from profile in _context.Profiles
+							   where profile.UserId == user.Id
+							   select profile;
+			Profile userProfile = profileQuery.FirstOrDefault();
+
+			var recievedMessageQuery = from message in _context.Messages
+							   where message.RecieverId == userProfile.Id
 							   select message;
-			List<Message> messages = newMessageQuery.ToList();
+
+			List<Message> messages = recievedMessageQuery.ToList();
 
 			return View("Recieved", messages);
 		}

@@ -103,6 +103,7 @@ namespace WebApplication1.Controllers
             //Updates the profile in the database and redirects to the profileview.
             _context.Update(profile);
             _context.SaveChanges();
+			TempData["AlertMessage"] = "Profile updated succesfully";
 
 			var profileList = from oldProfile in _context.Profiles
 							  where oldProfile.Id == profile.Id
@@ -155,6 +156,7 @@ namespace WebApplication1.Controllers
                 profile.Email.Add(profileViewModel.Email);
                 _context.Add(profile);
                 _context.SaveChanges();
+				TempData["AlertMessage"] = "Profile created succesfully";
 				return RedirectToAction("ProfileView", "Profile", profile);
 			}
             else
@@ -204,7 +206,7 @@ namespace WebApplication1.Controllers
                 TempData["AlertMessage"] = "Profile picture updated succesfully";
             }
 
-            return RedirectToAction("MyProfile");
+            return RedirectToAction("MyProfileView");
         }
 
     }

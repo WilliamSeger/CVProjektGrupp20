@@ -1,4 +1,10 @@
 ﻿@model Profile
+@if (TempData["AlertMessage"] != null)
+{
+	<div class="alert alert-success">
+		@TempData["AlertMessage"]
+	</div>
+}
 
 <h1 class="bold-text">@Model.Name's Profile</h1>
 @if (Model.Name == null)
@@ -37,7 +43,7 @@ else
 		</div>
 		<div class="item item2">
 			<h1>Contact Details</h1>			
-			<label>Email: </label>
+			<label class="bold-text">Email: </label>
 			<p>
 				@foreach (var mail in Model.Email)
 				{
@@ -45,7 +51,7 @@ else
 					<br />
 				}
 			</p>
-			<label>Phone number: </label>
+			<label class="bold-text">Phone number: </label>
 			@if (ViewBag.Resume != null)
 			{
 				<p>
@@ -60,7 +66,7 @@ else
 			{
 				<p> This profile has not registered a phonenumber </p>
 			}
-			<label>Status: </label>
+			<label class="bold-text">Status: </label>
 			@if (Model.IsPrivate)
 			{
 				<p>This profile is currently private.</p>

@@ -35,6 +35,7 @@ namespace WebApplication1.Controllers
 				if(result.Succeeded)
 				{
 					await signInManager.SignInAsync(user, isPersistent: true);
+					TempData["AlertMessage"] = "User was registered succesfully";
 					return RedirectToAction("CreateProfile", "Profile");
 				} else
 				{
@@ -102,6 +103,8 @@ namespace WebApplication1.Controllers
 						   select user;
 			User newUser = result.ToList()[0];
 			await userManager.ChangePasswordAsync(newUser, changePasswordViewModel.CurrentPassword, changePasswordViewModel.NewPassword);
+			_context.SaveChanges();
+			TempData["AlertMessage"] = "Password was updated succesfully";
 
 			return RedirectToAction("Search", "Resume");
 		}
@@ -125,8 +128,10 @@ namespace WebApplication1.Controllers
             User newUser = result.ToList()[0];
 			newUser.UserName = changeUserNameViewModel.NewUserName;
             await userManager.UpdateAsync(newUser);
+			_context.SaveChanges();
+			TempData["AlertMessage"] = "Username was updated succesfully";
 
-            return RedirectToAction("Search", "Resume");
+			return RedirectToAction("Search", "Resume");
         }
 
     }
