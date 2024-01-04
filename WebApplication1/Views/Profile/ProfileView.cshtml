@@ -27,7 +27,7 @@ else
 				}
 			</p>
 			<label>Phonenumber: </label>
-			@if (ViewBag.Resume.Phonenumber != null)
+			@if (ViewBag.Resume != null)
 			{
 				<p>
 					@foreach (var number in ViewBag.Resume.Phonenumber)
@@ -44,7 +44,7 @@ else
 		</div>
 		<div id="item2">
 			<h1>Resume</h1>
-			@if (ViewBag.Resume.Qualification != null)
+			@if (ViewBag.Resume != null)
 			{
 				<div class="resumeItemProfile" id="resume">
 					<div>
@@ -85,7 +85,7 @@ else
 			}
 			else
 			{
-				<h1> This profile has not uploaded a resume yet</h1>
+				<p> This profile has not uploaded a resume yet</p>
 			}
 			<div id="chat">
 			
@@ -95,24 +95,25 @@ else
 
 	
 		@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
-
 		{
-		@if (ViewBag.Resume is null)
-		{
-			<div><a asp-action="CreateResume" asp-controller="Resume" asp-route-id="@Model.Id">Create Resume</a></div>
-		}
-		else
-		{
-			<div><a asp-action="EditResume" asp-controller="Resume" asp-route-id="@Model.Id" id="resume">Edit Resume</a> </div>
-		}
-	
-		<div><a asp-action="CreateResume" asp-controller="Resume" asp-route-id="@Model.Id">Create Resume</a></div>
-		<div>
-			<form asp-controller="Resume" asp-action="Delete" asp-route-id="@Model.Id" method="post">
-				<input type="hidden" name="_method" value="DELETE" /> 
-				<button type="submit">Delete Resume</button>
-			</form>
-		</div>
+			@if (ViewBag.Resume == null)
+			{
+				<div>
+					<a asp-action="CreateResume" asp-controller="Resume" asp-route-id="@Model.Id">Create Resume</a>
+				</div>
+			}
+			else
+			{
+				<div>
+					<a asp-action="EditResume" asp-controller="Resume" asp-route-id="@Model.Id" id="resume">Edit Resume</a> 
+				</div>
+			}
+			<div>
+				<form asp-controller="Resume" asp-action="Delete" asp-route-id="@Model.Id" method="post">
+					<input type="hidden" name="_method" value="DELETE" /> 
+					<button type="submit">Delete Resume</button>
+				</form>
+			</div>
 		}
 
 		@*slut*@
