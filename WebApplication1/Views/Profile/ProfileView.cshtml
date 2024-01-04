@@ -1,23 +1,42 @@
 ﻿@model Profile
 
+<h1 class="bold-text">@Model.Name's Profile</h1>
 @if (Model.Name == null)
 {
 	<h2 class="bold-text">You currently don't have a profile.</h2>
 	<form method ="get" asp-controller="Profile" asp-action="CreateProfile">
-		<button type="submit">Create profile</button>
+		<button type="submit" class="btn btn-primary">Create profile</button>
 	</form>
 } 
 else
 {
 	<div class="grid-container">
-		<div id="item1">
-			<h1>Contact Details</h1>
+		<div class="item item1">
+			@*Hämtar egenvald profilbild eller standardbild*@
+			@if (!String.IsNullOrEmpty(Model.ProfilePicturePath))
+			{
+				<img src="/images/profiles/@Model.ProfilePicturePath" class="profile-picture" alt="@Model.ProfilePicturePath" />
+			}
+			else
+			{
+				<img src="/images/profiles/stdpfp.jpg" class="profile-picture" alt="Profile picture" />
+			}
+			@*Visar "edit profile" eller "send message" beroende på profil*@
 			@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
 			{
-				<div>
-					<a asp-action="EditProfile" asp-controller="Profile" asp-route-id="@Model.Id" id="editProfile">Edit Profile</a>
-				</div>
+				<form method="get" asp-controller="Profile" asp-action="EditProfile" asp-route-id="@Model.Id" id="editProfile">
+					<button type="submit" class="btn btn-primary">Edit profile</button>
+				</form>
 			}
+			else
+			{
+				<form method="get" asp-controller="Message" asp-action="SendMessage" asp-route-id="@Model.Id">
+					<button type="submit" class="btn btn-primary">Send message</button>
+				</form>
+			}
+		</div>
+		<div class="item item2">
+			<h1>Contact Details</h1>			
 			<label>Email: </label>
 			<p>
 				@foreach (var mail in Model.Email)
@@ -26,7 +45,7 @@ else
 					<br />
 				}
 			</p>
-			<label>Phonenumber: </label>
+			<label>Phone number: </label>
 			@if (ViewBag.Resume != null)
 			{
 				<p>
@@ -41,8 +60,17 @@ else
 			{
 				<p> This profile has not registered a phonenumber </p>
 			}
+			<label>Status: </label>
+			@if (Model.IsPrivate)
+			{
+				<p>This profile is currently private.</p>
+			}
+			else
+			{
+				<p>This profile is currently public.</p>
+			}
 		</div>
-		<div id="item2">
+		<div class="item item3">
 			<h1>Resume</h1>
 			@if (ViewBag.Resume != null)
 			{
@@ -90,35 +118,33 @@ else
 			<div id="chat">
 			
 			</div>
-		</div>
-		@* De ja laggt till *@
-
-	
-		@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
-		{
-			@if (ViewBag.Resume == null)
+			@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
 			{
-				<div>
-					<a asp-action="CreateResume" asp-controller="Resume" asp-route-id="@Model.Id">Create Resume</a>
-				</div>
+				@if (ViewBag.Resume == null)
+				{
+					<div>
+						<form asp-controller="Resume" asp-action="CreateResume" asp-route-id="@Model.Id" method="post">
+							<button type="submit" class="btn btn-primary">Create Resume</button>
+						</form>
+					</div>
+				}
+				else
+				{
+					<div>
+						<form asp-controller="Resume" asp-action="EditResume" asp-route-id="@Model.Id">
+							<button type="submit" class="btn btn-primary">Edit Resume</button>
+						</form>
+					</div>
+					<div>
+						<form asp-controller="Resume" asp-action="Delete" asp-route-id="@Model.Id" method="post">
+							<input type="hidden" name="_method" value="DELETE" />
+							<button type="submit" class="btn btn-secondary">Delete Resume</button>
+						</form>
+					</div>
+				}
 			}
-			else
-			{
-				<div>
-					<a asp-action="EditResume" asp-controller="Resume" asp-route-id="@Model.Id" id="resume">Edit Resume</a> 
-				</div>
-			}
-			<div>
-				<form asp-controller="Resume" asp-action="Delete" asp-route-id="@Model.Id" method="post">
-					<input type="hidden" name="_method" value="DELETE" /> 
-					<button type="submit">Delete Resume</button>
-				</form>
-			</div>
-		}
-
-		@*slut*@
-
-		<div id="item3">
+		</div>		
+		<div class="item item4">
 			@if (ViewBag.Projects.Count != 0)
 			{
 				<h1>Projects</h1>

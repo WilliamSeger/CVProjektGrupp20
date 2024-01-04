@@ -20,47 +20,43 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Resume" asp-action="Search">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="SearchProfile">Search Profiles</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="showProject">Projekt</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="SearchProfile">Search Profiles</a>
-                        </li>
                     </ul>
-                    <ul class="navbar-nav ms-auto">                       
-                         @if(User.Identity.IsAuthenticated)
-                         {
-                            <li class="nav-item">
-                                 <a class="nav-link text-dark" asp-area="" asp-controller="Message" asp-action="Recieved">Messages</a>
-                            </li>
-                            <li class="nav-item">
-                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
-                            </li>
-                            <li class="nav-item">
-                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangeUserName">Change Username</a>
-                            </li>
-                            <li>
-                                 <form method="post" asp-controller="Account" asp-action="Logout">
-                                     <input id="loggaUt" class="nav-link text-dark" type=submit value="Log Out"/> 
-                                 </form>
-                            </li>
-                         }
-                         @if (!User.Identity.IsAuthenticated)
-                         {
-                            <li class="nav-item">
-                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
-                            </li>
-                            <li class="nav-item">
-                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
-                            </li>
-                         }
+                    <ul class="navbar-nav ms-auto">
                         @if (User.Identity.IsAuthenticated)
                         {
-                             <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="MyProfileView">@User.Identity.Name</a>
-                             </li>
+                            <li>
+                                <p class="nav-link text-dark">User: </p>
+                            </li>
+                            <li class="nav-item">
+                                <div class="dropdown">
+                                    <a class="nav-link text-dark">@User.Identity.Name</a>
+                                    <div class="dropdown-content">
+                                        <a asp-area="" asp-controller="Profile" asp-action="MyProfileView">My profile</a>
+                                        <a asp-area="" asp-controller="Message" asp-action="Recieved">View messages</a>
+                                        <a asp-area="" asp-controller="Account" asp-action="ChangeUserName">Change Username</a>
+                                        <a asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <form method="post" asp-controller="Account" asp-action="Logout">
+                                    <input id="loggaUt" class="nav-link text-dark" type=submit value="Log Out" />
+                                </form>
+                            </li>
+                        }
+                        @if (!User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Log in</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Register</a>
+                            </li>
                         }
                     </ul>
                 </div>
@@ -75,7 +71,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - WebApplication1 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - Resume Web Site - <a asp-area="" asp-controller="Resume" asp-action="Search">Home page</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
