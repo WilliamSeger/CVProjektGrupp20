@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Numerics;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-    public class ProfileController : Controller
+    public class ProfileController : BaseController
     {
         CVContext _context;
-        public ProfileController(CVContext context) 
+        public ProfileController(CVContext context, UserManager<User> userManager) : base(context, userManager)
         {
             _context = context;
         }

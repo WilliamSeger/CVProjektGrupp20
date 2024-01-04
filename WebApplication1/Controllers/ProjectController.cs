@@ -1,12 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
 namespace WebApplication1.Controllers
 {
-	public class ProjectController : Controller
+	public class ProjectController : BaseController
 	{
 
 		public CVContext context {  get; set; }
-		public ProjectController(CVContext _context) 
+		public ProjectController(CVContext _context, UserManager<User> userManager) : base(_context, userManager)
 		
 		{
 			context = _context;

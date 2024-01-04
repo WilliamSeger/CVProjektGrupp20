@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
 
-    public class ResumeController : Controller
+    public class ResumeController : BaseController
     {
         private CVContext _context;
-        public ResumeController(CVContext context) 
+        public ResumeController(CVContext context, UserManager<User> userManager) : base(context, userManager)
         { 
             _context = context;
         }

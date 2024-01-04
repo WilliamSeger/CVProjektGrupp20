@@ -199,3 +199,7 @@ td {
 .row {
     margin-bottom: 0.5em;
 }
+
+#MessageCount {
+    color: red; 
+}

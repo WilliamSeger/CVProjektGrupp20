@@ -5,13 +5,13 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-	public class AccountController : Controller
+	public class AccountController : BaseController
 	{
 		private UserManager<User> userManager;
 		private SignInManager<User> signInManager;
 		private CVContext _context;
 
-		public AccountController(CVContext context, UserManager<User> userManager, SignInManager<User> signInManager)
+		public AccountController(CVContext context, UserManager<User> userManager, SignInManager<User> signInManager) : base(context, userManager)
 		{
 			this.userManager = userManager;
 			this.signInManager = signInManager;

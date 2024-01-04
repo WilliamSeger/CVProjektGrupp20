@@ -5,12 +5,12 @@ using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
 {
-	public class MessageController : Controller
+	public class MessageController : BaseController
 	{
 		CVContext _context;
 		private UserManager<User> userManager;
 
-		public MessageController(CVContext context, UserManager<User> userManager)
+		public MessageController(CVContext context, UserManager<User> userManager) : base(context, userManager)
 		{
 			_context = context;
 			this.userManager = userManager;
@@ -30,7 +30,6 @@ namespace WebApplication1.Controllers
 							   select message; 
 			
 			List<Message> messages = messageQuery.ToList();
-
 			return View(messages);
 		}
 
