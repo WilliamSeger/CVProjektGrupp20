@@ -140,6 +140,7 @@ namespace WebApplication1.Controllers
             {
                 Profile profile = new Profile();
                 profile.Name = profileViewModel.Name;
+                profile.ProfilePicturePath = "";
                 profile.Adress = profileViewModel.Adress;
                 profile.IsPrivate = profileViewModel.IsPrivate;
                 string userName = User.Identity.Name;

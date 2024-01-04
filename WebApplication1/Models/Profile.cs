@@ -6,11 +6,13 @@ namespace WebApplication1.Models
     public class Profile
     {
         public int Id { get; set; }
+        public string ProfilePicturePath { get; set; }
+        [Required]
         public string Name { get; set; }
         public string Adress { get; set; }
+        [Required]
         public List<string> Email { get; set; }
         public Boolean IsPrivate { get; set; }
-        //public byte[] Picture { get; set; }
         public string UserId { get; set; }
         [ForeignKey(nameof(UserId))]
         public virtual User User { get; set; }

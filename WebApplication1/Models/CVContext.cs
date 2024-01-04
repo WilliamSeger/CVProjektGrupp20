@@ -31,6 +31,7 @@ namespace WebApplication1.Models
                 {
                     Id = 1,
                     Name = "Bong",
+                    ProfilePicturePath = "",
                     Adress = "väggatan",
                     Email = new List<string> { "hej@gmail.com", "hej@jobb.com" },
                     IsPrivate = false,
@@ -40,6 +41,7 @@ namespace WebApplication1.Models
                 {
                     Id = 2,
                     Name = "Bongus",
+                    ProfilePicturePath = "",
                     Adress = "väggatan 4",
                     Email = new List<string> { "hallå@hotmail.com", "hallå@företag.se" },
                     IsPrivate = false,
@@ -49,6 +51,7 @@ namespace WebApplication1.Models
                 {
                     Id = 3,
                     Name = "Bing",
+                    ProfilePicturePath = "",
                     Adress = "väggatan 2",
                     Email = new List<string> { "meh@yahoo.com", "meh@arbete.com" },
                     IsPrivate = false,
