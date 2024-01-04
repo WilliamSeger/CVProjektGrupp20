@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Numerics;
 using WebApplication1.Models;
@@ -8,10 +9,30 @@ namespace WebApplication1.Controllers
     public class ProfileController : Controller
     {
         CVContext _context;
-        public ProfileController(CVContext context) 
+		private UserManager<User> userManager;
+
+		public ProfileController(CVContext context, UserManager<User> userManager) 
         {
             _context = context;
+            this.userManager = userManager;
         }
+
+        public async Task<IActionResult> MyProfileView()
+        {
+			User user = await userManager.FindByNameAsync(User.Identity.Name);
+			var profileQuery = from profile in _context.Profiles
+							   where profile.UserId == user.Id
+							   select profile;
+            Profile userProfile = new Profile();
+            if (!profileQuery.IsNullOrEmpty())
+            {
+                userProfile = profileQuery.ToList().First();
+            }
+
+
+            return RedirectToAction("ProfileView", "Profile", userProfile.Id);
+		    }
+
         public IActionResult ProfileView(int id)
         {
 			var resumeList = from resume in _context.Resumes
@@ -42,8 +63,14 @@ namespace WebApplication1.Controllers
             var profileList = from profile in _context.Profiles
                               where profile.Id == id
                               select profile;
-            
-            return View(profileList.ToList().FirstOrDefault());
+
+            Profile userProfile = new Profile();
+            if (!profileList.IsNullOrEmpty())
+            {
+                userProfile = profileList.ToList().First();
+            }
+
+            return View(userProfile);
         }
 
         public IActionResult EditProfile(int id) 
