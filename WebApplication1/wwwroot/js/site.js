@@ -1,4 +1,12 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿document.querySelectorAll('#showContentButton').forEach(function (button) {
+    button.addEventListener('click', function () {
+        var contentId = this.getAttribute('data-content-id');
+        var contentRow = document.getElementById('contentRow_' + contentId);
 
-// Write your JavaScript code.
+        if (contentRow.style.display === 'none') {
+            contentRow.style.display = 'table-row';
+        } else {
+            contentRow.style.display = 'none';
+        }
+    });
+});

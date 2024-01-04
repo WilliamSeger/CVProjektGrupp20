@@ -26,15 +26,15 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Project" asp-action="showProject">Projekt</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Message" asp-action="HÄR SKA MESSAGES VIEW VARA">Messages</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="SearchProfile">Search</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="SearchProfile">Search Profiles</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ms-auto">                       
                          @if(User.Identity.IsAuthenticated)
                          {
+                            <li class="nav-item">
+                                 <a class="nav-link text-dark" asp-area="" asp-controller="Message" asp-action="Recieved">Messages</a>
+                            </li>
                             <li class="nav-item">
                                  <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
                             </li>
@@ -59,7 +59,7 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                              <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="HÄR SKA PROFILES VIEW VARA">@User.Identity.Name</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="MyProfileView">@User.Identity.Name</a>
                              </li>
                         }
                     </ul>

@@ -1,5 +1,15 @@
 ﻿@model Profile
 
+@if (Model.Name == null)
+{
+		<h2 class="bold-text">You currently don't have a profile.</h2>
+		<form method ="get" asp-controller="Profile" asp-action="CreateProfile">
+			<button type="submit">Create profile</button>
+	</form>
+} else
+{
+	
+
 <div class="grid-container">
 	<div id="item1">
 		<h1>Contact Details</h1>
@@ -86,8 +96,10 @@
 		</div>
 	</div>
 	@* De ja laggt till *@
+
 	
 	@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
+
 	{
 	@if (ViewBag.Resume is null)
 	{
@@ -106,7 +118,9 @@
 		</form>
 	</div>
 	}
+</div>
 	@*slut*@
+	@*
 	<div id="item3">
 		@*@if (ViewBag.Projects.Count != 0)
 		{
@@ -126,6 +140,7 @@
 						<p>
 							@project.Created;
 						</p>
+
 					</div>
 					 <div>
 
@@ -165,3 +180,8 @@
 		}*@
 	</div>
 </div>
+
+	
+
+}
+
