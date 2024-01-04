@@ -1,37 +1,46 @@
 ﻿@model Resume
+
 <h1>Hej</h1>
 <div class="formDiv">
-	<form asp-action="AddNew" method="post">
-		<input type="hidden" asp-for="Id" />
-		<input type="hidden" asp-for="ProfileId" />
+    <form asp-action="AddNew" method="post">
+        <input type="hidden" asp-for="ProfileId" />
 
-		<label>Qualifications: </label>
-		
-			<input type="text" asp-for="@Model.Qualification" value=""/>
-		
-		<br />
+        <label>Qualifications: </label>
+        @for (var i = 0; i < Model.Qualification.Count; i++)
+        {
+            <input type="text" asp-for="@Model.Qualification[i]" value="" />
+            <br />
+        }
+        <br />
 
-		<label>Phone Numbers: </label>
+        <label>Phone Numbers: </label>
+        @for (var i = 0; i < Model.Education.Count; i++)
+        {
+            <input type="text" asp-for="@Model.Phonenumber[i]" value="" />
+            <br />
+        }
+        <br />
 
+        <label>Education: </label>
+        @for (var i = 0; i < Model.Education.Count; i++)
+        {
+            <input type="text" asp-for="@Model.Education[i]" value="" />
+            <br />
+        }
+        <br />
 
-			<input type="text" asp-for="@Model.Phonenumber" value="" />
-		
-		<br />
+        <label>Experiences: </label>
+        @for (var i = 0; i < Model.Experiences.Count; i++)
+        {
+            <input type="text" asp-for="@Model.Experiences[i]" value="" />
+            <br />
+        }
+        <br />
 
-		<label>Education: </label>
+        <button type="submit">Create Resume</button>
+    </form>
+</div>
 
-			<input type="text" asp-for="@Model.Education" value="" />
-		
-		<br />
-
-		<label>Experiences: </label>
-
-
-			<input type="text" asp-for="@Model.Experiences" value="" />
-		
-		<br />
-
-		<button type="submit">Create Resume</button>
 		@* <label>Qualifications: </label>
 		@foreach (var qualification in Model.Qualification)
 		{
@@ -61,5 +70,3 @@
 		<br />
 
 		<button type="submit">Create Resume</button> *@
-	</form>
-</div>
