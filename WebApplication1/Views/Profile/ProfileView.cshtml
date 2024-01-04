@@ -13,7 +13,7 @@
 <div class="grid-container">
 	<div id="item1">
 		<h1>Contact Details</h1>
-		@if (User.Identity.IsAuthenticated)
+		@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
 		{
 			<div>
 				<a asp-action="EditProfile" asp-controller="Profile" asp-route-id="@Model.Id" id="editProfile">Edit Profile</a>
@@ -96,7 +96,10 @@
 		</div>
 	</div>
 	@* De ja laggt till *@
-	@if(User.Identity.IsAuthenticated)
+
+	
+	@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
+
 	{
 	@if (ViewBag.Resume is null)
 	{
@@ -119,7 +122,7 @@
 	@*slut*@
 	@*
 	<div id="item3">
-		@if (ViewBag.Projects.Count != 0)
+		@*@if (ViewBag.Projects.Count != 0)
 		{
 			<div class="profileProjectItem">
 				<a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@Model.Id" asp-route-id2="@project.Id">
@@ -137,8 +140,9 @@
 						<p>
 							@project.Created;
 						</p>
-						</div>*@
-					@* <div>
+
+					</div>
+					 <div>
 
 			<h1>Projects</h1>
 			@foreach (var project in ViewBag.Projects)
@@ -174,6 +178,10 @@
 		{
 			<h1> This profile is not apart of any projects yet </h1>
 		}*@
+	</div>
+</div>
+
 	
 
 }
+

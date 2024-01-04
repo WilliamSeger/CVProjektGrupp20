@@ -8,8 +8,10 @@
 </header>
 <div>
     <div>
+
         @foreach (var resume in Model)
         {
+           
             <div class="resumeItem">
                 
                     <a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@resume.ProfileId">

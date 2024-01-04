@@ -35,7 +35,17 @@ namespace WebApplication1.Controllers
 
         public IActionResult ProfileView(int id)
         {
-			var resumeList = from resume in _context.Resumes
+            var userName = User.Identity.Name;
+
+            var currentUser = from user in _context.Users 
+                              where user.UserName == userName
+                              select user;
+            if (currentUser.Any())
+            {
+				ViewBag.UserId = currentUser.ToList().FirstOrDefault().Id;
+			}
+
+            var resumeList = from resume in _context.Resumes
                              where resume.ProfileId == id
 							 select resume;
             if (!resumeList.IsNullOrEmpty())
@@ -145,5 +155,6 @@ namespace WebApplication1.Controllers
                 return View();
             }
         }
+        
     }
 }
