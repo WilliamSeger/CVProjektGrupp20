@@ -28,15 +28,24 @@ else
 				<img src="/images/profiles/stdpfp.jpg" class="profile-picture" alt="Profile picture" />
 			}
 			@*Visar "edit profile" eller "send message" beroende på profil*@
-			@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
+			@if (User.Identity.IsAuthenticated)
 			{
-				<form method="get" asp-controller="Profile" asp-action="EditProfile">
-					<button type="submit" class="btn btn-primary">Edit profile</button>
-				</form>
+				if (Model.UserId == ViewBag.UserId)
+				{
+								<form method="get" asp-controller="Profile" asp-action="EditProfile">
+								<button type="submit" class="btn btn-primary">Edit profile</button>
+								</form>
+				}
+				else
+				{
+								<form method="get" asp-controller="Message" asp-action="SendMessage" asp-route-id="@Model.Id">
+								<button type="submit" class="btn btn-primary">Send message</button>
+								</form>	
+				}
 			}
 			else
 			{
-				<form method="get" asp-controller="Message" asp-action="SendMessage" asp-route-id="@Model.Id">
+				<form method="get" asp-controller="Message" asp-action="SendAnonymousMessage" asp-route-id="@Model.Id">
 					<button type="submit" class="btn btn-primary">Send message</button>
 				</form>
 			}
