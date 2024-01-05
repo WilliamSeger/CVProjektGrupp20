@@ -72,7 +72,7 @@
 @* </div>  *@
 @model Resume
 
-<p>Edit Profile</p>
+<h1>Edit Resume</h1>
 <div class="formDiv">
 	<form asp-action="Edit" method="post">
 		<input type="hidden" asp-for="Id" />
@@ -82,13 +82,24 @@
 		@for (int i = 0; i < Model.Qualification.Count; i++)
 		{
 			<input type="text" asp-for="@Model.Qualification[i]" />
+			<input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="1" asp-route-profId="@Model.ProfileId" value="X">
+			<br />
+		}
+		@if (Model.Qualification.Count < 5)
+		{
+			<input type="submit" asp-action="addItem" asp-route-caseId="1" asp-route-id="@Model.ProfileId" value="Add Qualification" />
 		}
 		<br />
 
 		<label>Phone Numbers: </label>
 		@for (int i = 0; i < Model.Phonenumber.Count; i++)
 		{
-			<input type="text" asp-for="@Model.Phonenumber[i]" />
+			<input type="text" asp-for="@Model.Phonenumber[i]" />    <input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="1" asp-route-profId="@Model.ProfileId" value="X">
+			<br />
+		}
+		@if (Model.Qualification.Count < 5)
+		{
+			<input type="submit" asp-action="addItem" asp-route-caseId="2" asp-route-id="@Model.ProfileId" value="Add Phonenumber" />
 		}
 		<br />
 
@@ -96,6 +107,12 @@
 		@for (int i = 0; i < Model.Education.Count; i++)
 		{
 			<input type="text" asp-for="@Model.Education[i]" />
+			<input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="1" asp-route-profId="@Model.ProfileId" value="X">
+			<br />
+		}
+		@if (Model.Qualification.Count < 5)
+		{
+			<input type="submit" asp-action="addItem" asp-route-caseId="3" asp-route-id="@Model.ProfileId" value="Add Education" />
 		}
 		<br />
 
@@ -103,6 +120,12 @@
 		@for (int i = 0; i < Model.Experiences.Count; i++)
 		{
 			<input type="text" asp-for="@Model.Experiences[i]" />
+			<input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="1" asp-route-profId="@Model.ProfileId" value="X">
+			<br />
+		}
+		@if (Model.Qualification.Count < 5)
+		{
+			<input type="submit" asp-action="addItem" asp-route-caseId="4" asp-route-id="@Model.ProfileId" value="Add Experience" />
 		}
 		<br />
 		
