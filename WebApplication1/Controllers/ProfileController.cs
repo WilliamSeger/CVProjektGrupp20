@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using Models.Models;
 using System.Numerics;
 using WebApplication1.Models;
 
@@ -174,6 +175,8 @@ namespace WebApplication1.Controllers
                 profile.ProfilePicturePath = "";
                 profile.Adress = profileViewModel.Adress;
                 profile.IsPrivate = profileViewModel.IsPrivate;
+                profile.RecievedAnonymousMessages = new List<AnonymousMessage>();
+                profile.ParticipatesIn = new List<ParticipatesIn>();
                 string userName = User.Identity.Name;
                 var result = from user in _context.Users
                              where user.UserName == userName

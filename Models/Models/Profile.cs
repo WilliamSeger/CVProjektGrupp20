@@ -20,5 +20,7 @@ namespace WebApplication1.Models
 		public virtual IEnumerable<Message> SentMessages { get; set; } = new List<Message>();
 		public virtual IEnumerable<Message> RecievedMessages { get; set; } = new List<Message>();
 		public virtual ICollection<ParticipatesIn> ParticipatesIn { get; set; } = new List<ParticipatesIn>();
-	}
+        public virtual IEnumerable<AnonymousMessage> RecievedAnonymousMessages { get; set; } = new List<AnonymousMessage>();
+
+    }
 }
