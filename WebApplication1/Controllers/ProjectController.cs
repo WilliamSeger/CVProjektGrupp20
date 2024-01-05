@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Models.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace WebApplication1.Controllers
 
@@ -35,7 +36,15 @@ namespace WebApplication1.Controllers
 			return View(projects.ToList());
 		}
 
-		[HttpPost]
+
+        public IActionResult Add()
+        {
+
+            return View(new Project());
+
+        }
+
+        [HttpPost]
 		public async Task<IActionResult> Add(Project project)
 		{
 			if (ModelState.IsValid)
