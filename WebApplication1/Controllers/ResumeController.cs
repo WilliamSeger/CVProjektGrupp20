@@ -95,7 +95,9 @@ namespace WebApplication1.Controllers
 
 			return RedirectToAction("ProfileView", "Profile", new { id = resume.ProfileId });
 		}
+
 		[Authorize]
+		[HttpPost]
 		public IActionResult CreateResume(int id)
 		{
 			//Creates a new blank resume and sends it to the view.

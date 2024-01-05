@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WebApplication1.Models;
 
@@ -11,9 +12,11 @@ using WebApplication1.Models;
 namespace WebApplication1.Migrations
 {
     [DbContext(typeof(CVContext))]
-    partial class CVContextModelSnapshot : ModelSnapshot
+    [Migration("20240105114334_projectMigration")]
+    partial class projectMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -158,6 +161,33 @@ namespace WebApplication1.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Models.Models.ParticipatesIn", b =>
+                {
+                    b.Property<int>("ProjectId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProfileId")
+                        .HasColumnType("int");
+
+                    b.HasKey("ProjectId", "ProfileId");
+
+                    b.HasIndex("ProfileId");
+
+                    b.ToTable("Participants");
+
+                    b.HasData(
+                        new
+                        {
+                            ProjectId = 1,
+                            ProfileId = 1
+                        },
+                        new
+                        {
+                            ProjectId = 2,
+                            ProfileId = 2
+                        });
+                });
+
             modelBuilder.Entity("WebApplication1.Models.Message", b =>
                 {
                     b.Property<int>("Id")
@@ -195,7 +225,7 @@ namespace WebApplication1.Migrations
                         {
                             Id = 1,
                             Content = "Tjenare mannen!",
-                            Created = new DateTime(2024, 1, 3, 13, 10, 40, 665, DateTimeKind.Local).AddTicks(4610),
+                            Created = new DateTime(2024, 1, 5, 12, 43, 34, 12, DateTimeKind.Local).AddTicks(6533),
                             IsRead = false,
                             RecieverId = 2,
                             SenderId = 1
@@ -204,7 +234,7 @@ namespace WebApplication1.Migrations
                         {
                             Id = 2,
                             Content = "Gott nytt år kompis.",
-                            Created = new DateTime(2024, 1, 3, 13, 10, 40, 665, DateTimeKind.Local).AddTicks(4655),
+                            Created = new DateTime(2024, 1, 5, 12, 43, 34, 12, DateTimeKind.Local).AddTicks(6565),
                             IsRead = false,
                             RecieverId = 3,
                             SenderId = 1
@@ -213,7 +243,7 @@ namespace WebApplication1.Migrations
                         {
                             Id = 3,
                             Content = "Jag måste berätta en grej...",
-                            Created = new DateTime(2024, 1, 3, 13, 10, 40, 665, DateTimeKind.Local).AddTicks(4659),
+                            Created = new DateTime(2024, 1, 5, 12, 43, 34, 12, DateTimeKind.Local).AddTicks(6568),
                             IsRead = false,
                             RecieverId = 1,
                             SenderId = 2
@@ -222,7 +252,7 @@ namespace WebApplication1.Migrations
                         {
                             Id = 4,
                             Content = "Vem är du? Vem är jag? Levande charader...",
-                            Created = new DateTime(2024, 1, 3, 13, 10, 40, 665, DateTimeKind.Local).AddTicks(4662),
+                            Created = new DateTime(2024, 1, 5, 12, 43, 34, 12, DateTimeKind.Local).AddTicks(6571),
                             IsRead = false,
                             RecieverId = 1,
                             SenderId = 3
@@ -252,16 +282,15 @@ namespace WebApplication1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ProjectId")
-                        .HasColumnType("int");
+                    b.Property<string>("ProfilePicturePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
 
                     b.HasIndex("UserId");
 
@@ -275,6 +304,7 @@ namespace WebApplication1.Migrations
                             Email = "[\"hej@gmail.com\",\"hej@jobb.com\"]",
                             IsPrivate = false,
                             Name = "Bong",
+                            ProfilePicturePath = "",
                             UserId = "123"
                         },
                         new
@@ -284,6 +314,7 @@ namespace WebApplication1.Migrations
                             Email = "[\"hall\\u00E5@hotmail.com\",\"hall\\u00E5@f\\u00F6retag.se\"]",
                             IsPrivate = false,
                             Name = "Bongus",
+                            ProfilePicturePath = "",
                             UserId = "123"
                         },
                         new
@@ -293,6 +324,7 @@ namespace WebApplication1.Migrations
                             Email = "[\"meh@yahoo.com\",\"meh@arbete.com\"]",
                             IsPrivate = false,
                             Name = "Bing",
+                            ProfilePicturePath = "",
                             UserId = "123"
                         });
                 });
@@ -324,26 +356,28 @@ namespace WebApplication1.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("ProjectOwnerId");
+
                     b.ToTable("Projects");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Created = new DateTime(2024, 1, 3, 13, 10, 40, 663, DateTimeKind.Local).AddTicks(1881),
+                            Created = new DateTime(2024, 1, 5, 12, 43, 34, 10, DateTimeKind.Local).AddTicks(9008),
                             Description = "JAVA project",
-                            ProjectOwnerId = 0,
+                            ProjectOwnerId = 1,
                             Title = "MIB",
-                            Updated = new DateTime(2024, 1, 3, 13, 10, 40, 663, DateTimeKind.Local).AddTicks(1939)
+                            Updated = new DateTime(2024, 1, 5, 12, 43, 34, 10, DateTimeKind.Local).AddTicks(9057)
                         },
                         new
                         {
                             Id = 2,
-                            Created = new DateTime(2024, 1, 3, 13, 10, 40, 663, DateTimeKind.Local).AddTicks(1943),
+                            Created = new DateTime(2024, 1, 5, 12, 43, 34, 10, DateTimeKind.Local).AddTicks(9062),
                             Description = "SCRUM Project",
-                            ProjectOwnerId = 0,
+                            ProjectOwnerId = 2,
                             Title = "Hattmakaren",
-                            Updated = new DateTime(2024, 1, 3, 13, 10, 40, 663, DateTimeKind.Local).AddTicks(1945)
+                            Updated = new DateTime(2024, 1, 5, 12, 43, 34, 10, DateTimeKind.Local).AddTicks(9064)
                         });
                 });
 
@@ -479,12 +513,12 @@ namespace WebApplication1.Migrations
                         {
                             Id = "123",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "51ba8733-dafb-47d8-8e61-313b3db0b5b8",
+                            ConcurrencyStamp = "2eba916f-bf08-4141-9288-f2e428ae2238",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             PasswordHash = "1234Abc!",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "39df011d-eba2-4fab-9a19-9cb4d70da27a",
+                            SecurityStamp = "5d72ec4f-2009-4aa7-a0bc-3ebda38331b0",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -541,6 +575,25 @@ namespace WebApplication1.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Models.Models.ParticipatesIn", b =>
+                {
+                    b.HasOne("WebApplication1.Models.Profile", "Profile")
+                        .WithMany("ParticipatesIn")
+                        .HasForeignKey("ProfileId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("WebApplication1.Models.Project", "Project")
+                        .WithMany("ParticipatesIn")
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Profile");
+
+                    b.Navigation("Project");
+                });
+
             modelBuilder.Entity("WebApplication1.Models.Message", b =>
                 {
                     b.HasOne("WebApplication1.Models.Profile", "Reciever")
@@ -562,10 +615,6 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Profile", b =>
                 {
-                    b.HasOne("WebApplication1.Models.Project", null)
-                        .WithMany("Participants")
-                        .HasForeignKey("ProjectId");
-
                     b.HasOne("WebApplication1.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
@@ -573,6 +622,17 @@ namespace WebApplication1.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WebApplication1.Models.Project", b =>
+                {
+                    b.HasOne("WebApplication1.Models.Profile", "ProjectOwner")
+                        .WithMany()
+                        .HasForeignKey("ProjectOwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProjectOwner");
                 });
 
             modelBuilder.Entity("WebApplication1.Models.Resume", b =>
@@ -588,6 +648,8 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Profile", b =>
                 {
+                    b.Navigation("ParticipatesIn");
+
                     b.Navigation("RecievedMessages");
 
                     b.Navigation("SentMessages");
@@ -595,7 +657,7 @@ namespace WebApplication1.Migrations
 
             modelBuilder.Entity("WebApplication1.Models.Project", b =>
                 {
-                    b.Navigation("Participants");
+                    b.Navigation("ParticipatesIn");
                 });
 #pragma warning restore 612, 618
         }

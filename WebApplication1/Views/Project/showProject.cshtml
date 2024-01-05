@@ -1,95 +1,36 @@
-﻿@model Project
+﻿@model List<Project>
 
-@{
-    ViewBag.Title = "ProjectDetails";
-}
-
-<h2>Project Details</h2>
+<h2>All Projects</h2>
 
 @if (User.Identity.IsAuthenticated)
 {
-    <p>
-        @Html.ActionLink("Create new Project", "Create", null, new { @class = "btn btn-success" })
-    </p>
+        <p>
+            <a asp-action="Add" asp-controller="Project" class="btn btn-success">Create New Project</a>
+        </p>
 }
 
-<div>
-    <h4>Project</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+<div class="row">
+    @foreach (var item in Model)
+    {
+            <div class="col-md-4">
+                <div class="project-box">
+                    <h4>@item.Title</h4>
+                    <p>@item.Description</p>
+                    <p>Created: @item.Created</p>
+                    <p>Updated: @item.Updated</p>
+                    <p>Project Owner: @item.ProjectOwner.Name</p>
 
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
-        @if (User.Identity.IsAuthenticated)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.Created)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Updated)
-            </dd>
-
-        }
-        <dt>
-            @Html.DisplayNameFor(model => model.Participants)
-        </dt>
-        @if (User.Identity.IsAuthenticated)
-        {
-            foreach (var item in Model.Participants)
-            {
-                <dd>
-                    @item.Name
-                </dd>
-            }
-        }
-        else
-        {
-            foreach (var item in Model.Participants)
-            {
-
-                if (item.IsPrivate == false)
+                @if (User.Identity.IsAuthenticated)
                 {
-                    <dd>
-                        @item.Name
-                    </dd>
+                            <p>
+                                <a asp-action="EditProject" asp-controller="Project" asp-route-id="@item.Id">Edit</a>
+                        @* här kan man lägga till fler actions *@
+                            </p>
                 }
-            }
-
-        }
-    </dl>
+                </div>
+            </div>
+    }
 </div>
-<p>
-    @Html.ActionLink("Back to List", "Index", null, new { @class = "btn btn-primary" })
-</p>
 
 
 

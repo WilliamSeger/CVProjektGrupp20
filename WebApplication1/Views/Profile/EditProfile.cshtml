@@ -1,30 +1,64 @@
 ﻿@model Profile
 
 <h1>Edit Profile</h1>
-<div class="formDiv">
-	<form asp-action="Edit" method="post">
-		<input type="hidden" asp-for="Id" />
-		<input type="hidden" asp-for="UserId" />
 
-		<label>Name: </label>
-		<input type="text" asp-for="@Model.Name" />
-		<br />
+<form method="get" asp-controller="Profile" asp-action="UploadProfilePicture">
+	<button type="submit" class="btn btn-primary">Edit profile picture</button>
+</form>
 
-		<label>Adress: </label>
-		<input type="text" asp-for="@Model.Adress" />
-		<br />
-
-		<label>Emails: </label>
-		@for (int i = 0; i < Model.Email.Count; i++)
-		{
-			<input type="text" asp-for="@Model.Email[i]" />
-		}
-		<br />
-
-		<label>Private profile: </label>
-		<input type="checkbox" asp-for="@Model.IsPrivate" />
-		<br />
-
-		<button type="submit">Save Resume</button>
-	</form>
+<div asp-validation-summary="All" class=text-danger>
+	<span></span>
 </div>
+<form method="post" asp-controller="Profile" asp-action="Edit" asp-route-id="@Model.Id">
+	<input type="hidden" asp-for="Id" />
+	<input type="hidden" asp-for="UserId" />
+	<div class="form-group row">
+		<div class="col-sm-2">
+			<label>Name: </label>
+		</div>
+		<div class="col-sm-4">
+			<input asp-for="Name" class="form-control" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">
+			<label>Email: </label>
+		</div>
+			@for (int i = 0; i < Model.Email.Count; i++)
+			{
+				<div class="col-sm-4">
+					<input asp-for="@Model.Email[i]" class="form-control" />
+				</div>
+			}
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">
+			<label>Adress: </label>
+		</div>
+		<div class="col-sm-4">
+			<input asp-for="Adress" class="form-control" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="col-sm-2">
+			<label>Private profile </label>
+		</div>
+		<div class="col-sm-2 col-sm-4">
+			<input type="checkbox" id="private" asp-for="IsPrivate" class="form-check" />
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="offset-2">
+			<button type="submit" class="btn btn-primary">Save</button>
+		</div>
+	</div>
+	<div class="form-group row">
+		<div class="offset-2">
+			<button type="submit" form="cancel" class="btn btn-secondary">Cancel</button>
+		</div>
+	</div>
+</form>
+
+
+<form id="cancel" method="get" asp-controller="Profile" asp-action="MyProfileView">
+</form>

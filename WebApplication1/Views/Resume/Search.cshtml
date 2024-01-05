@@ -1,7 +1,12 @@
 ﻿@model List<Resume>
 
 <meta name="viewport" content="width=device-width, inital-scale=1.0" />
-
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["AlertMessage"]
+    </div>
+}
 
 <header>
     <h1>Resume</h1>

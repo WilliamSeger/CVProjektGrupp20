@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
 using WebApplication1.Models;
 
 
@@ -14,8 +15,11 @@ namespace WebApplication1.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Profile> Profiles { get; set; }
 		public DbSet<Message> Messages { get; set; }
+        public DbSet<ParticipatesIn> Participants { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public DbSet<AnonymousMessage> anonMessages { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>().HasData(
@@ -31,6 +35,7 @@ namespace WebApplication1.Models
                 {
                     Id = 1,
                     Name = "Bong",
+                    ProfilePicturePath = "",
                     Adress = "väggatan",
                     Email = new List<string> { "hej@gmail.com", "hej@jobb.com" },
                     IsPrivate = false,
@@ -40,6 +45,7 @@ namespace WebApplication1.Models
                 {
                     Id = 2,
                     Name = "Bongus",
+                    ProfilePicturePath = "",
                     Adress = "väggatan 4",
                     Email = new List<string> { "hallå@hotmail.com", "hallå@företag.se" },
                     IsPrivate = false,
@@ -49,6 +55,7 @@ namespace WebApplication1.Models
                 {
                     Id = 3,
                     Name = "Bing",
+                    ProfilePicturePath = "",
                     Adress = "väggatan 2",
                     Email = new List<string> { "meh@yahoo.com", "meh@arbete.com" },
                     IsPrivate = false,
@@ -88,6 +95,8 @@ namespace WebApplication1.Models
                 }
                 );
 
+
+
             modelBuilder.Entity<Project>().HasData(
                 new Project
                 {
@@ -95,7 +104,8 @@ namespace WebApplication1.Models
                     Title = "MIB",
                     Description = "JAVA project",
                     Created = DateTime.Now,
-                    Updated = DateTime.Now
+                    Updated = DateTime.Now,
+                    ProjectOwnerId = 1
                 }
                 ,
                 new Project
@@ -104,9 +114,32 @@ namespace WebApplication1.Models
                     Title = "Hattmakaren",
                     Description = "SCRUM Project",
                     Created = DateTime.Now,
-                    Updated = DateTime.Now
-                }
+                    Updated = DateTime.Now,
+					ProjectOwnerId = 2
+				}
                 );
+
+			//Composite primary key for deltagare
+			modelBuilder.Entity<ParticipatesIn>()
+			.HasKey(pa => new { pa.ProjectId, pa.ProfileId });
+
+			modelBuilder.Entity<ParticipatesIn>()
+		    .HasOne(pi => pi.Project)
+		    .WithMany(p => p.ParticipatesIn)
+		    .OnDelete(DeleteBehavior.Restrict);
+
+
+
+			modelBuilder.Entity<ParticipatesIn>()
+		    .HasOne(pi => pi.Profile)
+		    .WithMany(pr => pr.ParticipatesIn)
+		    .OnDelete(DeleteBehavior.Restrict);
+
+
+			modelBuilder.Entity<ParticipatesIn>().HasData(
+		    new ParticipatesIn { ProjectId = 1, ProfileId = 1 },
+		    new ParticipatesIn { ProjectId = 2, ProfileId = 2 }
+	);
 
 			modelBuilder.Entity<Message>()
 				.HasOne(msg => msg.Sender)
@@ -156,6 +189,11 @@ namespace WebApplication1.Models
 					RecieverId = 1
 				}
 				);
-		}
+                modelBuilder.Entity<AnonymousMessage>()
+                .HasOne(msg => msg.Reciever)
+                .WithMany(pr => pr.RecievedAnonymousMessages)
+                .OnDelete(DeleteBehavior.Restrict);
+
+        }
     }
 }
