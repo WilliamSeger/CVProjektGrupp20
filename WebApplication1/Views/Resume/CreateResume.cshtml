@@ -5,7 +5,7 @@
     <form asp-action="AddNew" method="post">
         <input type="hidden" asp-for="ProfileId" />
 
-        <h2>Qualifications: </h2>
+        <label>Qualifications: </label>
         <div>
             @for (var i = 0; i < Model.Qualification.Count; i++)
             {
@@ -19,7 +19,7 @@
             <br />
         </div>
 
-        <h2>Phone Numbers: </h2>
+        <label>Phone Numbers: </label>
         <div>
             @for (var i = 0; i < Model.Phonenumber.Count; i++)
             {
@@ -33,7 +33,7 @@
             <br />
         </div>
 
-        <h2>Education: </h2>
+        <label>Education: </label>
         <div>
             @for (var i = 0; i < Model.Education.Count; i++)
             {
@@ -47,7 +47,7 @@
             <br />
         </div>
 
-        <h2>Experiences: </h2>
+        <label>Experiences: </label>
         <div>
             @for (var i = 0; i < Model.Experiences.Count; i++)
             {
