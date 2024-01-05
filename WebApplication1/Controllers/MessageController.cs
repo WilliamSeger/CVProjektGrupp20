@@ -194,6 +194,11 @@ namespace WebApplication1.Controllers
                                        where message.RecieverId == userProfile.Id
                                        select message;
 
+            var anonMessageQuery = from anonMessage in _context.anonMessages
+                                   where anonMessage.RecieverId == userProfile.Id
+                                   select anonMessage;
+            ViewBag.AnonMessages = anonMessageQuery.ToList();
+
             List<Message> messages = recievedMessageQuery.ToList();
 
             return View("Recieved", messages);

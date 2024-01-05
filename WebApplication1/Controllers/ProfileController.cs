@@ -135,10 +135,10 @@ namespace WebApplication1.Controllers
                 _context.SaveChanges();
 				TempData["AlertMessage"] = "Profile updated succesfully";
 
-				return RedirectToAction("ProfileView", "Profile", profileList.ToList().FirstOrDefault());
+				return RedirectToAction("MyProfileView", "Profile");
 			}
 
-			return RedirectToAction("ProfileView", "Profile", profileList.ToList().FirstOrDefault());
+			return RedirectToAction("EditProfile", "Profile");
         }
 
         public IActionResult SearchProfile()
