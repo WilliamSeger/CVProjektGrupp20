@@ -4,15 +4,6 @@ using System.Runtime;
 namespace WebApplication1.Models;
 public class Resume
 {
-	//Test för att se om jag kan fixa en grej med create
-	public Resume()
-	{
-		
-		Qualification = new List<string>();
-		Phonenumber = new List<string>();
-		Education = new List<string>();
-		Experiences = new List<string>();
-	}
 	public int Id { get; set; }
     [Required]
     public List<string> Qualification { get; set; }
@@ -20,6 +11,7 @@ public class Resume
     public List<string> Phonenumber { get; set; }
     [Required]
     public List<string> Education { get; set; }
+    [Required]
     public List<string> Experiences { get; set; }
 	
 	[Required]

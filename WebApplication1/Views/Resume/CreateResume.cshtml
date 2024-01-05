@@ -1,45 +1,65 @@
 ﻿@model Resume
 
-<h1>Hej</h1>
+<h1>Create Resume</h1>
 <div class="formDiv">
     <form asp-action="AddNew" method="post">
         <input type="hidden" asp-for="ProfileId" />
 
-        <label>Qualifications: </label>
-        @for (var i = 0; i < Model.Qualification.Count; i++)
-        {
-            <input type="text" asp-for="@Model.Qualification[i]" value="" />
-            <button type="button" class="addInput" id="addQualInput">Add Qualification</button>
+        <h2>Qualifications: </h2>
+        <div>
+            @for (var i = 0; i < Model.Qualification.Count; i++)
+            {
+                <input type="text" asp-for="@Model.Qualification[i]" value="" />
+                <input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="1" asp-route-profId="@Model.ProfileId" value="X">
+                <br />
+            }
+            @if (Model.Qualification.Count < 5) {
+                <input type="submit" asp-action="addItem" asp-route-caseId="1" asp-route-id="@Model.ProfileId" value="Add Qualification" />
+            }
             <br />
-        }
-        <br />
+        </div>
 
-        <label>Phone Numbers: </label>
-        @for (var i = 0; i < Model.Phonenumber.Count; i++)
-        {
-            <input type="text" asp-for="@Model.Phonenumber[i]" value="" />
-            <button type="button" class="addInput" id="addPhone">Add Phonenumber</button>
+        <h2>Phone Numbers: </h2>
+        <div>
+            @for (var i = 0; i < Model.Phonenumber.Count; i++)
+            {
+                <input type="text" asp-for="@Model.Phonenumber[i]" value="" />
+                <input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="2" asp-route-profId="@Model.ProfileId" value="X">
+                <br />
+            }
+            @if (Model.Phonenumber.Count < 5) {
+                <input type="submit" asp-action="addItem" asp-route-caseId="2" asp-route-id="@Model.ProfileId" value="Add Phonenumber" />
+            }
             <br />
-        }
-        <br />
+        </div>
 
-        <label>Education: </label>
-        @for (var i = 0; i < Model.Education.Count; i++)
-        {
-            <input type="text" asp-for="@Model.Education[i]" value="" />
-            <input type="button" value="Click" />
-            //<button type="button" class="addInput" id="addEdu">Add Education</button>
+        <h2>Education: </h2>
+        <div>
+            @for (var i = 0; i < Model.Education.Count; i++)
+            {
+                <input type="text" asp-for="@Model.Education[i]" value="" />
+                <input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="3" asp-route-profId="@Model.ProfileId" value="X">
+                <br />
+            }
+            @if (Model.Education.Count < 5) {
+                <input type="submit" asp-action="addItem" asp-route-caseId="3" asp-route-id="@Model.ProfileId" value="Add Education" />
+            }
             <br />
-        }
-        <br />
+        </div>
 
-        <label>Experiences: </label>
-        @for (var i = 0; i < Model.Experiences.Count; i++)
-        {
-            <input type="text" asp-for="@Model.Experiences[i]" value="" />
-            <button type="button" class="addInput" id="addExp">Add Experiences</button>
+        <h2>Experiences: </h2>
+        <div>
+            @for (var i = 0; i < Model.Experiences.Count; i++)
+            {
+                <input type="text" asp-for="@Model.Experiences[i]" value="" />
+                <input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="4" asp-route-profId="@Model.ProfileId" value="X">
+                <br />
+            }
+            @if (Model.Experiences.Count < 5) {
+                <input type="submit" asp-action="addItem" asp-route-caseId="4" asp-route-id="@Model.ProfileId" value="Add Experience" />
+            }
             <br />
-        }
+        </div>
         <br />
 
         <button type="submit">Create Resume</button>
