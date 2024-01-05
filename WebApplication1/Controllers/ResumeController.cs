@@ -62,10 +62,7 @@ namespace WebApplication1.Controllers
 		[HttpPost]
 		public IActionResult Edit(Resume userResume, int id)
 		{
-        //OBS! Uppdaterar alltid resume med ID 1 av nån anledning, kolla cshtml.
-			var resumeQuery = from resume in _context.Resumes
-							  where userResume.Id == id
-							  select resume;
+			var resumeQuery = _context.Resumes.Where(resume => resume.Id == id);
 			Resume currentResume = resumeQuery.FirstOrDefault();
 
             if (userResume.Qualification != null)
