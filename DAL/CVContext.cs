@@ -16,7 +16,6 @@ namespace WebApplication1.Models
         public DbSet<Profile> Profiles { get; set; }
 		public DbSet<Message> Messages { get; set; }
         public DbSet<ParticipatesIn> Participants { get; set; }
-        public DbSet<AnonymousMessage> anonMessages { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -189,10 +188,6 @@ namespace WebApplication1.Models
 				}
 				);
 
-			modelBuilder.Entity<AnonymousMessage>()
-				.HasOne(msg => msg.Reciever)
-				.WithMany(pr => pr.RecievedAnonymousMessages)
-				.OnDelete(DeleteBehavior.Restrict);
 		}
     }
 }

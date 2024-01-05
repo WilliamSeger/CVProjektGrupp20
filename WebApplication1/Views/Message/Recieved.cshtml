@@ -1,6 +1,6 @@
 ﻿@model List<Message>
 <script src="~/js/site.js" asp-append-version="true"></script>
-<h2 class="bold-text">Your Messages</h2>
+<h2 class="bold-text">You have @Model.Count messages</h2>
 
 <form method="get" asp-controller="Profile" asp-action="SearchProfile">
 	<button type="submit" class="btn btn-primary">New Message</button>
@@ -43,35 +43,6 @@
 								<div class="content-container">@message.Content</div>
 							</td>
 						</tr>
-		}
-		@foreach (var anonMessage in @ViewBag.AnonMessages)
-		{
-			<tr>
-				<td>@anonMessage.SenderName</td>
-				<td>@anonMessage.Created</td>
-				@if (@anonMessage.IsRead)
-				{
-					<td>Read</td>
-				}
-				else
-				{
-					<td>
-					<form method="post" action="@Url.Action("AnonMessageIsRead", "Message")">
-						<input type="hidden" name="msgId" value="@anonMessage.Id" />
-					    <label>Mark as Read <button type="submit" class="btn btn-outline-success">&#10004;</button></label>
-					</form>
-					</td>
-				}
-								<td>
-							<button id="showContentButton" class="btn btn-outline-primary" data-content-id="@anonMessage.Id">Show Content</button>
-								</td>
-							</tr>
-							<tr class="contentRow" id="contentRow_@anonMessage.Id" style="display:none;">
-								<td class="bold-text">Message content:</td>
-								<td>
-									<div class="content-container">@anonMessage.Content</div>
-								</td>
-							</tr>
 		}
 	</tbody>
 </table>

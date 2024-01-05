@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.Linq;
 using WebApplication1.Models;
-using Models.Models;
 
 namespace WebApplication1.Controllers
 {
@@ -38,14 +37,8 @@ namespace WebApplication1.Controllers
 			var messageQuery = from message in _context.Messages
 							   where message.RecieverId == userProfile.Id
 							   select message; 
-
-			var anonMessageQuery = from anonMessage in _context.anonMessages
-								   where anonMessage.RecieverId == userProfile.Id
-								   select anonMessage;
-			List<AnonymousMessage> anonymousMessages = anonMessageQuery.ToList();
-			ViewBag.AnonMessages = anonymousMessages;
-
-			List < Message > messages = messageQuery.ToList();
+			
+			List<Message> messages = messageQuery.ToList();
 
 			return View(messages);
 		}
@@ -86,26 +79,6 @@ namespace WebApplication1.Controllers
 			return View(sendMessageViewModel);
 		}
 
-		public async Task<IActionResult> SendAnonymousMessage(int id)
-		{			
-			var recieverQuery = from profile in _context.Profiles
-								where profile.Id == id
-								select profile;
-
-			Profile recieverProfile = recieverQuery.ToList().FirstOrDefault();
-
-			//Skickar med mottagaren
-			ViewBag.Reciever = recieverProfile;
-
-			SendAnonymousMessageViewModel sendMessageViewModel = new SendAnonymousMessageViewModel
-			{
-				IsRead = false,
-				RecieverId = recieverProfile.Id,
-				Reciever = recieverProfile
-			};
-			return View(sendMessageViewModel);
-		}
-
 		[HttpPost]
 		public IActionResult CreateMessage(SendMessageViewModel viewModel, int senderId, int recieverId)
 		{
@@ -140,76 +113,17 @@ namespace WebApplication1.Controllers
 
 		}
 
-		[HttpPost]
-		public IActionResult CreateAnonymousMessage(SendAnonymousMessageViewModel viewModel, int recieverId)
+			public async Task<IActionResult> MessageIsRead(int msgId)
 		{
-			var recieverQuery = from profile in _context.Profiles
-								where profile.Id == recieverId
-								select profile;
-
-			Profile recieverProfile = recieverQuery.ToList().First();
-
-			AnonymousMessage message = new AnonymousMessage();
-			message.Created = DateTime.Now;
-			message.Content = viewModel.Content;
-			message.IsRead = viewModel.IsRead;
-			message.Reciever = recieverProfile;
-			message.RecieverId = recieverProfile.Id;
-			message.SenderName = viewModel.SenderName;
-
-			if (message.Reciever != null)
+			var messageQuery = from message in _context.Messages
+							   where message.Id == msgId
+							   select message;
+			Message currentMessage = new Message();
+			if(messageQuery != null)
 			{
-				_context.anonMessages.Add(message);
-				_context.SaveChanges();
-				TempData["AlertMessage"] = "Message sent succesfully";
-
-				return RedirectToAction("Search", "Resume");
-			}
-
-			return View("Views/Message/SendAnonymousMessage.cshtml", viewModel);
-
-		}
-
-		public async Task<IActionResult> MessageIsRead(int msgId)
-		{
-		var messageQuery = from message in _context.Messages
-							  where message.Id == msgId
-							  select message;
-		Message currentMessage = new Message();
-		if(messageQuery != null)
-		{
 				currentMessage = messageQuery.FirstOrDefault();
 				currentMessage.IsRead = true;
 				_context.Messages.Update(currentMessage);
-				_context.SaveChanges();
-		}
-
-		User user = await userManager.FindByNameAsync(User.Identity.Name);
-		var profileQuery = from profile in _context.Profiles
-							   where profile.UserId == user.Id
-							   select profile;
-		Profile userProfile = profileQuery.FirstOrDefault();
-
-		var recievedMessageQuery = from message in _context.Messages
-							   where message.RecieverId == userProfile.Id
-							   select message;
-
-		List<Message> messages = recievedMessageQuery.ToList();
-
-		return View("Recieved", messages);
-		}
-
-		public async Task<IActionResult> AnonMessageIsRead(int msgId)
-		{
-			var messageQuery = from message in _context.anonMessages
-							   where message.Id == msgId
-							   select message;
-			AnonymousMessage currentMessage = new AnonymousMessage();
-			if (messageQuery != null)
-			{
-				currentMessage = messageQuery.FirstOrDefault();
-				currentMessage.IsRead = true;
-				_context.anonMessages.Update(currentMessage);
 				_context.SaveChanges();
 			}
 
@@ -220,13 +134,8 @@ namespace WebApplication1.Controllers
 			Profile userProfile = profileQuery.FirstOrDefault();
 
 			var recievedMessageQuery = from message in _context.Messages
-									   where message.RecieverId == userProfile.Id
-									   select message;
-
-			var anonMessageQuery = from anonMessage in _context.anonMessages
-								   where anonMessage.RecieverId == userProfile.Id
-								   select anonMessage;
-			ViewBag.AnonMessages = anonMessageQuery.ToList();
+							   where message.RecieverId == userProfile.Id
+							   select message;
 
 			List<Message> messages = recievedMessageQuery.ToList();
 
