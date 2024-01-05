@@ -1,194 +1,400 @@
 ﻿@model Profile
+
 @if (TempData["AlertMessage"] != null)
+
 {
+
 	<div class="alert alert-success">
+
 		@TempData["AlertMessage"]
+
 	</div>
+
 }
+
+
 
 @if (Model.Name == null)
+
 {
+
 	<h2 class="bold-text">You currently don't have a profile.</h2>
-	<form method ="get" asp-controller="Profile" asp-action="CreateProfile">
+
+	<form method="get" asp-controller="Profile" asp-action="CreateProfile">
+
 		<button type="submit" class="btn btn-primary">Create profile</button>
+
 	</form>
+
 }
+
 else
+
 {
+
 	<h1 class="bold-text">@Model.Name's Profile</h1>
+
 	<div class="grid-container">
+
 		<div class="item item1">
+
 			@*Hämtar egenvald profilbild eller standardbild*@
+
 			@if (!String.IsNullOrEmpty(Model.ProfilePicturePath))
+
 			{
+
 				<img src="/images/profiles/@Model.ProfilePicturePath" class="profile-picture" alt="@Model.ProfilePicturePath" />
+
 			}
+
 			else
+
 			{
+
 				<img src="/images/profiles/stdpfp.jpg" class="profile-picture" alt="Profile picture" />
+
 			}
+
 			@*Visar "edit profile" eller "send message" beroende på profil*@
-			@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
+
+			@if (User.Identity.IsAuthenticated)
+
 			{
-				<form method="get" asp-controller="Profile" asp-action="EditProfile">
-					<button type="submit" class="btn btn-primary">Edit profile</button>
-				</form>
-			}
-			else
-			{
-				<form method="get" asp-controller="Message" asp-action="SendMessage" asp-route-id="@Model.Id">
-					<button type="submit" class="btn btn-primary">Send message</button>
-				</form>
-			}
-		</div>
-		<div class="item item2">
-			<h1>Contact Details</h1>			
-			<label class="bold-text">Email: </label>
-			<p>
-				@foreach (var mail in Model.Email)
+
+				if (Model.UserId == ViewBag.UserId)
+
 				{
-					@mail
-					<br />
+
+					<form method="get" asp-controller="Profile" asp-action="EditProfile">
+
+						<button type="submit" class="btn btn-primary">Edit profile</button>
+
+					</form>
+
 				}
-			</p>
-			<label class="bold-text">Phone number: </label>
-			@if (ViewBag.Resume != null)
-			{
-				<p>
-					@foreach (var number in ViewBag.Resume.Phonenumber)
-					{
-						@number
-						<br />
-					}
-				</p>
-			}
-			else
-			{
-				<p> This profile has not registered a phonenumber </p>
-			}
-			<label class="bold-text">Status: </label>
-			@if (Model.IsPrivate)
-			{
-				<p>This profile is currently private.</p>
-			}
-			else
-			{
-				<p>This profile is currently public.</p>
-			}
-		</div>
-		<div class="item item3">
-			<h1>Resume</h1>
-			@if (ViewBag.Resume != null)
-			{
-				<div class="resumeItemProfile" id="resume">
-					<div>
-						<label>Qualification: </label>
-						<p>
-							@foreach (var quali in ViewBag.Resume.Qualification)
-							{
-								@quali
-								<br />
-							}
-						</p>
-						<label>Education: </label>
-						<p>
-							@foreach (var edu in ViewBag.Resume.Education)
-							{
-								@edu
-								<br />
-							}
-						</p>
-						<label>Experiences: </label>
-						<p>
-							@foreach (var exp in ViewBag.Resume.Experiences)
-							{
-								@exp
-								<br />
-							}
-						</p>
-						<label>Phonenumber: </label>
-						<p>
-							@foreach (var number in ViewBag.Resume.Phonenumber)
-							{
-								@number
-								<br />
-							}
-						</p>
-					</div>
-				</div>
-			}
-			else
-			{
-				<p> This profile has not uploaded a resume yet</p>
-			}
-			<div id="chat">
-			
-			</div>
-			@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
-			{
-				@if (ViewBag.Resume == null)
-				{
-					<div>
-						<form asp-controller="Resume" asp-action="CreateResume" asp-route-id="@Model.Id" method="post">
-							<button type="submit" class="btn btn-primary">Create Resume</button>
-						</form>
-					</div>
-				}
+
 				else
+
 				{
-					<div>
-						<form asp-controller="Resume" asp-action="EditResume" asp-route-id="@Model.Id">
-							<button type="submit" class="btn btn-primary">Edit Resume</button>
-						</form>
-					</div>
-					<div>
-						<form asp-controller="Resume" asp-action="Delete" asp-route-id="@Model.Id" method="post">
-							<input type="hidden" name="_method" value="DELETE" />
-							<button type="submit" class="btn btn-secondary">Delete Resume</button>
-						</form>
-					</div>
+
+					<form method="get" asp-controller="Message" asp-action="SendMessage" asp-route-id="@Model.Id">
+
+						<button type="submit" class="btn btn-primary">Send message</button>
+
+					</form>
+
 				}
+
 			}
-		</div>		
-		<div class="item item4">
-			@if (ViewBag.Projects.Count != 0)
+
+			else
+
 			{
-				<h1>Projects</h1>
-				@foreach (var project in ViewBag.Projects)
+
+				<form method="get" asp-controller="Message" asp-action="SendAnonymousMessage" asp-route-id="@Model.Id">
+
+					<button type="submit" class="btn btn-primary">Send message</button>
+
+				</form>
+
+			}
+
+		</div>
+
+		<div class="item item2">
+
+			<h1>Contact Details</h1>
+
+			<label class="bold-text">Email: </label>
+
+			<p>
+
+				@foreach (var mail in Model.Email)
+
 				{
+
+					@mail
+
+					<br />
+
+				}
+
+			</p>
+
+			<label class="bold-text">Phone number: </label>
+
+			@if (ViewBag.Resume != null)
+
+			{
+
+				<p>
+
+					@foreach (var number in ViewBag.Resume.Phonenumber)
+
+					{
+
+						@number
+
+						<br />
+
+					}
+
+				</p>
+
+			}
+
+			else
+
+			{
+
+				<p> This profile has not registered a phonenumber </p>
+
+			}
+
+			<label class="bold-text">Status: </label>
+
+			@if (Model.IsPrivate)
+
+			{
+
+				<p>This profile is currently private.</p>
+
+			}
+
+			else
+
+			{
+
+				<p>This profile is currently public.</p>
+
+			}
+
+		</div>
+
+		<div class="item item3">
+
+			<h1>Resume</h1>
+
+			@if (ViewBag.Resume != null)
+
+			{
+
+				<div class="resumeItemProfile" id="resume">
+
+					<div>
+
+						<label>Qualification: </label>
+
+						<p>
+
+							@foreach (var quali in ViewBag.Resume.Qualification)
+
+							{
+
+								@quali
+
+								<br />
+
+							}
+
+						</p>
+
+						<label>Education: </label>
+
+						<p>
+
+							@foreach (var edu in ViewBag.Resume.Education)
+
+							{
+
+								@edu
+
+								<br />
+
+							}
+
+						</p>
+
+						<label>Experiences: </label>
+
+						<p>
+
+							@foreach (var exp in ViewBag.Resume.Experiences)
+
+							{
+
+								@exp
+
+								<br />
+
+							}
+
+						</p>
+
+						<label>Phonenumber: </label>
+
+						<p>
+
+							@foreach (var number in ViewBag.Resume.Phonenumber)
+
+							{
+
+								@number
+
+								<br />
+
+							}
+
+						</p>
+
+					</div>
+
+				</div>
+
+			}
+
+			else
+
+			{
+
+				<p> This profile has not uploaded a resume yet</p>
+
+			}
+
+			<div id="chat">
+			</div>
+
+			@if (User.Identity.IsAuthenticated && Model.UserId == ViewBag.UserId)
+
+			{
+
+				@if (ViewBag.Resume == null)
+
+				{
+
+					<div>
+
+						<form asp-controller="Resume" asp-action="CreateResume" asp-route-id="@Model.Id" method="post">
+
+							<button type="submit" class="btn btn-primary">Create Resume</button>
+
+						</form>
+
+					</div>
+
+				}
+
+				else
+
+				{
+
+					<div>
+
+						<form asp-controller="Resume" asp-action="EditResume" asp-route-id="@Model.Id">
+
+							<button type="submit" class="btn btn-primary">Edit Resume</button>
+
+						</form>
+
+					</div>
+
+					<div>
+
+						<form asp-controller="Resume" asp-action="Delete" asp-route-id="@Model.Id" method="post">
+
+							<input type="hidden" name="_method" value="DELETE" />
+
+							<button type="submit" class="btn btn-secondary">Delete Resume</button>
+
+						</form>
+
+					</div>
+
+				}
+
+			}
+
+		</div>
+
+		<div class="item item4">
+
+			@if (ViewBag.Projects.Count != 0)
+
+			{
+
+				<h1>Projects</h1>
+
+				@foreach (var project in ViewBag.Projects)
+
+				{
+
 					<div class="profileProjectItem">
 
+
+
 						<a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@Model.Id" asp-route-id2="@project.Id">
+
 							<div>
+
 								<label>Title: </label>
+
 								<p>
+
 									@project.Title
+
 								</p>
+
 								<label>Description: </label>
+
 								<p>
+
 									@project.Description
+
 								</p>
+
 								<label>Date Created: </label>
+
 								<p>
+
 									@project.Created;
+
 								</p>
+
 							</div>
+
 						</a>
-						<div>
-							@foreach (var participant in project.Participants)
+
+						@* <div>
+
+							@foreach (var participant in project.ParticipantsIn)
+
 							{
 
+
+
 							}
-						</div> 
+
+						</div> *@
+
+
 
 					</div>
-				}
-			}
-			else
-			{
-				<h1> This profile is not part of any projects yet </h1>
-			}
-			</div>
-		</div>
-}
 
+				}
+
+			}
+
+			else
+
+			{
+
+				<h1> This profile is not part of any projects yet </h1>
+
+			}
+
+		</div>
+
+	</div>
+
+}

@@ -17,7 +17,9 @@ namespace WebApplication1.Models
 		public DbSet<Message> Messages { get; set; }
         public DbSet<ParticipatesIn> Participants { get; set; }
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public DbSet<AnonymousMessage> anonMessages { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.Entity<User>().HasData(
@@ -187,7 +189,11 @@ namespace WebApplication1.Models
 					RecieverId = 1
 				}
 				);
+                modelBuilder.Entity<AnonymousMessage>()
+                .HasOne(msg => msg.Reciever)
+                .WithMany(pr => pr.RecievedAnonymousMessages)
+                .OnDelete(DeleteBehavior.Restrict);
 
-		}
+        }
     }
 }
