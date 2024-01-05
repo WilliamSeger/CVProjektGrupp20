@@ -2,7 +2,7 @@
 
 namespace WebApplication1.Models
 {
-    public class LoginViewModel
+    public class LoginViewModel : LayoutViewModel
     {
         [Required(ErrorMessage = "Please choose a Username")]
         public string UserName { get; set; }

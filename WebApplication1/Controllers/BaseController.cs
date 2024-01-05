@@ -15,13 +15,34 @@ namespace WebApplication1.Controllers
 		{
 			this._context = _context;
 			this.userManager = userManager;
-			messageCount();
 		}
-		//public override async void OnActionExecuted(ActionExecutedContext context)
+		public override async void OnActionExecuted(ActionExecutedContext context)
+		{
+			base.OnActionExecuted(context);
+			if (context.Controller is Controller controller)
+			{
+				var model = controller.ViewData.Model as LayoutViewModel;
+				if (model != null)
+				{
+					model.MessagesCount = await getMessagesCount();
+				}
+				
+			}
+		}
+
+		//public async void messageCount()
 		//{
-		//	if (User.Identity.IsAuthenticated)
+
+		//	string? userName = User.Identity.Name;
+		//	if (userName == null)
 		//	{
-		//		User currentUser = await userManager.FindByNameAsync(User.Identity.Name);
+
+		//	}
+		//	else
+		//	{
+
+		//		User currentUser = await userManager.FindByNameAsync(userName);
+
 		//		var profileList = from profile in _context.Profiles
 		//						  where profile.UserId == currentUser.Id
 		//						  select profile;
@@ -31,24 +52,18 @@ namespace WebApplication1.Controllers
 		//						 where message.IsRead == false
 		//						 select message;
 
-		//		ViewBag.MessagesCount = messagesIn.Count();
+		//		var theValueIwantToAddAsAproperty = messagesIn.Count();
 		//	}
-		//	base.OnActionExecuted(context);
+
 		//}
 
-		public async void messageCount()
+		protected async Task<int> getMessagesCount()
 		{
-			
-			string? userName = User.Identity.Name;
-			if (userName == null)
+			if (User.Identity.IsAuthenticated)
 			{
 
-			}
-			else
-			{
-
+				string userName = User.Identity.Name;
 				User currentUser = await userManager.FindByNameAsync(userName);
-
 				var profileList = from profile in _context.Profiles
 								  where profile.UserId == currentUser.Id
 								  select profile;
@@ -58,9 +73,9 @@ namespace WebApplication1.Controllers
 								 where message.IsRead == false
 								 select message;
 
-				ViewBag.MessagesCount = messagesIn.Count();
+				return messagesIn.ToList().Count();
 			}
-			
+			else { return 0; }
 		}
 	}
 }

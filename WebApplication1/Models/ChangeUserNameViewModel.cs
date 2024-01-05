@@ -2,7 +2,7 @@
 
 namespace WebApplication1.Models
 {
-	public class ChangeUserNameViewModel
+	public class ChangeUserNameViewModel : LayoutViewModel
 	{
 	
 		[Required]

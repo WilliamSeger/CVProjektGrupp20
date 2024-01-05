@@ -1,6 +1,6 @@
 namespace WebApplication1.Models
 {
-    public class ErrorViewModel
+    public class ErrorViewModel : LayoutViewModel
     {
         public string? RequestId { get; set; }
 

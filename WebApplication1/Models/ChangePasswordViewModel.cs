@@ -2,7 +2,7 @@
 
 namespace WebApplication1.Models
 {
-	public class ChangePasswordViewModel
+	public class ChangePasswordViewModel : LayoutViewModel
 	{
 		[Required]
 		[DataType(DataType.Password)]

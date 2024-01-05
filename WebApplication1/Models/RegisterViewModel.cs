@@ -2,7 +2,7 @@
 
 namespace WebApplication1.Models
 {
-	public class RegisterViewModel
+	public class RegisterViewModel : LayoutViewModel
 	{
 		[Required]
 		[StringLength(50, MinimumLength = 2, ErrorMessage = "Username has to be between 2 and 50 characters")]

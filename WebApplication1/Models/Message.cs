@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication1.Models
 {
-	public class Message
+	public class Message : LayoutViewModel
 	{
 		public int Id { get; set; }
 		[Required]

@@ -1,6 +1,6 @@
 ﻿namespace WebApplication1.Models
 {
-    public class Project
+    public class Project : LayoutViewModel
     {
 
         public int Id { get; set; }

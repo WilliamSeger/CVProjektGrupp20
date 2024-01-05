@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Runtime;
 namespace WebApplication1.Models;
-public class Resume
+public class Resume : LayoutViewModel
 {
 	//Test för att se om jag kan fixa en grej med create
 	public Resume()
