@@ -71,7 +71,7 @@ namespace WebApplication1.Controllers
 
 			Profile recieverProfile = recieverQuery.ToList().FirstOrDefault();
 			User recieverUser = recieverProfile.User;
-			if(recieverUser.MessagesCount == null && 0)
+			if(recieverUser.MessagesCount == null || recieverUser.MessagesCount == 0)
 			{
 				recieverUser.MessagesCount = 1;
 			}
@@ -105,7 +105,7 @@ namespace WebApplication1.Controllers
 			Profile recieverProfile = recieverQuery.ToList().FirstOrDefault();
 			User recieverUser = recieverProfile.User;
 
-			if (recieverUser.MessagesCount == null && 0)
+			if (recieverUser.MessagesCount == null || recieverUser.MessagesCount ==  0)
 			{
 				recieverUser.MessagesCount = 1;
 			}
