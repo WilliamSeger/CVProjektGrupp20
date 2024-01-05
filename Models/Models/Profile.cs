@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Models.Models;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WebApplication1.Models
@@ -18,5 +19,6 @@ namespace WebApplication1.Models
         public virtual User User { get; set; }
 		public virtual IEnumerable<Message> SentMessages { get; set; } = new List<Message>();
 		public virtual IEnumerable<Message> RecievedMessages { get; set; } = new List<Message>();
+		public virtual IEnumerable<AnonymousMessage> RecievedAnonymousMessages { get; set; } = new List<AnonymousMessage>();
 	}
 }
