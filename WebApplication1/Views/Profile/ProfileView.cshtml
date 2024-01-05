@@ -108,12 +108,14 @@ else
 					<a asp-action="EditResume" asp-controller="Resume" asp-route-id="@Model.Id" id="resume">Edit Resume</a> 
 				</div>
 			}
+			
 			<div>
 				<form asp-controller="Resume" asp-action="Delete" asp-route-id="@Model.Id" method="post">
 					<input type="hidden" name="_method" value="DELETE" /> 
 					<button type="submit">Delete Resume</button>
 				</form>
 			</div>
+			
 		}
 
 		@*slut*@
