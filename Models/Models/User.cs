@@ -5,6 +5,6 @@ namespace WebApplication1.Models
 {
 	public class User : IdentityUser
 	{
-		
+		public dynamic int MessagesCount { get; set; }
 	}
 }

@@ -70,6 +70,16 @@ namespace WebApplication1.Controllers
 								select profile;
 
 			Profile recieverProfile = recieverQuery.ToList().FirstOrDefault();
+			User recieverUser = recieverProfile.User;
+			if(recieverUser.MessagesCount == null && 0)
+			{
+				recieverUser.MessagesCount = 1;
+			}
+			else
+			{
+				recieverUser.MessagesCount = (recieverUser.MessagesCount +
+				recieverProfile.RecievedMessages.ToList().Count + recieverProfile.RecievedAnonymousMessages.ToList().Count);
+			}
 
 			//Skickar med avsändaren samt mottagaren
 			ViewBag.Sender = userProfile;
@@ -93,6 +103,17 @@ namespace WebApplication1.Controllers
 								select profile;
 
 			Profile recieverProfile = recieverQuery.ToList().FirstOrDefault();
+			User recieverUser = recieverProfile.User;
+
+			if (recieverUser.MessagesCount == null && 0)
+			{
+				recieverUser.MessagesCount = 1;
+			}
+			else
+			{
+				recieverUser.MessagesCount = (recieverUser.MessagesCount +
+				recieverProfile.RecievedMessages.ToList().Count + recieverProfile.RecievedAnonymousMessages.ToList().Count);
+			}
 
 			//Skickar med mottagaren
 			ViewBag.Reciever = recieverProfile;

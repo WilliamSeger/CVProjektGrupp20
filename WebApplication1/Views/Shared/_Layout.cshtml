@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -37,7 +39,11 @@
                                     <a class="nav-link text-dark">@User.Identity.Name</a>
                                     <div class="dropdown-content">
                                         <a asp-area="" asp-controller="Profile" asp-action="MyProfileView">My profile</a>
-                                        <a asp-area="" asp-controller="Message" asp-action="Recieved">View messages</a>
+                                        <a asp-area="" asp-controller="Message" asp-action="Recieved">View messages
+                                            <span> 
+                                                @(await UserManager.FindByNameAsync(User.Identity.Name)).MessagesCount
+                                            </span>
+                                        </a>
                                         <a asp-area="" asp-controller="Account" asp-action="ChangeUserName">Change Username</a>
                                         <a asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
                                     </div>
