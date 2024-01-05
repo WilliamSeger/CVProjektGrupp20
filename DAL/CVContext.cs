@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Models.Models;
 using WebApplication1.Models;
 
 
@@ -14,6 +15,7 @@ namespace WebApplication1.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Profile> Profiles { get; set; }
 		public DbSet<Message> Messages { get; set; }
+        public DbSet<ParticipatesIn> Participants { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -91,6 +93,8 @@ namespace WebApplication1.Models
                 }
                 );
 
+
+
             modelBuilder.Entity<Project>().HasData(
                 new Project
                 {
@@ -98,7 +102,8 @@ namespace WebApplication1.Models
                     Title = "MIB",
                     Description = "JAVA project",
                     Created = DateTime.Now,
-                    Updated = DateTime.Now
+                    Updated = DateTime.Now,
+                    ProjectOwnerId = 1
                 }
                 ,
                 new Project
@@ -107,9 +112,32 @@ namespace WebApplication1.Models
                     Title = "Hattmakaren",
                     Description = "SCRUM Project",
                     Created = DateTime.Now,
-                    Updated = DateTime.Now
-                }
+                    Updated = DateTime.Now,
+					ProjectOwnerId = 2
+				}
                 );
+
+			//Composite primary key for deltagare
+			modelBuilder.Entity<ParticipatesIn>()
+			.HasKey(pa => new { pa.ProjectId, pa.ProfileId });
+
+			modelBuilder.Entity<ParticipatesIn>()
+		    .HasOne(pi => pi.Project)
+		    .WithMany(p => p.ParticipatesIn)
+		    .OnDelete(DeleteBehavior.Restrict);
+
+
+
+			modelBuilder.Entity<ParticipatesIn>()
+		    .HasOne(pi => pi.Profile)
+		    .WithMany(pr => pr.ParticipatesIn)
+		    .OnDelete(DeleteBehavior.Restrict);
+
+
+			modelBuilder.Entity<ParticipatesIn>().HasData(
+		    new ParticipatesIn { ProjectId = 1, ProfileId = 1 },
+		    new ParticipatesIn { ProjectId = 2, ProfileId = 2 }
+	);
 
 			modelBuilder.Entity<Message>()
 				.HasOne(msg => msg.Sender)
@@ -159,6 +187,7 @@ namespace WebApplication1.Models
 					RecieverId = 1
 				}
 				);
+
 		}
     }
 }

@@ -1,0 +1,29 @@
+﻿@model Project 
+
+<form asp-controller="Project" asp-action="Edit" method="post">
+
+
+    <table class="table table-light">
+
+        <tr>
+            <td>
+                <label>Title</label>
+                <input asp-for="Title" type="text" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label>Description</label>
+                <input asp-for="Description" type="text" />
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <input type="submit" value="Uppdatera" class="btn-primary" />
+            </td>
+        </tr>
+
+    </table>
+</form>
+
