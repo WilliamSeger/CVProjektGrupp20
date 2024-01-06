@@ -46,53 +46,46 @@ namespace WebApplication1.Controllers
 
 		public IActionResult Create()
 		{
+			CreateProjectViewModel viewModel = new CreateProjectViewModel();
 
-			return View("add", new Project());
+
+            return View("add", viewModel);
 
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> Add(Project project)
+		public async Task<IActionResult> Add(CreateProjectViewModel viewmodel)
 		{
 			if (ModelState.IsValid)
 			{
+                User user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var profileQuery = from profileObj in context.Profiles
+                              where profileObj.UserId == user.Id
+                              select profileObj;
+				Profile profile = profileQuery.FirstOrDefault();
+
+				Project project = new Project();
+				project.Title = viewmodel.Title;
+				project.Description = viewmodel.Description;
+				project.Created = DateTime.Now;
+				project.Updated =	DateTime.Now;
+
+				project.ParticipatesIn = new List<ParticipatesIn>();
+				project.ProjectOwner = profile;
+				project.ProjectOwnerId = profile.Id;
+
+				context.Add(project);
+				context.SaveChanges();
+
+				TempData["AlertMessage"] = "Project Created sucessfully";
+				return RedirectToAction("showProject");
 
 
-				//OBS denna kan vara fel , först loopa genom alla profiler i context genom en linq och sen vill jag jämföra deras userID nyckel med den userid som currentuser har
-				//hämta användare
-				var currentUser = await _userManager.GetUserAsync(User);
-
-				var userProfile = context.Profiles.FirstOrDefault(p => p.Id.ToString() == currentUser.Id);
-
-				if (userProfile != null)
-
-				{
-					project.ProjectOwnerId = userProfile.Id;
-
-					context.Projects.Add(project);
-
-					var ownerParticipation = new ParticipatesIn
-					{
-						ProfileId = userProfile.Id,
-						ProjectId = project.Id
-					};
-
-					context.Participants.Add(ownerParticipation);
-
-					await context.SaveChangesAsync();
-
-					return RedirectToAction("ShowProject");
-				}
-
-				else
-				{
-					ModelState.AddModelError("", "Ingen profil hittades för användaren.");
-				}
 
 
 			}
 
-			return View("Add", project);
+			return View("Add", viewmodel);
 
 		}
 
