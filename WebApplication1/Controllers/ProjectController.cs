@@ -28,11 +28,18 @@ namespace WebApplication1.Controllers
 
 		[AllowAnonymous] // Tillåt åtkomst utan inloggning för ShowProject
 
-		public IActionResult showProject()
+		public async Task<IActionResult> showProject()
 		{
 			var projects = from project in context.Projects
 						   select project;
-
+			if (User.Identity.IsAuthenticated)
+			{
+				User user = await _userManager.FindByNameAsync(User.Identity.Name);
+				var profile = from profileObj in context.Profiles
+							  where profileObj.UserId == user.Id
+							  select profileObj;
+				ViewBag.Profile = profile.FirstOrDefault();
+			}
 			return View(projects.ToList());
 		}
 
