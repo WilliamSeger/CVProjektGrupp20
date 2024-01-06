@@ -233,3 +233,7 @@ td {
     font-size: 14px;
     font-weight: bold;
 }
+
+.btn {
+    margin: 0.2em;
+}

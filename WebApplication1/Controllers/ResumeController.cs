@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using WebApplication1.Models;
 using System.Text.Json;
+using Microsoft.AspNetCore.Identity;
 
 namespace WebApplication1.Controllers
 {
@@ -10,9 +11,11 @@ namespace WebApplication1.Controllers
     public class ResumeController : Controller
     {
         private CVContext _context;
-        public ResumeController(CVContext context) 
+        private UserManager<User> userManager;
+        public ResumeController(CVContext context, UserManager<User> userManager) 
         { 
             _context = context;
+            this.userManager = userManager;
         }
 
         public IActionResult Search()
@@ -40,28 +43,61 @@ namespace WebApplication1.Controllers
 			return View(resumeList.ToList());
         }
 		
-		public IActionResult EditResume(int id)
+		public async Task<IActionResult> EditResume()
 		{
-			//Fetches the resume that corresponds to the profile 
-			var resumeList = from resume in _context.Resumes
-							  where resume.ProfileId == id
+            User user = await userManager.FindByNameAsync(User.Identity.Name);
+            var profileQuery = from profile in _context.Profiles
+                               where profile.UserId == user.Id
+                               select profile;
+            Profile userProfile = profileQuery.FirstOrDefault();
+            var resumeList = from resume in _context.Resumes
+							  where resume.ProfileId == userProfile.Id
 							  select resume;
+			Resume userResume = resumeList.FirstOrDefault();
+			ViewBag.Resume = userResume;
 
-			return View(resumeList.ToList().FirstOrDefault());
+			return View(userResume);
 		}
-		[HttpPost]
-		public IActionResult Edit(Resume resume)
-		{
-			//Edits an exitsting resume with values provided by userinputs. Updates database
-			_context.Update(resume);
-			_context.SaveChanges();
 
+		[HttpPost]
+		public IActionResult Edit(Resume userResume, int id)
+		{
+			var resumeQuery = _context.Resumes.Where(resume => resume.Id == id);
+			Resume currentResume = resumeQuery.FirstOrDefault();
+
+            if (userResume.Qualification != null)
+            {
+                currentResume.Qualification = userResume.Qualification;
+            }
+            if (userResume.Phonenumber != null)
+            {
+                currentResume.Phonenumber = userResume.Phonenumber;
+            }
+            if (userResume.Education != null)
+            {
+                currentResume.Education = userResume.Education;
+            }
+            if (userResume.Experiences != null)
+            {
+                currentResume.Experiences = userResume.Experiences;
+            }
+
+            if (currentResume != null)
+            {
+                _context.Update(currentResume);
+                _context.SaveChanges();
+                TempData["AlertMessage"] = "Resume updated succesfully";
+
+                return RedirectToAction("MyProfileView", "Profile");
+            }
+            
 			var resumeList = from oldResume in _context.Resumes
-							  where oldResume.Id == resume.Id
+							  where oldResume.Id == currentResume.Id
 							  select oldResume;
 
 			return RedirectToAction("EditResume", "Resume", resumeList.ToList().FirstOrDefault());
 		}
+
 		[Authorize]
 		[HttpPost]
 		public IActionResult Delete(int id)
