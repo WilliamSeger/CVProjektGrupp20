@@ -101,6 +101,13 @@ label:hover {
     grid-row-end: 5;
 }
 
+.item item5 {
+    grid-column-start: 1;
+    grid-column-end: 2;
+    grid-row-start: 4;
+    grid-row-end: 5;
+}
+
 .resumeItemProfile {
     display: inline-block;
     flex-wrap: wrap;
@@ -245,4 +252,8 @@ td {
     width: 300px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+}
+
+.project-box-container {
+    display: flex;
 }

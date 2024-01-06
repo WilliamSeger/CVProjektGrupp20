@@ -124,7 +124,7 @@ namespace WebApplication1.Controllers
 				currentProject.Updated = DateTime.Now;
 				context.Update(currentProject);
 				context.SaveChanges();
-				TempData["AlertMessage"] = "Resume updated succesfully";
+				TempData["AlertMessage"] = "Project updated succesfully";
 				return RedirectToAction("showProject");
 			}
 
