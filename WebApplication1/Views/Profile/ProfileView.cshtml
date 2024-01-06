@@ -63,6 +63,7 @@ else
 					<br />
 				}
 			</p>
+			
 			<label class="bold-text">Phone number: </label>
 			@if (ViewBag.Resume != null)
 			{
@@ -102,6 +103,7 @@ else
 								<br />
 							}
 						</p>
+						<br />
 						<label>Education: </label>
 						<p>
 							@foreach (var edu in ViewBag.Resume.Education)
@@ -110,6 +112,7 @@ else
 								<br />
 							}
 						</p>
+						<br />
 						<label>Experiences: </label>
 						<p>
 							@foreach (var exp in ViewBag.Resume.Experiences)
@@ -118,6 +121,7 @@ else
 								<br />
 							}
 						</p>
+						<br />
 						<label>Phonenumber: </label>
 						<p>
 							@foreach (var number in ViewBag.Resume.Phonenumber)
