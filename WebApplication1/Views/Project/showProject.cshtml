@@ -2,6 +2,13 @@
 
 <h2>All Projects</h2>
 
+@if (TempData["AlertMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["AlertMessage"]
+    </div>
+}
+
 @if (User.Identity.IsAuthenticated)
 {
         <p>
@@ -16,21 +23,42 @@
                 <div class="project-box">
                     <h4>@item.Title</h4>
                     <p>@item.Description</p>
-                    <p>Created: @item.Created</p>
-                    <p>Updated: @item.Updated</p>
-                    <p>Project Owner: @item.ProjectOwner.Name</p>
+                    <p class="bold-text">Created: </p>
+                    <p>@item.Created</p>
+                    <p class="bold-text">Updated: </p>
+                    <p>@item.Updated</p>
+                    <p class="bold-text">Project Owner: </p>
+                    <p>@item.ProjectOwner.Name</p>
+                    <p class="bold-text">Participants:</p>
+                    @foreach (var participant in ViewBag.Allparticipants)
+                    {
+                    @if(participant.ProjectId == item.Id)
+                    {
+                        <p>@participant.Profile.Name</p>
+                    }
+                    }
                     @if(User.Identity.IsAuthenticated) {
-                        @if (@ViewBag.Profile.Id == @item.ProjectOwnerId && User.Identity.IsAuthenticated)
+                    @if (@ViewBag.Profile.Id == @item.ProjectOwnerId)
+                    {
+                    <p>
+                    <a asp-action="EditProject" asp-controller="Project" asp-route-id="@item.Id">Edit</a>
+                    </p>
+                    } else
+                    {
+                        @if (ViewBag.UserParticipationId.Contains(item.Id)) {
+                            <form asp-action="Leave" asp-controller="Project" method="post">
+                                <input type="hidden" name="projectId" value="@item.Id" />
+                                <input type="submit" value="Leave" class="btn btn-secondary" />
+                            </form>
+                        }
+                        else
                         {
-                                        <p>
-                                            <a asp-action="EditProject" asp-controller="Project" asp-route-id="@item.Id">Edit</a>
-                                        </p>
-                        }                      
-                        <form asp-action="Participate" asp-controller="Project" method="post">
-                            <input type="hidden" name="projectId" value="@item.Id" />
-                            <input type="submit" value="Participate" class="btn btn-primary" />
-                        </form>
-                        
+                            <form asp-action="Participate" asp-controller="Project" method="post">
+                                <input type="hidden" name="projectId" value="@item.Id" />
+                                <input type="submit" value="Participate" class="btn btn-primary" />
+                            </form>
+                        }
+                    }                  
                     }
                 </div>
             </div>

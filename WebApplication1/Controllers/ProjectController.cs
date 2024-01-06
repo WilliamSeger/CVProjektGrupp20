@@ -32,13 +32,23 @@ namespace WebApplication1.Controllers
 		{
 			var projects = from project in context.Projects
 						   select project;
+			var participants = from participant in context.Participants
+							   select participant;
+			ViewBag.AllParticipants = participants.ToList();
+
 			if (User.Identity.IsAuthenticated)
 			{
 				User user = await _userManager.FindByNameAsync(User.Identity.Name);
 				var profile = from profileObj in context.Profiles
 							  where profileObj.UserId == user.Id
 							  select profileObj;
-				ViewBag.Profile = profile.FirstOrDefault();
+				Profile userProfile = profile.FirstOrDefault();
+				ViewBag.Profile = userProfile;
+
+				var myParticipations = from participant in context.Participants
+								   where participant.ProfileId == userProfile.Id
+								   select participant.ProjectId;
+				ViewBag.UserParticipationId = myParticipations.ToList();
 			}
 			return View(projects.ToList());
 		}
@@ -141,7 +151,6 @@ namespace WebApplication1.Controllers
 
 
 		[HttpPost]
-
 		public async Task<IActionResult> Participate(int projectId)
 		{
 			User user = await _userManager.FindByNameAsync(User.Identity.Name);
@@ -149,12 +158,12 @@ namespace WebApplication1.Controllers
 						  where profileObj.UserId == user.Id
 						  select profileObj;
 
-			Profile newprofile = profile.FirstOrDefault();
-			if (newprofile != null)
+			Profile userprofile = profile.FirstOrDefault();
+			if (userprofile != null)
 			{
 				var participation = new ParticipatesIn
 				{
-					ProfileId = newprofile.Id,
+					ProfileId = userprofile.Id,
 					ProjectId = projectId
 				};
 
@@ -165,5 +174,30 @@ namespace WebApplication1.Controllers
 			return RedirectToAction("showProject");
 
 		}
-	}
+
+        [HttpPost]
+        public async Task<IActionResult> Leave(int projectId)
+        {
+            User user = await _userManager.FindByNameAsync(User.Identity.Name);
+            var profile = from profileObj in context.Profiles
+                          where profileObj.UserId == user.Id
+                          select profileObj;
+
+            Profile userprofile = profile.FirstOrDefault();
+            if (userprofile != null)
+            {
+                var participant = from participantObj in context.Participants
+								  where participantObj.ProfileId == userprofile.Id
+								  where participantObj.ProjectId == projectId
+								  select participantObj;
+                ParticipatesIn currentParticipant = participant.FirstOrDefault();
+
+                context.Participants.Remove(currentParticipant);
+                await context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("showProject");
+
+        }
+    }
 }
