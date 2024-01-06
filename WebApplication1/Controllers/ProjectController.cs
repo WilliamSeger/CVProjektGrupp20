@@ -140,7 +140,30 @@ namespace WebApplication1.Controllers
 		}
 
 
+		[HttpPost]
 
+		public async Task<IActionResult> Participate(int projectId)
+		{
+			User user = await _userManager.FindByNameAsync(User.Identity.Name);
+			var profile = from profileObj in context.Profiles
+						  where profileObj.UserId == user.Id
+						  select profileObj;
 
+			Profile newprofile = profile.FirstOrDefault();
+			if (newprofile != null)
+			{
+				var participation = new ParticipatesIn
+				{
+					ProfileId = newprofile.Id,
+					ProjectId = projectId
+				};
+
+				context.Participants.Add(participation);
+				await context.SaveChangesAsync();
+			}
+
+			return RedirectToAction("showProject");
+
+		}
 	}
 }
