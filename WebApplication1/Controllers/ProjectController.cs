@@ -134,6 +134,7 @@ namespace WebApplication1.Controllers
 			Project project = context.Projects.Find(id);
 
 
+
 			return View("Edit", project);
 
 		}
@@ -142,7 +143,6 @@ namespace WebApplication1.Controllers
 		[HttpPost]
 
 		public async Task<IActionResult> Participate(int projectId)
-
 		{
 			User user = await _userManager.FindByNameAsync(User.Identity.Name);
 			var profile = from profileObj in context.Profiles
