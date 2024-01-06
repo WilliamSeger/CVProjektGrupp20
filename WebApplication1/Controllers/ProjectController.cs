@@ -79,7 +79,6 @@ namespace WebApplication1.Controllers
 				project.Description = viewmodel.Description;
 				project.Created = DateTime.Now;
 				project.Updated =	DateTime.Now;
-
 				project.ParticipatesIn = new List<ParticipatesIn>();
 				project.ProjectOwner = profile;
 				project.ProjectOwnerId = profile.Id;
@@ -100,7 +99,35 @@ namespace WebApplication1.Controllers
 		}
 
 
+		[HttpPost]
+		public IActionResult Delete(int id) 
+		{
+			var projectList = from project in context.Projects
+							  where project.Id == id
+							  select project;
+			Project projectToDelete = projectList.FirstOrDefault();
+            var participantList = from participants in context.Participants
+                              where participants.ProjectId == id
+                              select participants;
 
+            if (participantList != null)
+            {
+                List<ParticipatesIn> participantsToDelete = participantList.ToList();
+                foreach (var participant in participantsToDelete)
+				{
+                    context.Participants.Remove(participant);
+                }
+                context.SaveChanges();
+            }
+
+            if (projectToDelete != null)
+			{
+				context.Projects.Remove(projectToDelete);
+				context.SaveChanges();
+			}
+
+			return RedirectToAction("showProject");
+		}
 
 		[HttpPost]
 		public IActionResult Edit(Project project, int Id)
@@ -129,26 +156,15 @@ namespace WebApplication1.Controllers
 			}
 
 			return View("Edit", project);
-
 		}
-
-
-
-
-
-
 
 		[HttpGet]
 		public IActionResult EditProject(int id)
 		{
 			Project project = context.Projects.Find(id);
 
-
-
 			return View("Edit", project);
-
 		}
-
 
 		[HttpPost]
 		public async Task<IActionResult> Participate(int projectId)
