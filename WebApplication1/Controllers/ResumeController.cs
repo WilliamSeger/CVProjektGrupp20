@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using WebApplication1.Models;
 using System.Text.Json;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.IdentityModel.Tokens;
 
 namespace WebApplication1.Controllers
 {
@@ -29,6 +30,14 @@ namespace WebApplication1.Controllers
                              select resume;
 
 			List<Resume> publicResumeList = new List<Resume>();
+
+            var projectList = from project in _context.Projects
+                              orderby project.Created descending
+                              select project;
+            if(!projectList.IsNullOrEmpty())
+            {
+                ViewBag.LatestProject = projectList.FirstOrDefault();
+            }
 
 			foreach (var resume in resumeList.ToList())
 			{

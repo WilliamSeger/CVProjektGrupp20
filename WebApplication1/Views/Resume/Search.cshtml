@@ -14,8 +14,14 @@
 <div>
     <div>
 
-        @foreach (var resume in Model)
+        @for (int i = 0; i < Model.Count; i++)
         {
+            var resume = Model[i];
+            //Visar max 5 resumes på front page
+            if(i > 4)
+            {
+                break;
+            }
             if (ViewBag.PublicResumes.Contains(resume) || User.Identity.IsAuthenticated) {
                 <div class="resumeItem">
                     <a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@resume.ProfileId">
@@ -59,4 +65,14 @@
             }
         }
     </div>
+</div>
+<h1>Latest Uploaded Project</h1>
+<div class="col-md-4">
+                <div class="project-box">
+                    <h4>@ViewBag.LatestProject.Title</h4>
+                    <p>@ViewBag.LatestProject.Description</p>
+                    <p>Created: @ViewBag.LatestProject.Created</p>
+                    <p>Updated: @ViewBag.LatestProject.Updated</p>
+                    <p>Project Owner: @ViewBag.LatestProject.ProjectOwner.Name</p>
+                </div>
 </div>
