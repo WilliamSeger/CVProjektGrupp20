@@ -37,10 +37,10 @@ namespace WebApplication1.Controllers
 		}
 
 
-        public IActionResult Add()
+        public IActionResult Create()
         {
 
-            return View(new Project());
+            return View("add",new Project());
 
         }
 
@@ -92,38 +92,53 @@ namespace WebApplication1.Controllers
 
 
 
+        [HttpPost]
+        public IActionResult Edit(Project project)
+        {
+            if (ModelState.IsValid)
+            {
+                var existingProject = context.Projects.Find(project.Id);
+
+                if (existingProject != null)
+                {
+                    existingProject.Title = project.Title;
+                    existingProject.Description = project.Description;
+                    existingProject.Updated = DateTime.Now;
+
+                    context.SaveChanges();
+                    return RedirectToAction("showProject");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Projektet kunde inte hittas.");
+                }
+            }
+            return View("Edit", project);
+        }
+
+
+
+
+
+        [HttpGet]
+        public IActionResult EditProject(int id)
+        {
+            Project project = context.Projects.Find(id);
+	
+
+			return View("Edit", project);
+
+        }
+
 		[HttpPost]
-		public async Task<IActionResult> Edit(Project project)
+		public IActionResult Edit(Project project)
+
 		{
-			if (ModelState.IsValid)
-			{
-				var existingProject = context.Projects.FirstOrDefault(p => p.Title == project.Title);
 
-				if (existingProject != null)
-				{
-					existingProject.Title = project.Title;
-					existingProject.Description = project.Description;
-					existingProject.Updated = DateTime.Now;
-
-					context.Update(existingProject);
-					await context.SaveChangesAsync();
-
-					return RedirectToAction("ShowProject");
-				}
-
-				else
-				{
-					return View(project);
-				}
-			}
-
-			return View(project);
+			context.Projects.Update(project);
+			context.SaveChanges();
+			return RedirectToAction("showProject");
 		}
-
-
-
-
-
 
 	}
 }
