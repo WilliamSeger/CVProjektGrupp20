@@ -83,7 +83,10 @@
 		@for (int i = 0; i < Model.Qualification.Count; i++)
 		{
 			<input type="text" asp-for="@Model.Qualification[i]" />
-			<input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="1" asp-route-profId="@Model.ProfileId" asp-route-method="edit" value="X">
+			if(i >= 1)
+			{
+				<input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="1" asp-route-profId="@Model.ProfileId" asp-route-method="edit" value="X">
+			}
 			<br />
 		}
 		@if (Model.Qualification.Count < 5)
@@ -98,7 +101,10 @@
 		@for (int i = 0; i < Model.Phonenumber.Count; i++)
 		{
 			<input type="text" asp-for="@Model.Phonenumber[i]" />
-			<input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="2" asp-route-profId="@Model.ProfileId" asp-route-method="edit" value="X">
+			if (i >= 1)
+			{
+				<input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="2" asp-route-profId="@Model.ProfileId" asp-route-method="edit" value="X">
+			}
 			<br />
 		}
 		@if (Model.Phonenumber.Count < 5)
@@ -113,7 +119,10 @@
 		@for (int i = 0; i < Model.Education.Count; i++)
 		{
 			<input type="text" asp-for="@Model.Education[i]" />
-			<input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="3" asp-route-profId="@Model.ProfileId" asp-route-method="edit" value="X">
+			if (i >= 1)
+			{
+				<input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="3" asp-route-profId="@Model.ProfileId" asp-route-method="edit" value="X">
+			}
 			<br />
 		}
 		@if (Model.Education.Count < 5)
@@ -128,7 +137,10 @@
 		@for (int i = 0; i < Model.Experiences.Count; i++)
 		{
 			<input type="text" asp-for="@Model.Experiences[i]" />
-			<input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="4" asp-route-profId="@Model.ProfileId" asp-route-method="edit" value="X">
+			if (i >= 1)
+			{
+				<input type="submit" asp-action="RemoveField" asp-controller="Resume" asp-route-caseId="4" asp-route-profId="@Model.ProfileId" asp-route-method="edit" value="X">
+			}
 			<br />
 		}
 		@if (Model.Experiences.Count < 5)

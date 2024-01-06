@@ -130,15 +130,15 @@ namespace WebApplication1.Controllers
 
         }
 
-		[HttpPost]
-		public IActionResult Edit(Project project)
+		//[HttpPost]
+		//public IActionResult Edit(Project project)
 
-		{
+		//{
 
-			context.Projects.Update(project);
-			context.SaveChanges();
-			return RedirectToAction("showProject");
-		}
+		//	context.Projects.Update(project);
+		//	context.SaveChanges();
+		//	return RedirectToAction("showProject");
+		//}
 
 	}
 }

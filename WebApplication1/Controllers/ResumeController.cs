@@ -126,7 +126,11 @@ namespace WebApplication1.Controllers
 		public IActionResult AddNew(Resume resume)
 		{
 			//Creates a Resume using the values provided by the inputs. 
-			_context.Resumes.Add(resume);
+            var resumeToRemove = from resumes in _context.Resumes
+                                 where resumes.ProfileId == resume.ProfileId
+                                 select resumes;
+            _context.Resumes.Remove(resumeToRemove.FirstOrDefault());
+            _context.Resumes.Add(resume);
 			_context.SaveChanges();
 
 			return RedirectToAction("ProfileView", "Profile", new { id = resume.ProfileId });
@@ -146,6 +150,15 @@ namespace WebApplication1.Controllers
                 Education = new List<string> { "" },
                 Experiences = new List<string> { "" }
             };
+
+            var resumeList = from resumes in _context.Resumes
+                             where resumes.ProfileId == id
+                             select resumes;
+            if (!resumeList.Any())
+            {
+                _context.Resumes.Add(newResume);
+                _context.SaveChanges();
+            }
             return View(newResume);
 		}
         [Authorize]
@@ -169,23 +182,32 @@ namespace WebApplication1.Controllers
         [HttpPost]
         public IActionResult addItem(int id, int caseId, string method, Resume resume)
 		{
+			var resumeList = from resumes in _context.Resumes
+							 where resumes.ProfileId == resume.ProfileId
+							 select resumes;
+			Resume currentResume = resumeList.ToList().FirstOrDefault();
+
 			switch (caseId)
 			{
 				case 1:
 					resume.Qualification.Add("");
+                    currentResume.Qualification = resume.Qualification;
 					break;
 				case 2:
 					resume.Phonenumber.Add("");
+                    currentResume.Phonenumber = resume.Phonenumber;
                     break;
                 case 3: 
 					resume.Education.Add("");
+                    currentResume.Education = resume.Education;
                     break;
                 case 4: 
 					resume.Experiences.Add("");
+                    currentResume.Experiences = resume.Experiences;
                     break;
             }
 
-            _context.Update(resume);
+            _context.Update(currentResume);
             _context.SaveChanges();
 
             string resumeJson = JsonSerializer.Serialize(resume);
@@ -219,7 +241,7 @@ namespace WebApplication1.Controllers
                     break;
             }
 
-            _context.Update(resume);
+			_context.Update(resume);
             _context.SaveChanges();
 
             string resumeJson = JsonSerializer.Serialize(resume);
