@@ -28,117 +28,119 @@ namespace WebApplication1.Controllers
 
 		[AllowAnonymous] // Tillåt åtkomst utan inloggning för ShowProject
 
-		public IActionResult showProject()
+		public async Task<IActionResult> showProject()
 		{
 			var projects = from project in context.Projects
 						   select project;
-
+			if (User.Identity.IsAuthenticated)
+			{
+				User user = await _userManager.FindByNameAsync(User.Identity.Name);
+				var profile = from profileObj in context.Profiles
+							  where profileObj.UserId == user.Id
+							  select profileObj;
+				ViewBag.Profile = profile.FirstOrDefault();
+			}
 			return View(projects.ToList());
 		}
 
 
-        public IActionResult Create()
-        {
+		public IActionResult Create()
+		{
+			CreateProjectViewModel viewModel = new CreateProjectViewModel();
 
-            return View("add",new Project());
 
-        }
+            return View("add", viewModel);
 
-        [HttpPost]
-		public async Task<IActionResult> Add(Project project)
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> Add(CreateProjectViewModel viewmodel)
 		{
 			if (ModelState.IsValid)
 			{
+                User user = await _userManager.FindByNameAsync(User.Identity.Name);
+                var profileQuery = from profileObj in context.Profiles
+                              where profileObj.UserId == user.Id
+                              select profileObj;
+				Profile profile = profileQuery.FirstOrDefault();
+
+				Project project = new Project();
+				project.Title = viewmodel.Title;
+				project.Description = viewmodel.Description;
+				project.Created = DateTime.Now;
+				project.Updated =	DateTime.Now;
+
+				project.ParticipatesIn = new List<ParticipatesIn>();
+				project.ProjectOwner = profile;
+				project.ProjectOwnerId = profile.Id;
+
+				context.Add(project);
+				context.SaveChanges();
+
+				TempData["AlertMessage"] = "Project Created sucessfully";
+				return RedirectToAction("showProject");
 
 
-				//OBS denna kan vara fel , först loopa genom alla profiler i context genom en linq och sen vill jag jämföra deras userID nyckel med den userid som currentuser har
-				//hämta användare
-				var currentUser = await _userManager.GetUserAsync(User);
-
-				var userProfile = context.Profiles.FirstOrDefault(p => p.Id.ToString() == currentUser.Id);
-
-				if (userProfile != null)
-
-				{
-					project.ProjectOwnerId = userProfile.Id;
-
-					context.Projects.Add(project);
-
-					var ownerParticipation = new ParticipatesIn
-					{
-						ProfileId = userProfile.Id,
-						ProjectId = project.Id
-					};
-
-					context.Participants.Add(ownerParticipation);
-
-					await context.SaveChangesAsync();
-
-					return RedirectToAction("ShowProject");
-				}
-
-				else
-				{
-					ModelState.AddModelError("", "Ingen profil hittades för användaren.");
-				}
 
 
 			}
 
-			return View("Add", project);
+			return View("Add", viewmodel);
 
 		}
 
 
 
 
-        [HttpPost]
-        public IActionResult Edit(Project project)
-        {
-            if (ModelState.IsValid)
-            {
-                var existingProject = context.Projects.Find(project.Id);
+		[HttpPost]
+		public IActionResult Edit(Project project, int Id)
+		{
+			var existingProject = context.Projects.Where(project => project.Id == Id);
+			Project currentProject = existingProject.FirstOrDefault();
 
-                if (existingProject != null)
-                {
-                    existingProject.Title = project.Title;
-                    existingProject.Description = project.Description;
-                    existingProject.Updated = DateTime.Now;
+			if (project.Title != null)
+			{
+				currentProject.Title = project.Title;
 
-                    context.SaveChanges();
-                    return RedirectToAction("showProject");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Projektet kunde inte hittas.");
-                }
-            }
-            return View("Edit", project);
-        }
+			}
 
+			if (project.Description != null)
+			{
+				currentProject.Description = project.Description;
+			}
 
-
-
-
-        [HttpGet]
-        public IActionResult EditProject(int id)
-        {
-            Project project = context.Projects.Find(id);
-	
+			if (project != null)
+			{
+				currentProject.Updated = DateTime.Now;
+				context.Update(currentProject);
+				context.SaveChanges();
+				TempData["AlertMessage"] = "Resume updated succesfully";
+				return RedirectToAction("showProject");
+			}
 
 			return View("Edit", project);
 
-        }
+		}
 
-		//[HttpPost]
-		//public IActionResult Edit(Project project)
 
-		//{
 
-		//	context.Projects.Update(project);
-		//	context.SaveChanges();
-		//	return RedirectToAction("showProject");
-		//}
+
+
+
+
+		[HttpGet]
+		public IActionResult EditProject(int id)
+		{
+			Project project = context.Projects.Find(id);
+
+
+
+			return View("Edit", project);
+
+		}
+
+
+
 
 	}
 }
