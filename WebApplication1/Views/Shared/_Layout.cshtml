@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -29,15 +31,29 @@
                     <ul class="navbar-nav ms-auto">
                         @if (User.Identity.IsAuthenticated)
                         {
+                            var user = UserManager.FindByNameAsync(User.Identity.Name).Result;
                             <li>
                                 <p class="nav-link text-dark">User: </p>
                             </li>
                             <li class="nav-item">
                                 <div class="dropdown">
-                                    <a class="nav-link text-dark">@User.Identity.Name</a>
+                                    <a class="nav-link text-dark">@User.Identity.Name
+                                                                @if (@user?.MessagesCount > 0)
+                                                                {
+                                                <span class="msgCount"> @user?.MessagesCount </span>
+                                                                }
+
+                                    </a>
                                     <div class="dropdown-content">
                                         <a asp-area="" asp-controller="Profile" asp-action="MyProfileView">My profile</a>
-                                        <a asp-area="" asp-controller="Message" asp-action="Recieved">View messages</a>
+                                        <a asp-area="" asp-controller="Message" asp-action="Recieved">View messages
+                                                                    @if (@user?.MessagesCount > 0)
+                                                                    {
+                                                    <span class="msgCount"> 
+                                                                            @user?.MessagesCount
+                                                    </span>
+                                                                    }
+                                        </a>
                                         <a asp-area="" asp-controller="Account" asp-action="ChangeUserName">Change Username</a>
                                         <a asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a>
                                     </div>

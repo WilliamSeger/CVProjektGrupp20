@@ -127,6 +127,18 @@ namespace WebApplication1.Controllers
             message.SenderId = senderProfile.Id;
             message.Reciever = recieverProfile;
             message.RecieverId = recieverProfile.Id;
+
+            User recieverUser = recieverProfile.User;
+
+            if (recieverUser.MessagesCount == null || recieverUser.MessagesCount == 0)
+            {
+                recieverUser.MessagesCount = 1;
+            }
+            else
+            {
+                recieverUser.MessagesCount = (recieverUser.MessagesCount + 1);
+            }
+
             if (message.Sender != null && message.Reciever != null)
             {
                 _context.Messages.Add(message);
@@ -157,6 +169,16 @@ namespace WebApplication1.Controllers
             message.RecieverId = recieverProfile.Id;
             message.SenderName = viewModel.SenderName;
 
+            User recieverUser = recieverProfile.User;
+            if (recieverUser.MessagesCount == null || recieverUser.MessagesCount == 0)
+            {
+                recieverUser.MessagesCount = 1;
+            }
+            else
+            {
+                recieverUser.MessagesCount = (recieverUser.MessagesCount + 1);
+            }
+
             if (message.Reciever != null)
             {
                 _context.anonMessages.Add(message);
@@ -185,6 +207,9 @@ namespace WebApplication1.Controllers
             }
 
             User user = await userManager.FindByNameAsync(User.Identity.Name);
+            user.MessagesCount = user.MessagesCount - 1;
+            _context.SaveChanges();
+
             var profileQuery = from profile in _context.Profiles
                                where profile.UserId == user.Id
                                select profile;
@@ -219,6 +244,9 @@ namespace WebApplication1.Controllers
             }
 
             User user = await userManager.FindByNameAsync(User.Identity.Name);
+            user.MessagesCount = user.MessagesCount - 1;
+            _context.SaveChanges();
+
             var profileQuery = from profile in _context.Profiles
                                where profile.UserId == user.Id
                                select profile;

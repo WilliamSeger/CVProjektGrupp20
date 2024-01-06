@@ -5,6 +5,6 @@ namespace WebApplication1.Models
 {
 	public class User : IdentityUser
 	{
-		
+		public int MessagesCount { get; set; }
 	}
 }

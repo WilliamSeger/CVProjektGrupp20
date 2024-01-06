@@ -224,6 +224,16 @@ td {
     margin-bottom: 0.5em;
 }
 
+.msgCount {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: #ff0000; /* Red background color */
+    color: #ffffff; /* White text color */
+    border-radius: 50%; /* Make it a circle */
+    font-size: 14px;
+    font-weight: bold;
+}
+
 .btn {
     margin: 0.2em;
 }
