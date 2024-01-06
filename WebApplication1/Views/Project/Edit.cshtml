@@ -1,6 +1,6 @@
 ﻿@model Project 
 
-<form asp-controller="Project" asp-action="Edit" method="post">
+<form asp-controller="Project" asp-action="Edit" asp-route-id=@Model.Id method="post">
     <input type="hidden" asp-for="Id" />
    
 
@@ -21,7 +21,7 @@
 
         <tr>
             <td>
-                <input type="submit" value="Uppdatera" class="btn-primary" />
+                <input type="submit" value="Update" class="btn-primary" />
             </td>
         </tr>
 
