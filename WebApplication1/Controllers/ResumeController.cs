@@ -141,10 +141,10 @@ namespace WebApplication1.Controllers
             var newResume = new Resume
             {
                 ProfileId = id,
-                Qualification = new List<string> { "Item 1" },
-                Phonenumber = new List<string> { "Item 1" },
-                Education = new List<string> { "Item 1" },
-                Experiences = new List<string> { "Item 1" }
+                Qualification = new List<string> { "" },
+                Phonenumber = new List<string> { "" },
+                Education = new List<string> { "" },
+                Experiences = new List<string> { "" }
             };
             return View(newResume);
 		}
@@ -157,31 +157,51 @@ namespace WebApplication1.Controllers
             var resume = JsonSerializer.Deserialize<Resume>(resumeJson);
             return View("CreateResume", resume);
         }
-		[HttpPost]
-        public IActionResult addItem(int id, int caseId, Resume resume)
+        public IActionResult EditResumeOverload(int id)
+        {
+            //Creates a new blank resume and sends it to the view.
+            //The lists contains dummy items because the input fields in the view needs items in the list to attach to.
+            var resumeJson = TempData["ResumeData"] as string;
+            var resume = JsonSerializer.Deserialize<Resume>(resumeJson);
+            return View("EditResume", resume);
+        }
+
+        [HttpPost]
+        public IActionResult addItem(int id, int caseId, string method, Resume resume)
 		{
 			switch (caseId)
 			{
 				case 1:
-					resume.Qualification.Add("item");
+					resume.Qualification.Add("");
 					break;
 				case 2:
-					resume.Phonenumber.Add("item");
+					resume.Phonenumber.Add("");
                     break;
                 case 3: 
-					resume.Education.Add("item");
+					resume.Education.Add("");
                     break;
                 case 4: 
-					resume.Experiences.Add("item");
+					resume.Experiences.Add("");
                     break;
             }
+
+            _context.Update(resume);
+            _context.SaveChanges();
+
             string resumeJson = JsonSerializer.Serialize(resume);
             TempData["ResumeData"] = resumeJson;
 
-            return RedirectToAction("CreateResumeOverload", "Resume", new { id });
+            if (method.Equals("create"))
+            {
+                return RedirectToAction("CreateResumeOverload", "Resume", new { id });
+            }
+            else
+            {
+                return RedirectToAction("EditResumeOverload", "Resume", new { id });
+            }
         }
         [HttpPost]
-        public IActionResult RemoveField(int caseId, int profId, Resume resume)
+        public IActionResult RemoveField(int caseId, int profId, string method, Resume resume)
         {
             switch (caseId)
             {
@@ -198,10 +218,21 @@ namespace WebApplication1.Controllers
                     resume.Experiences.RemoveAt(resume.Experiences.Count-1);
                     break;
             }
+
+            _context.Update(resume);
+            _context.SaveChanges();
+
             string resumeJson = JsonSerializer.Serialize(resume);
             TempData["ResumeData"] = resumeJson;
 
-            return RedirectToAction("CreateResumeOverload", "Resume", new { profId });
+			if (method.Equals("create"))
+			{
+				return RedirectToAction("CreateResumeOverload", "Resume", new { profId });
+			}
+			else
+			{
+				return RedirectToAction("EditResumeOverload", "Resume", new { profId });
+			}
         }
     }
 }
