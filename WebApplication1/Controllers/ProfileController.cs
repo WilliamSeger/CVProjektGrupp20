@@ -62,9 +62,9 @@ namespace WebApplication1.Controllers
                 ViewBag.Resume = null;
             }
       
-
-			var projectList = from project in _context.Projects
-							  select project;
+			var projectList = from participant in _context.Participants
+                              where participant.ProfileId == id
+							  select participant;
 
             if (!projectList.IsNullOrEmpty())
             {
@@ -72,10 +72,23 @@ namespace WebApplication1.Controllers
             }
             else
             {
-                ViewBag.Projects = new List<Project>();
+                ViewBag.Projects = new List<ParticipatesIn>();
             }
 
-            var profileList = from profile in _context.Profiles
+			var ownedProjectList = from project in _context.Projects
+							       where project.ProjectOwnerId == id
+							       select project;
+
+			if (!ownedProjectList.IsNullOrEmpty())
+			{
+				ViewBag.OwnedProjects = ownedProjectList.ToList();
+			}
+			else
+			{
+				ViewBag.OwnedProjects = new List<Project>();
+			}
+
+			var profileList = from profile in _context.Profiles
                               where profile.Id == id
                               select profile;
 
