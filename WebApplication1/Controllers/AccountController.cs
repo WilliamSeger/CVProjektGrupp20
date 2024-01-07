@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using WebApplication1.Models;
 
 namespace WebApplication1.Controllers
@@ -27,28 +28,40 @@ namespace WebApplication1.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
 		{
-			if(ModelState.IsValid)
-			{	//creates an empty user object where and assigns the from the registerviewmodel
-				User user = new User();
-				user.UserName = registerViewModel.UserName;
-				//creates the user with the usermanager and if succeded the new user gets signed in 
-				//and a message is displayed
-				var result = await userManager.CreateAsync(user, registerViewModel.Password);
-				if(result.Succeeded)
-				{
-					await signInManager.SignInAsync(user, isPersistent: true);
-					TempData["AlertMessage"] = "User was registered succesfully";
-					return RedirectToAction("CreateProfile", "Profile");
-				} else
-				{
-					foreach(var error in result.Errors)
+			try
+			{
+				if (ModelState.IsValid)
+				{   //creates an empty user object where and assigns the from the registerviewmodel
+					User user = new User();
+					user.UserName = registerViewModel.UserName;
+					//creates the user with the usermanager and if succeded the new user gets signed in 
+					//and a message is displayed
+					var result = await userManager.CreateAsync(user, registerViewModel.Password);
+					if (result.Succeeded)
 					{
-						ModelState.AddModelError(string.Empty, error.Description);
+						await signInManager.SignInAsync(user, isPersistent: true);
+						TempData["AlertMessage"] = "User was registered succesfully";
+						return RedirectToAction("CreateProfile", "Profile");
+					}
+					else
+					{
+						foreach (var error in result.Errors)
+						{
+							ModelState.AddModelError(string.Empty, error.Description);
+						}
 					}
 				}
-			}
 
-			return View();
+				return View();
+			}
+			catch (DbUpdateException Dbex)
+			{
+				return View("Views/Error/ErrorView.cshtml", "An error has occured in the database");
+			}
+			catch (Exception ex)
+			{
+				return View("Views/Error/ErrorView.cshtml", "The new user could not be registered");
+			}
 		}
 
 		[HttpGet]
@@ -62,22 +75,33 @@ namespace WebApplication1.Controllers
 		[HttpPost]
 		public async Task<IActionResult> Login(LoginViewModel loginViewModel)
 		{
-			if (ModelState.IsValid)
-			{	//uses the signinmanager class to attempt a sign in by sending the values from the loginviewmodel
-				//to the signinmanagers method signin if succeded the user is signed in if not a message is displayed
-				var result = await signInManager.PasswordSignInAsync(
-				loginViewModel.UserName, loginViewModel.Password, isPersistent: loginViewModel.RememberMe,
-				lockoutOnFailure: false);
-				if (result.Succeeded)
-				{
-					return RedirectToAction("Search", "Resume");
+			try
+			{
+				if (ModelState.IsValid)
+				{   //uses the signinmanager class to attempt a sign in by sending the values from the loginviewmodel
+					//to the signinmanagers method signin if succeded the user is signed in if not a message is displayed
+					var result = await signInManager.PasswordSignInAsync(
+					loginViewModel.UserName, loginViewModel.Password, isPersistent: loginViewModel.RememberMe,
+					lockoutOnFailure: false);
+					if (result.Succeeded)
+					{
+						return RedirectToAction("Search", "Resume");
+					}
+					else
+					{
+						ModelState.AddModelError("", "Wrong username/password");
+					}
 				}
-				else
-				{
-					ModelState.AddModelError("", "Wrong username/password");
-				}
+				return View(loginViewModel);
 			}
-			return View(loginViewModel);
+			catch (DbUpdateException Dbex)
+			{
+				return View("Views/Error/ErrorView.cshtml", "An error has occured in the database");
+			}
+			catch (Exception ex)
+			{
+				return View("Views/Error/ErrorView.cshtml", "The user could not sign in");
+			}
 		}
 
 		[HttpPost]
@@ -99,30 +123,41 @@ namespace WebApplication1.Controllers
 		[HttpPost]
 		public async Task<IActionResult> ChangePassword(ChangePasswordViewModel changePasswordViewModel) 
 		{
-			//takes the values from the changepassword viewmodel and attempts password change
-			//if the user input is correct the password is changed
-			if (ModelState.IsValid)
+			try
 			{
-				var users = _context.Users;
-				User user = users.Where(user => user.UserName == User.Identity.Name).First();
-				var result = await userManager.ChangePasswordAsync(user, changePasswordViewModel.CurrentPassword, changePasswordViewModel.NewPassword);
-				if (result.Succeeded)
+				//takes the values from the changepassword viewmodel and attempts password change
+				//if the user input is correct the password is changed
+				if (ModelState.IsValid)
 				{
-					TempData["AlertMessage"] = "Password was updated succesfully";
+					var users = _context.Users;
+					User user = users.Where(user => user.UserName == User.Identity.Name).First();
+					var result = await userManager.ChangePasswordAsync(user, changePasswordViewModel.CurrentPassword, changePasswordViewModel.NewPassword);
+					if (result.Succeeded)
+					{
+						TempData["AlertMessage"] = "Password was updated succesfully";
 
-					return RedirectToAction("Search", "Resume");
+						return RedirectToAction("Search", "Resume");
+					}
+					else
+					{
+						//adds errors so they can be displayed
+						foreach (var error in result.Errors)
+						{
+							ModelState.AddModelError(string.Empty, error.Description);
+						}
+
+					}
 				}
-				else
-				{
-					//adds errors so they can be displayed
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-
-                }
+				return View(changePasswordViewModel);
 			}
-			return View(changePasswordViewModel);
+			catch (DbUpdateException Dbex)
+			{
+				return View("Views/Error/ErrorView.cshtml", "An error has occured in the database");
+			}
+			catch (Exception ex)
+			{
+				return View("Views/Error/ErrorView.cshtml", "The user could not change password");
+			}
 		}
 
         [Authorize]
@@ -133,26 +168,47 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChangeUserName(ChangeUserNameViewModel changeUserNameViewModel)
-        {
+		public async Task<IActionResult> ChangeUserName(ChangeUserNameViewModel changeUserNameViewModel)
+		{
+			try {
+				//takes the values from the changeUserNameviewmodel and attempts Username change
+				//if the user input is correct the Username is changed
+				if (ModelState.IsValid)
+				{
+					var users = _context.Users;
+					User user = users.Where(user => user.UserName == User.Identity.Name).First();
+					user.UserName = changeUserNameViewModel.NewUserName;
+					var result = await userManager.UpdateAsync(user);
+					if (result.Succeeded)
+					{
+						TempData["AlertMessage"] = "Username was updated succesfully";
 
-			//takes the values from the changeUserNameviewmodel and attempts Username change
-			//if the user input is correct the Username is changed
-			if (ModelState.IsValid)
-			{
-				var users = _context.Users;
-				User user = users.Where(user => user.UserName == User.Identity.Name).First();
-				user.UserName = changeUserNameViewModel.NewUserName;
-				await userManager.UpdateAsync(user);
-				TempData["AlertMessage"] = "Username was updated succesfully";
+						return RedirectToAction("Search", "Resume");
+					}
+					else
+					{
+						foreach (var error in result.Errors)
+						{
+							ModelState.AddModelError(string.Empty, error.Description);
+						}
+						return View(changeUserNameViewModel);
+					}
+				}
+				else
+				{
+					return View(changeUserNameViewModel);
+				}
 
-				return RedirectToAction("Search", "Resume");
 			}
-			else
+			catch (DbUpdateException Dbex)
 			{
-				return View(changeUserNameViewModel);
+				return View("Views/Error/ErrorView.cshtml", "An error has occured in the database");
 			}
-        }
+			catch (Exception ex)
+			{
+				return View("Views/Error/ErrorView.cshtml", "The username could not be changed");
+			}
+		}
 
-    }
+	}
 }
