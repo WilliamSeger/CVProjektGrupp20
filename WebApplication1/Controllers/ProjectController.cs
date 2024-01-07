@@ -19,7 +19,9 @@ namespace WebApplication1.Controllers
 
 		private UserManager<User> _userManager { get; set; }
 		public CVContext context { get; set; }
-		public ProjectController(UserManager<User> userManager, CVContext _context)
+
+        // Konstruktorn - Initialiserar kontrollern med UserManager och CVContext
+        public ProjectController(UserManager<User> userManager, CVContext _context)
 
 		{
 			context = _context;
@@ -28,33 +30,47 @@ namespace WebApplication1.Controllers
 
 		[AllowAnonymous] // Tillåt åtkomst utan inloggning för ShowProject
 
+		//Visar en en lista av projekt som är relaterad till showProject.cshtml , listan visar olika data
+		//beroende om man är inloggad eller ej 
 		public async Task<IActionResult> showProject()
 		{
-			var projects = from project in context.Projects
-						   select project;
-			var participants = from participant in context.Participants
-							   select participant;
-			ViewBag.AllParticipants = participants.ToList();
-
-			if (User.Identity.IsAuthenticated)
+			try
 			{
-				User user = await _userManager.FindByNameAsync(User.Identity.Name);
-				var profile = from profileObj in context.Profiles
-							  where profileObj.UserId == user.Id
-							  select profileObj;
-				Profile userProfile = profile.FirstOrDefault();
-				ViewBag.Profile = userProfile;
+				var projects = from project in context.Projects
+							   select project;
+				var participants = from participant in context.Participants
+								   select participant;
+				ViewBag.AllParticipants = participants.ToList();
 
-				var myParticipations = from participant in context.Participants
-								   where participant.ProfileId == userProfile.Id
-								   select participant.ProjectId;
-				ViewBag.UserParticipationId = myParticipations.ToList();
+				if (User.Identity.IsAuthenticated)
+				{
+					User user = await _userManager.FindByNameAsync(User.Identity.Name);
+					var profile = from profileObj in context.Profiles
+								  where profileObj.UserId == user.Id
+								  select profileObj;
+					Profile userProfile = profile.FirstOrDefault();
+					ViewBag.Profile = userProfile;
+
+					var myParticipations = from participant in context.Participants
+										   where participant.ProfileId == userProfile.Id
+										   select participant.ProjectId;
+					ViewBag.UserParticipationId = myParticipations.ToList();
+				}
+				return View(projects.ToList());
 			}
-			return View(projects.ToList());
+			catch (DbUpdateException dbex)
+			{
+				return View("Views/Error/ErrorView.cshtml", "Database problem. Check your connecttion.");
+			}
+
+			catch (Exception ex)
+			{
+				return View("Views/Error/ErrorView.cshtml", "Project could not be fetched.");
+			}
+
 		}
-
-
-		public IActionResult Create()
+            //Returnerar vyn för att skapa ett nytt projekt
+            public IActionResult Create()
 		{
 			CreateProjectViewModel viewModel = new CreateProjectViewModel();
 
@@ -63,156 +79,263 @@ namespace WebApplication1.Controllers
 
 		}
 
+		//Lägger till ett nytt projekt i databasen genom add.cshtml samt lägger till vem som är projectOwner i det projektet
 		[HttpPost]
 		public async Task<IActionResult> Add(CreateProjectViewModel viewmodel)
 		{
-			if (ModelState.IsValid)
+
+			try
 			{
-                User user = await _userManager.FindByNameAsync(User.Identity.Name);
-                var profileQuery = from profileObj in context.Profiles
-                              where profileObj.UserId == user.Id
-                              select profileObj;
-				Profile profile = profileQuery.FirstOrDefault();
 
-				Project project = new Project();
-				project.Title = viewmodel.Title;
-				project.Description = viewmodel.Description;
-				project.Created = DateTime.Now;
-				project.Updated =	DateTime.Now;
-				project.ParticipatesIn = new List<ParticipatesIn>();
-				project.ProjectOwner = profile;
-				project.ProjectOwnerId = profile.Id;
+				if (ModelState.IsValid)
+				{
+					User user = await _userManager.FindByNameAsync(User.Identity.Name);
+					var profileQuery = from profileObj in context.Profiles
+									   where profileObj.UserId == user.Id
+									   select profileObj;
+					Profile profile = profileQuery.FirstOrDefault();
 
-				context.Add(project);
-				context.SaveChanges();
+					Project project = new Project();
+					project.Title = viewmodel.Title;
+					project.Description = viewmodel.Description;
+					project.Created = DateTime.Now;
+					project.Updated = DateTime.Now;
+					project.ParticipatesIn = new List<ParticipatesIn>();
+					project.ProjectOwner = profile;
+					project.ProjectOwnerId = profile.Id;
 
-				TempData["AlertMessage"] = "Project Created sucessfully";
-				return RedirectToAction("showProject");
+					context.Add(project);
+					context.SaveChanges();
+
+					TempData["AlertMessage"] = "Project Created sucessfully";
+					return RedirectToAction("showProject");
 
 
 
+
+				}
+
+				return View("Add", viewmodel);
 
 			}
 
-			return View("Add", viewmodel);
-
-		}
-
-
-		[HttpPost]
-		public IActionResult Delete(int id) 
-		{
-			var projectList = from project in context.Projects
-							  where project.Id == id
-							  select project;
-			Project projectToDelete = projectList.FirstOrDefault();
-            var participantList = from participants in context.Participants
-                              where participants.ProjectId == id
-                              select participants;
-
-            if (participantList != null)
+            catch (DbUpdateException dbex)
             {
-                List<ParticipatesIn> participantsToDelete = participantList.ToList();
-                foreach (var participant in participantsToDelete)
-				{
-                    context.Participants.Remove(participant);
-                }
-                context.SaveChanges();
+                return View("Views/Error/ErrorView.cshtml", "Database problem. Check your connecttion.");
             }
 
-            if (projectToDelete != null)
+            catch (Exception ex)
+            {
+                return View("Views/Error/ErrorView.cshtml", "Project could not be fetched.");
+            }
+
+        }
+
+
+        // Tar bort ett specifikt projekt från databasen
+
+        [HttpPost]
+		public IActionResult Delete(int id) 
+		{
+
+			try
 			{
-				context.Projects.Remove(projectToDelete);
-				context.SaveChanges();
-			}
 
-			return RedirectToAction("showProject");
-		}
 
+				var projectList = from project in context.Projects
+								  where project.Id == id
+								  select project;
+				Project projectToDelete = projectList.FirstOrDefault();
+				var participantList = from participants in context.Participants
+									  where participants.ProjectId == id
+									  select participants;
+
+				if (participantList != null)
+				{
+					List<ParticipatesIn> participantsToDelete = participantList.ToList();
+					foreach (var participant in participantsToDelete)
+					{
+						context.Participants.Remove(participant);
+					}
+					context.SaveChanges();
+				}
+
+				if (projectToDelete != null)
+				{
+					context.Projects.Remove(projectToDelete);
+					context.SaveChanges();
+				}
+
+				return RedirectToAction("showProject");
+            }
+
+            catch (DbUpdateException dbex)
+            {
+                return View("Views/Error/ErrorView.cshtml", "Database problem. Check your connecttion.");
+            }
+
+            catch (Exception ex)
+            {
+                return View("Views/Error/ErrorView.cshtml", "Project could not be fetched.");
+            }
+        }
+
+		//Uppdaterar ett befintiligt projekt 
 		[HttpPost]
 		public IActionResult Edit(Project project, int Id)
 		{
-			var existingProject = context.Projects.Where(project => project.Id == Id);
-			Project currentProject = existingProject.FirstOrDefault();
 
-			if (project.Title != null)
+			try
 			{
-				currentProject.Title = project.Title;
 
+
+				var existingProject = context.Projects.Where(project => project.Id == Id);
+				Project currentProject = existingProject.FirstOrDefault();
+
+				if (project.Title != null)
+				{
+					currentProject.Title = project.Title;
+
+				}
+
+				if (project.Description != null)
+				{
+					currentProject.Description = project.Description;
+				}
+
+				if (project != null)
+				{
+					currentProject.Updated = DateTime.Now;
+					context.Update(currentProject);
+					context.SaveChanges();
+					TempData["AlertMessage"] = "Project updated succesfully";
+					return RedirectToAction("showProject");
+				}
+
+				return View("Edit", project);
 			}
 
-			if (project.Description != null)
-			{
-				currentProject.Description = project.Description;
-			}
+            catch (DbUpdateException dbex)
+            {
+                return View("Views/Error/ErrorView.cshtml", "Database problem. Check your connecttion.");
+            }
 
-			if (project != null)
-			{
-				currentProject.Updated = DateTime.Now;
-				context.Update(currentProject);
-				context.SaveChanges();
-				TempData["AlertMessage"] = "Project updated succesfully";
-				return RedirectToAction("showProject");
-			}
+            catch (Exception ex)
+            {
+                return View("Views/Error/ErrorView.cshtml", "Project could not be fetched.");
+            }
+        }
 
-			return View("Edit", project);
-		}
-
+		//hämtar in ett projekt med id för redigiering från ShowProject.cshtml och returnerar den till edit.cshtml
 		[HttpGet]
 		public IActionResult EditProject(int id)
 		{
-			Project project = context.Projects.Find(id);
 
-			return View("Edit", project);
-		}
+			try
+			{
 
+
+				Project project = context.Projects.Find(id);
+
+				return View("Edit", project);
+
+
+
+			}
+            catch (DbUpdateException dbex)
+            {
+                return View("Views/Error/ErrorView.cshtml", "Database problem. Check your connecttion.");
+            }
+
+            catch (Exception ex)
+            {
+                return View("Views/Error/ErrorView.cshtml", "Project could not be fetched.");
+            }
+
+        }
+
+		// Lägger till användaren som deltagare i ett projekt
 		[HttpPost]
 		public async Task<IActionResult> Participate(int projectId)
 		{
-			User user = await _userManager.FindByNameAsync(User.Identity.Name);
-			var profile = from profileObj in context.Profiles
-						  where profileObj.UserId == user.Id
-						  select profileObj;
 
-			Profile userprofile = profile.FirstOrDefault();
-			if (userprofile != null)
+
+			try
 			{
-				var participation = new ParticipatesIn
-				{
-					ProfileId = userprofile.Id,
-					ProjectId = projectId
-				};
+				User user = await _userManager.FindByNameAsync(User.Identity.Name);
+				var profile = from profileObj in context.Profiles
+							  where profileObj.UserId == user.Id
+							  select profileObj;
 
-				context.Participants.Add(participation);
-				await context.SaveChangesAsync();
+				Profile userprofile = profile.FirstOrDefault();
+				if (userprofile != null)
+				{
+					var participation = new ParticipatesIn
+					{
+						ProfileId = userprofile.Id,
+						ProjectId = projectId
+					};
+
+					context.Participants.Add(participation);
+					await context.SaveChangesAsync();
+				}
+
+				return RedirectToAction("showProject");
+
 			}
 
-			return RedirectToAction("showProject");
-
-		}
-
-        [HttpPost]
-        public async Task<IActionResult> Leave(int projectId)
-        {
-            User user = await _userManager.FindByNameAsync(User.Identity.Name);
-            var profile = from profileObj in context.Profiles
-                          where profileObj.UserId == user.Id
-                          select profileObj;
-
-            Profile userprofile = profile.FirstOrDefault();
-            if (userprofile != null)
+            catch (DbUpdateException dbex)
             {
-                var participant = from participantObj in context.Participants
-								  where participantObj.ProfileId == userprofile.Id
-								  where participantObj.ProjectId == projectId
-								  select participantObj;
-                ParticipatesIn currentParticipant = participant.FirstOrDefault();
-
-                context.Participants.Remove(currentParticipant);
-                await context.SaveChangesAsync();
+                return View("Views/Error/ErrorView.cshtml", "Database problem. Check your connecttion.");
             }
 
-            return RedirectToAction("showProject");
+            catch (Exception ex)
+            {
+                return View("Views/Error/ErrorView.cshtml", "Project could not be fetched.");
+            }
+        }
+
+
+		// Tar bort användarens deltagande i ett projekt
+		[HttpPost]
+		public async Task<IActionResult> Leave(int projectId)
+		{
+
+			try
+			{
+
+
+				User user = await _userManager.FindByNameAsync(User.Identity.Name);
+				var profile = from profileObj in context.Profiles
+							  where profileObj.UserId == user.Id
+							  select profileObj;
+
+				Profile userprofile = profile.FirstOrDefault();
+				if (userprofile != null)
+				{
+					var participant = from participantObj in context.Participants
+									  where participantObj.ProfileId == userprofile.Id
+									  where participantObj.ProjectId == projectId
+									  select participantObj;
+					ParticipatesIn currentParticipant = participant.FirstOrDefault();
+
+					context.Participants.Remove(currentParticipant);
+					await context.SaveChangesAsync();
+				}
+
+				return RedirectToAction("showProject");
+
+			}
+
+            catch (DbUpdateException dbex)
+            {
+                return View("Views/Error/ErrorView.cshtml", "Database problem. Check your connecttion.");
+            }
+
+            catch (Exception ex)
+            {
+                return View("Views/Error/ErrorView.cshtml", "Project could not be fetched.");
+            }
 
         }
     }
