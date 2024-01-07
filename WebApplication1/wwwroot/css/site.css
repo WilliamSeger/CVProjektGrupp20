@@ -285,7 +285,7 @@ td {
     background-color: #A1B1DE;
     border-radius: 2vw;
 }
-.project-box p, .project-box h4, .project-box input{
+.project-box p, .project-box h4, .project-box input, .project-box a{
         margin-left: 20px;
         margin-right: 10px;
         margin-bottom: 10px;
