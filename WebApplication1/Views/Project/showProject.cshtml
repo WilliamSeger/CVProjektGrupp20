@@ -32,10 +32,20 @@
                     <p class="bold-text">Participants:</p>
                     @foreach (var participant in ViewBag.Allparticipants)
                     {
-                    @if(participant.ProjectId == item.Id)
-                    {
-                        <p>@participant.Profile.Name</p>
-                    }
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                            @if (participant.ProjectId == item.Id)
+                            {
+                                <p>@participant.Profile.Name</p>
+                            }
+                        }
+                        else
+                        {
+                            @if (participant.ProjectId == item.Id && participant.Profile.IsPrivate == false)
+                            {
+                                <p>@participant.Profile.Name</p>
+                            }
+                        }                       
                     }
                     @if(User.Identity.IsAuthenticated) {
                     @if (@ViewBag.Profile.Id == @item.ProjectOwnerId)
