@@ -28,6 +28,18 @@ namespace WebApplication1.Models
                     Id = "123",
                     UserName = "Admin",
                     PasswordHash = "1234Abc!"
+                },
+                new User
+                {
+                    Id = "1234",
+                    UserName = "Admin1",
+                    PasswordHash = "1234Abc!"
+                },
+                new User
+                {
+                    Id = "12345",
+                    UserName = "Admin2",
+                    PasswordHash = "1234Abc!"
                 }
                 );
 			modelBuilder.Entity<Profile>().HasData(
@@ -44,52 +56,52 @@ namespace WebApplication1.Models
                 new Profile
                 {
                     Id = 2,
-                    Name = "Bongus",
+                    Name = "Gustav",
                     ProfilePicturePath = "",
-                    Adress = "väggatan 4",
-                    Email = new List<string> { "hallå@hotmail.com", "hallå@företag.se" },
+                    Adress = "Väggatan 24",
+                    Email = new List<string> { "gustav@hotmail.com", "gustav@företag.se" },
                     IsPrivate = false,
-                    UserId = "123"
+                    UserId = "1234"
                 },
                 new Profile
                 {
                     Id = 3,
-                    Name = "Bing",
+                    Name = "Göran",
                     ProfilePicturePath = "",
-                    Adress = "väggatan 2",
-                    Email = new List<string> { "meh@yahoo.com", "meh@arbete.com" },
+                    Adress = "Husgatan 2",
+                    Email = new List<string> { "oru@yahoo.com", "oru@arbete.com" },
                     IsPrivate = false,
-                    UserId = "123"
+                    UserId = "12345"
                 }
                 );
             modelBuilder.Entity<Resume>().HasData(
                 new Resume
                 {
                     Id = 1,
-                    Qualification = new List<string> { "bingus", "bongus" },
-                    Phonenumber = new List<string> { "09348", "094854" },
+                    Qualification = new List<string> { "ASP NET", "HTML-master" },
+                    Phonenumber = new List<string> { "09342128", "091234854" },
                     Education = new List<string> { "Harvard", "Yale" },
-                    Experiences = new List<string> { "Amgus champion"},
+                    Experiences = new List<string> { "Professional Gamer"},
                     ProfileId = 1
 
                 },
                 new Resume
                 {
                     Id = 2,
-                    Qualification = new List<string> { "bin", "bon" },
+                    Qualification = new List<string> { "Fullstack" },
                     Phonenumber = new List<string> { "09348999", "99094854" },
-                    Education = new List<string> { "Harvardle", "Yalebon" },
-                    Experiences = new List<string> { "Coding"},
+                    Education = new List<string> { "KTH", "Yalebon" },
+                    Experiences = new List<string> { "Google internship" },
                     ProfileId = 2
 
                 },
                 new Resume
                 {
                     Id = 3,
-                    Qualification = new List<string> { "binguruskus", "sibongus" },
-                    Phonenumber = new List<string> { "66609348", "666094854" },
-                    Education = new List<string> { "FakeHarvard", "RealYale" },
-                    Experiences = new List<string> { "Bruh" },
+                    Qualification = new List<string> { "Fullstack", "ASP NET" },
+                    Phonenumber = new List<string> { "123891892", "666094854" },
+                    Education = new List<string> { "Harvard", "Örebro Universitet" },
+                    Experiences = new List<string> { "Rest runt jorden" },
                     ProfileId = 3
 
                 }
