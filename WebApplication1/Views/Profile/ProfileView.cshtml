@@ -168,46 +168,54 @@ else
 			}
 		</div>
 		<div class="item item4">
-			@if (ViewBag.Projects.Count != 0)
+			<h1>Projects participated in</h1>
+			<div class="project-box-container">
+			@if (ViewBag.Projects.Count != 0 && ViewBag.Projects != null)
 			{
-				<h1>Projects</h1>
 				@foreach (var project in ViewBag.Projects)
 				{
-					<div class="profileProjectItem">
-						<a asp-action="ProfileView" asp-controller="Profile" asp-route-id="@Model.Id" asp-route-id2="@project.Id">
-							<div>
-								<label>Title: </label>
-								<p>
-									@project.Title
-								</p>
-								<label>Description: </label>
-								<p>
-									@project.Description
-								</p>
-								<label>Date Created: </label>
-								<p>
-									@project.Created;
-								</p>
-							</div>
-						</a>
-						@* <div>
-
-							@foreach (var participant in project.ParticipantsIn)
-
-							{
-
-
-
-							}
-
-						</div> *@
+					<div class="project-box">
+						<h4>@project.Project.Title</h4>
+						<p>@project.Project.Description</p>
+						<p class="bold-text">Created: </p>
+						<p>@project.Project.Created</p>
+						<p class="bold-text">Updated: </p>
+						<p>@project.Project.Updated</p>
+						<p class="bold-text">Project Owner: </p>
+						<p>@project.Project.ProjectOwner.Name</p>
 					</div>
 				}
 			}
 			else
 			{
-				<h1> This profile is not part of any projects yet </h1>
+				<p> This profile is not part of any projects yet </p>
 			}
+			</div>			
+		</div>
+		<div class="item item5">			
+			<h1>Created projects</h1>
+			<div class="project-box-container">
+				@if (ViewBag.OwnedProjects.Count != 0 && ViewBag.OwnedProjects != null)
+				{
+					@foreach (var project in ViewBag.OwnedProjects)
+					{
+						<div class="project-box">
+							<h4>@project.Title</h4>
+							<p>@project.Description</p>
+							<p class="bold-text">Created: </p>
+							<p>@project.Created</p>
+							<p class="bold-text">Updated: </p>
+							<p>@project.Updated</p>
+							<p class="bold-text">Project Owner: </p>
+							<p>@project.ProjectOwner.Name</p>
+						</div>
+					}
+				}
+				else
+				{
+					<p> This profile has not created any projects yet </p>
+				}
+			</div>
 		</div>
 	</div>
 }
