@@ -13,12 +13,17 @@ html {
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
+
 }
 
 body {
-  margin-bottom: 60px;
+    margin-bottom: 60px;
+    background-image: url('../images/background/sunset.webp');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 p {
@@ -41,13 +46,14 @@ label:hover {
     border: solid black 1px;
     border-radius: 2vw;
     width: 15vw;
+    background-color: #A1B1DE;
 }
 
-.resumeItem:hover {
-    background-color: lightgrey;
-    cursor: pointer;
-    color: black;
-}
+    .resumeItem:hover {
+        background-color: #7E99E5;
+        cursor: pointer;
+        color: black;
+    }
 
 .resumeItem div {
     margin: 1vw;
@@ -65,6 +71,7 @@ label:hover {
 .grid-container {
     display: grid;
     row-gap: 5vh;
+    background-color:
 }
 
 .item {
@@ -101,12 +108,32 @@ label:hover {
     grid-row-end: 5;
 }
 
+
+.ProfileInfo {
+    display: inline-block;
+    flex-wrap: wrap;
+    margin-right: 1vw;
+    margin-bottom: 10vh;
+    border: solid black 1px;
+    border-radius: 2vw;
+    width: 15vw;
+    background-color: #A1B1DE;
+}
+
+    .ProfileInfo p, .ProfileInfo label {
+        margin-left: 20px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+    }
+
 .item item5 {
     grid-column-start: 1;
     grid-column-end: 2;
     grid-row-start: 4;
     grid-row-end: 5;
 }
+
 
 .resumeItemProfile {
     display: inline-block;
@@ -116,6 +143,7 @@ label:hover {
     border: solid black 1px;
     border-radius: 2vw;
     width: 15vw;
+    background-color: #A1B1DE;
 }
 
 .resumeItemProfile div {
@@ -134,6 +162,7 @@ label:hover {
     border: solid black 1px;
     border-radius: 2vw;
     width: 15vw;
+    background-color: #A1B1DE;
 }
 
 .profileProjectItem:hover {
@@ -153,6 +182,12 @@ label:hover {
 .profileProjectItem a {
     color: black;
     text-decoration: none;
+}
+.profileProjectItem p, .profileProjectItem h4, .profileProjectItem input {
+    margin-left: 20px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .formDiv form {
@@ -236,7 +271,7 @@ td {
     padding: 5px 10px;
     background-color: #ff0000;
     color: #ffffff;
-    border-radius: 50%;
+    border-radius: 50%; 
     font-size: 14px;
     font-weight: bold;
 }
@@ -246,6 +281,25 @@ td {
 }
 
 .project-box {
+    border: solid black 1px;
+    background-color: #A1B1DE;
+    border-radius: 2vw;
+}
+.project-box p, .project-box h4, .project-box input{
+        margin-left: 20px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        margin-top: 10px;
+}
+table tbody{
+    background-color: #A1B1DE;
+    border: solid black 1px;
+}
+table thead {
+    background-color: #599FF7;
+}
+label {
+    font-weight: bold;
     border: 1px solid #ddd;
     padding: 15px;
     margin: 2px;
